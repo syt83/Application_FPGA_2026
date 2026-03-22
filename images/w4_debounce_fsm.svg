@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .subtitle { font-size: 12px; fill: #666; }
+  .label { font-size: 12px; fill: #2C3E50; }
+  .label-b { font-size: 12px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .code { font-family: 'Courier New', monospace; font-size: 10px; fill: #2C3E50; }
+  .warn { font-size: 11px; fill: #E74C3C; font-weight: bold; }
+  .note { font-size: 10px; fill: #1B4F72; }
+</style>
+<defs><marker id="ad" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1E8449"/></marker>
+<marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#999"/></marker></defs>
+<text x="300" y="18" text-anchor="middle" class="title">Debounce FSM State Diagram</text>
+<!-- States -->
+<circle cx="80" cy="110" r="35" fill="#D6EAF8" stroke="#1B4F72" stroke-width="2"/>
+<text x="80" y="115" text-anchor="middle" class="label-b">IDLE</text>
+<circle cx="220" cy="110" r="35" fill="#FEF9E7" stroke="#B7950B" stroke-width="2"/>
+<text x="220" y="105" text-anchor="middle" class="label-b">WAIT</text>
+<text x="220" y="120" text-anchor="middle" class="label-s">PRESS</text>
+<circle cx="370" cy="110" r="35" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/>
+<text x="370" y="108" text-anchor="middle" class="label-b">PRES-</text>
+<text x="370" y="123" text-anchor="middle" class="label-b">SED</text>
+<circle cx="520" cy="110" r="35" fill="#FEF9E7" stroke="#B7950B" stroke-width="2"/>
+<text x="520" y="105" text-anchor="middle" class="label-b">WAIT</text>
+<text x="520" y="120" text-anchor="middle" class="label-s">RELEASE</text>
+<!-- Transitions -->
+<line x1="117" y1="100" x2="183" y2="100" stroke="#1E8449" stroke-width="2" marker-end="url(#ad)"/>
+<text x="150" y="92" text-anchor="middle" class="label-s" fill="#1E8449">btn=0</text>
+<line x1="257" y1="100" x2="333" y2="100" stroke="#1E8449" stroke-width="2" marker-end="url(#ad)"/>
+<text x="295" y="92" text-anchor="middle" class="label-s" fill="#1E8449">cnt_done</text>
+<line x1="407" y1="100" x2="483" y2="100" stroke="#1E8449" stroke-width="2" marker-end="url(#ad)"/>
+<text x="445" y="92" text-anchor="middle" class="label-s" fill="#1E8449">auto</text>
+<path d="M520,75 Q520,30 80,75" fill="none" stroke="#999" stroke-width="1.5" marker-end="url(#ag)"/>
+<text x="300" y="40" text-anchor="middle" class="label-s">btn=1 &amp;&amp; cnt_done</text>
+<!-- Back arrow from WAIT_P to IDLE -->
+<path d="M205,145 Q150,170 95,145" fill="none" stroke="#999" stroke-width="1.5" marker-end="url(#ag)"/>
+<text x="150" y="175" text-anchor="middle" class="label-s">btn=1 (released early)</text>
+<!-- Output note -->
+<text x="370" y="165" text-anchor="middle" class="label-b" fill="#1E8449">Output: btn_pulse = 1</text>
+<text x="370" y="180" text-anchor="middle" class="label-s">(1-clock pulse)</text>
+</svg>

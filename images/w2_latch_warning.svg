@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 240">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .subtitle { font-size: 12px; fill: #666; }
+  .label { font-size: 12px; fill: #2C3E50; }
+  .label-b { font-size: 12px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .code { font-family: 'Courier New', monospace; font-size: 10px; fill: #2C3E50; }
+  .warn { font-size: 11px; fill: #E74C3C; font-weight: bold; }
+  .note { font-size: 10px; fill: #1B4F72; }
+</style>
+<text x="360" y="20" text-anchor="middle" class="title">Latch Inference Cases (Common Mistakes)</text>
+<!-- Case 1 -->
+<rect x="10" y="35" width="225" height="195" rx="6" fill="#FFF" stroke="#E74C3C" stroke-width="2"/>
+<text x="122" y="52" text-anchor="middle" class="warn">Case 1: Missing default</text>
+<text x="20" y="72" class="code">always @(*) begin</text>
+<text x="20" y="85" class="code">  case(sel)</text>
+<text x="20" y="98" class="code">    2'b00: y = a;</text>
+<text x="20" y="111" class="code">    2'b01: y = b;</text>
+<text x="20" y="124" class="code">    // NO default!</text>
+<text x="20" y="137" class="code">  endcase</text>
+<text x="20" y="150" class="code">end</text>
+<rect x="15" y="158" width="215" height="20" rx="3" fill="#FADBD8"/><text x="20" y="173" class="label-s" fill="#E74C3C">sel=10,11: y holds -> LATCH!</text>
+<rect x="15" y="182" width="215" height="20" rx="3" fill="#D5F5E3"/><text x="20" y="197" class="label-s" fill="#1E8449">Fix: add default: y = 0;</text>
+<!-- Case 2 -->
+<rect x="248" y="35" width="225" height="195" rx="6" fill="#FFF" stroke="#E74C3C" stroke-width="2"/>
+<text x="360" y="52" text-anchor="middle" class="warn">Case 2: Missing else</text>
+<text x="258" y="72" class="code">always @(*) begin</text>
+<text x="258" y="85" class="code">  if (en)</text>
+<text x="258" y="98" class="code">    y = a;</text>
+<text x="258" y="111" class="code">  // NO else!</text>
+<text x="258" y="124" class="code">end</text>
+<rect x="253" y="158" width="215" height="20" rx="3" fill="#FADBD8"/><text x="258" y="173" class="label-s" fill="#E74C3C">en=0: y holds -> LATCH!</text>
+<rect x="253" y="182" width="215" height="20" rx="3" fill="#D5F5E3"/><text x="258" y="197" class="label-s" fill="#1E8449">Fix: add else y = 0;</text>
+<!-- Case 3 -->
+<rect x="486" y="35" width="225" height="195" rx="6" fill="#FFF" stroke="#E74C3C" stroke-width="2"/>
+<text x="598" y="52" text-anchor="middle" class="warn">Case 3: No default value</text>
+<text x="496" y="72" class="code">always @(*) begin</text>
+<text x="496" y="85" class="code">  // no init!</text>
+<text x="496" y="98" class="code">  if (s==0) y = a;</text>
+<text x="496" y="111" class="code">  if (s==1) z = b;</text>
+<text x="496" y="124" class="code">end</text>
+<rect x="491" y="158" width="215" height="20" rx="3" fill="#FADBD8"/><text x="496" y="173" class="label-s" fill="#E74C3C">y,z hold when cond false -> LATCH!</text>
+<rect x="491" y="182" width="215" height="20" rx="3" fill="#D5F5E3"/><text x="496" y="197" class="label-s" fill="#1E8449">Fix: y=0; z=0; at top</text>
+</svg>

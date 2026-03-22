@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 200">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .subtitle { font-size: 12px; fill: #666; }
+  .label { font-size: 12px; fill: #2C3E50; }
+  .label-b { font-size: 12px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .code { font-family: 'Courier New', monospace; font-size: 10px; fill: #2C3E50; }
+  .warn { font-size: 11px; fill: #E74C3C; font-weight: bold; }
+  .note { font-size: 10px; fill: #1B4F72; }
+</style>
+<text x="350" y="20" text-anchor="middle" class="title">Moore vs Mealy Machine</text>
+<!-- Moore -->
+<rect x="15" y="35" width="320" height="150" rx="8" fill="#D6EAF8" stroke="#1B4F72" stroke-width="2"/>
+<text x="175" y="55" text-anchor="middle" class="label-b" fill="#1B4F72">Moore Machine</text>
+<text x="30" y="78" class="label">Output = f(state)</text>
+<text x="30" y="98" class="label">Output changes WITH state transition</text>
+<text x="30" y="118" class="label">1-clock delay on input response</text>
+<text x="30" y="138" class="label-b" fill="#1E8449">Glitch-free output</text>
+<text x="30" y="158" class="label-s">More states, but safer</text>
+<rect x="200" y="160" width="120" height="20" rx="4" fill="#1E8449"/>
+<text x="260" y="175" text-anchor="middle" fill="white" class="label-s" font-weight="bold">RECOMMENDED</text>
+<!-- Mealy -->
+<rect x="365" y="35" width="320" height="150" rx="8" fill="#FDEBD0" stroke="#E67E22" stroke-width="2"/>
+<text x="525" y="55" text-anchor="middle" class="label-b" fill="#E67E22">Mealy Machine</text>
+<text x="380" y="78" class="label">Output = f(state, input)</text>
+<text x="380" y="98" class="label">Output can change IMMEDIATELY with input</text>
+<text x="380" y="118" class="label">Faster response (same cycle)</text>
+<text x="380" y="138" class="warn">Input glitch propagates to output!</text>
+<text x="380" y="158" class="label-s">Fewer states, but risky</text>
+</svg>

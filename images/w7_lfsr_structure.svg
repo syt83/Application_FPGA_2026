@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 150">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .subtitle { font-size: 12px; fill: #666; }
+  .label { font-size: 12px; fill: #2C3E50; }
+  .label-b { font-size: 12px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .code { font-family: 'Courier New', monospace; font-size: 10px; fill: #2C3E50; }
+  .warn { font-size: 11px; fill: #E74C3C; font-weight: bold; }
+  .note { font-size: 10px; fill: #1B4F72; }
+</style>
+<defs><marker id="al" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#666"/></marker></defs>
+<text x="300" y="18" text-anchor="middle" class="title">16-bit LFSR Feedback Structure</text>
+<text x="300" y="35" text-anchor="middle" class="label-s">Polynomial: x^16 + x^15 + x^13 + x^4 + 1 (maximal length, period=65535)</text>
+<!-- Shift register boxes -->
+<g transform="translate(30,50)">
+  <rect x="0" y="0" width="30" height="30" fill="#D6EAF8" stroke="#1B4F72"/><text x="15" y="20" text-anchor="middle" class="code">[15]</text>
+  <rect x="32" y="0" width="30" height="30" fill="#D6EAF8" stroke="#1B4F72"/><text x="47" y="20" text-anchor="middle" class="code">[14]</text>
+  <rect x="64" y="0" width="30" height="30" fill="#EAECEE" stroke="#999"/><text x="79" y="20" text-anchor="middle" class="code">[13]</text>
+  <rect x="96" y="0" width="30" height="30" fill="#D6EAF8" stroke="#1B4F72"/><text x="111" y="20" text-anchor="middle" class="code">[12]</text>
+  <text x="140" y="20" class="label-s">...</text>
+  <rect x="160" y="0" width="30" height="30" fill="#EAECEE" stroke="#999"/><text x="175" y="20" text-anchor="middle" class="code">[4]</text>
+  <rect x="192" y="0" width="30" height="30" fill="#D6EAF8" stroke="#1B4F72"/><text x="207" y="20" text-anchor="middle" class="code">[3]</text>
+  <text x="236" y="20" class="label-s">...</text>
+  <rect x="255" y="0" width="30" height="30" fill="#EAECEE" stroke="#999"/><text x="270" y="20" text-anchor="middle" class="code">[0]</text>
+  <!-- Arrows showing shift direction -->
+  <text x="310" y="20" class="label-s">-> out</text>
+  <!-- XOR feedback -->
+  <circle cx="350" cy="65" r="12" fill="#FEF9E7" stroke="#B7950B" stroke-width="2"/>
+  <text x="350" y="70" text-anchor="middle" class="label-b">XOR</text>
+  <!-- Feedback lines -->
+  <line x1="15" y1="30" x2="15" y2="50" stroke="#E74C3C" stroke-width="1.5"/>
+  <line x1="15" y1="50" x2="340" y2="50" stroke="#E74C3C" stroke-width="1.5"/>
+  <line x1="47" y1="30" x2="47" y2="55" stroke="#E74C3C" stroke-width="1.5"/>
+  <line x1="47" y1="55" x2="340" y2="55" stroke="#E74C3C" stroke-width="1.5"/>
+  <line x1="111" y1="30" x2="111" y2="60" stroke="#E74C3C" stroke-width="1.5"/>
+  <line x1="111" y1="60" x2="340" y2="60" stroke="#E74C3C" stroke-width="1.5"/>
+  <line x1="207" y1="30" x2="207" y2="70" stroke="#E74C3C" stroke-width="1.5"/>
+  <line x1="207" y1="70" x2="340" y2="70" stroke="#E74C3C" stroke-width="1.5"/>
+  <!-- Feedback to input -->
+  <line x1="362" y1="65" x2="480" y2="65" stroke="#1E8449" stroke-width="2"/>
+  <line x1="480" y1="65" x2="480" y2="-10" stroke="#1E8449" stroke-width="2"/>
+  <line x1="480" y1="-10" x2="0" y2="-10" stroke="#1E8449" stroke-width="2" marker-end="url(#al)"/>
+  <text x="400" y="58" class="label-s" fill="#1E8449">feedback</text>
+  <text x="240" y="-15" text-anchor="middle" class="label-s" fill="#1E8449">-> shift in at MSB</text>
+</g>
+<text x="300" y="140" text-anchor="middle" class="warn" font-size="9">WARNING: seed must be non-zero! All-zero state locks up forever.</text>
+</svg>

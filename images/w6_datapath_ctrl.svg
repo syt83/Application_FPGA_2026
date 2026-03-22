@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 300">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .subtitle { font-size: 12px; fill: #666; }
+  .label { font-size: 12px; fill: #2C3E50; }
+  .label-b { font-size: 12px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .code { font-family: 'Courier New', monospace; font-size: 10px; fill: #2C3E50; }
+  .warn { font-size: 11px; fill: #E74C3C; font-weight: bold; }
+  .note { font-size: 10px; fill: #1B4F72; }
+</style>
+<defs><marker id="a6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#666"/></marker></defs>
+<text x="325" y="20" text-anchor="middle" class="title">Datapath + Controller Architecture</text>
+<!-- Controller -->
+<rect x="25" y="40" width="210" height="170" rx="10" fill="#D6EAF8" stroke="#1B4F72" stroke-width="2"/>
+<text x="130" y="62" text-anchor="middle" class="label-b" fill="#1B4F72">Controller (FSM)</text>
+<rect x="40" y="75" width="180" height="120" rx="6" fill="#EAECEE" stroke="#999"/>
+<text x="130" y="95" text-anchor="middle" class="label">State Register</text>
+<text x="130" y="115" text-anchor="middle" class="label">Next State Logic</text>
+<text x="130" y="135" text-anchor="middle" class="label">Output Logic</text>
+<text x="130" y="158" text-anchor="middle" class="label-s">(generates control signals)</text>
+<!-- Datapath -->
+<rect x="310" y="40" width="315" height="230" rx="10" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/>
+<text x="467" y="62" text-anchor="middle" class="label-b" fill="#1E8449">Datapath</text>
+<rect x="330" y="78" width="120" height="50" rx="6" fill="#FDEBD0" stroke="#E67E22"/><text x="390" y="100" text-anchor="middle" class="label-b">ALU</text><text x="390" y="118" text-anchor="middle" class="label-s">+ - &amp; | ^ &lt;&lt; &gt;&gt;</text>
+<rect x="480" y="78" width="120" height="50" rx="6" fill="#E8DAEF" stroke="#8E44AD"/><text x="540" y="100" text-anchor="middle" class="label-b">Registers</text><text x="540" y="118" text-anchor="middle" class="label-s">A, B, Result</text>
+<rect x="330" y="150" width="120" height="45" rx="6" fill="#FEF9E7" stroke="#B7950B"/><text x="390" y="178" text-anchor="middle" class="label-b">MUX</text>
+<rect x="480" y="150" width="120" height="45" rx="6" fill="#D1F2EB" stroke="#148F77"/><text x="540" y="173" text-anchor="middle" class="label-b">Comparator</text><text x="540" y="188" text-anchor="middle" class="label-s">flags</text>
+<!-- Arrows -->
+<line x1="237" y1="105" x2="328" y2="105" stroke="#1B4F72" stroke-width="2" marker-end="url(#a6)"/>
+<text x="275" y="95" text-anchor="middle" class="label-s" fill="#1B4F72">ctrl signals</text>
+<text x="275" y="118" text-anchor="middle" class="label-s" fill="#1B4F72">(sel, en, op)</text>
+<line x1="478" y1="190" x2="237" y2="165" stroke="#1E8449" stroke-width="2" marker-end="url(#a6)"/>
+<text x="350" y="200" class="label-s" fill="#1E8449">status flags (zero, carry)</text>
+<line x1="8" y1="100" x2="23" y2="100" stroke="#666" stroke-width="2" marker-end="url(#a6)"/>
+<text x="2" y="90" class="label-s">clk/rst</text>
+<line x1="627" y1="115" x2="645" y2="115" stroke="#E74C3C" stroke-width="2" marker-end="url(#a6)"/>
+<text x="630" y="135" class="label-s" fill="#E74C3C">output data</text>
+<!-- Bottom note -->
+<rect x="310" y="225" width="315" height="35" rx="4" fill="#F8F9FA" stroke="#AEB6BF"/>
+<text x="467" y="242" text-anchor="middle" class="label-s">Controller: decides WHAT to do</text>
+<text x="467" y="255" text-anchor="middle" class="label-s">Datapath: does the actual DATA processing</text>
+</svg>

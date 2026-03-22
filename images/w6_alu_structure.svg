@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 220">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .subtitle { font-size: 12px; fill: #666; }
+  .label { font-size: 12px; fill: #2C3E50; }
+  .label-b { font-size: 12px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .code { font-family: 'Courier New', monospace; font-size: 10px; fill: #2C3E50; }
+  .warn { font-size: 11px; fill: #E74C3C; font-weight: bold; }
+  .note { font-size: 10px; fill: #1B4F72; }
+</style>
+<defs><marker id="aa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#666"/></marker></defs>
+<text x="225" y="18" text-anchor="middle" class="title">ALU Internal Structure</text>
+<!-- Inputs -->
+<text x="15" y="60" class="label-b">a[7:0]</text><line x1="70" y1="57" x2="120" y2="57" stroke="#666" stroke-width="2" marker-end="url(#aa)"/>
+<text x="15" y="130" class="label-b">b[7:0]</text><line x1="70" y1="127" x2="120" y2="127" stroke="#666" stroke-width="2" marker-end="url(#aa)"/>
+<text x="15" y="180" class="label-b">op[2:0]</text><line x1="70" y1="177" x2="190" y2="177" stroke="#E67E22" stroke-width="2" marker-end="url(#aa)"/>
+<!-- Operation blocks -->
+<rect x="122" y="35" width="60" height="30" rx="3" fill="#D6EAF8" stroke="#1B4F72"/><text x="152" y="55" text-anchor="middle" class="code">ADD</text>
+<rect x="122" y="68" width="60" height="30" rx="3" fill="#D6EAF8" stroke="#1B4F72"/><text x="152" y="88" text-anchor="middle" class="code">SUB</text>
+<rect x="122" y="101" width="60" height="30" rx="3" fill="#D5F5E3" stroke="#1E8449"/><text x="152" y="121" text-anchor="middle" class="code">AND</text>
+<rect x="122" y="134" width="60" height="30" rx="3" fill="#D5F5E3" stroke="#1E8449"/><text x="152" y="154" text-anchor="middle" class="code">OR...</text>
+<!-- MUX -->
+<polygon points="210,35 210,170 270,130 270,70" fill="#FEF9E7" stroke="#B7950B" stroke-width="2"/>
+<text x="240" y="105" text-anchor="middle" class="label-b">MUX</text>
+<text x="240" y="120" text-anchor="middle" class="label-s">8:1</text>
+<!-- Output -->
+<line x1="270" y1="100" x2="340" y2="100" stroke="#666" stroke-width="2" marker-end="url(#aa)"/>
+<text x="350" y="95" class="label-b">result[7:0]</text>
+<!-- Flags -->
+<text x="350" y="130" class="label-s">zero = (result==0)</text>
+<text x="350" y="148" class="label-s">carry = temp[8]</text>
+<text x="350" y="166" class="label-s">negative = result[7]</text>
+<!-- op select arrow -->
+<text x="195" y="195" text-anchor="middle" class="label-s" fill="#E67E22">op selects operation</text>
+</svg>

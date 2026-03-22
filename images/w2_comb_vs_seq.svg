@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 280">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .subtitle { font-size: 12px; fill: #666; }
+  .label { font-size: 12px; fill: #2C3E50; }
+  .label-b { font-size: 12px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .code { font-family: 'Courier New', monospace; font-size: 10px; fill: #2C3E50; }
+  .warn { font-size: 11px; fill: #E74C3C; font-weight: bold; }
+  .note { font-size: 10px; fill: #1B4F72; }
+</style>
+<text x="350" y="22" text-anchor="middle" class="title">Combinational vs Sequential Logic</text>
+<!-- Combinational -->
+<rect x="15" y="40" width="320" height="220" rx="10" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/>
+<text x="175" y="62" text-anchor="middle" class="label-b" font-size="13">Combinational Logic</text>
+<text x="40" y="85" class="label">Output = f(current inputs only)</text>
+<text x="40" y="105" class="label">No memory, no clock</text>
+<text x="40" y="130" class="code">assign y = a &amp; b;</text>
+<text x="40" y="148" class="code">always @(*) begin ... end</text>
+<text x="40" y="175" class="label-b" fill="#1E8449">Use blocking (=)</text>
+<text x="40" y="198" class="label-s">Examples: MUX, Decoder, Adder, ALU</text>
+<rect x="40" y="210" width="270" height="35" rx="4" fill="#FFF" stroke="#1E8449"/>
+<text x="50" y="228" class="code">always @(*) begin</text>
+<text x="50" y="240" class="code">  result = a + b;  // blocking</text>
+<!-- Sequential -->
+<rect x="365" y="40" width="320" height="220" rx="10" fill="#FDEBD0" stroke="#E67E22" stroke-width="2"/>
+<text x="525" y="62" text-anchor="middle" class="label-b" font-size="13">Sequential Logic</text>
+<text x="390" y="85" class="label">Output = f(state, inputs)</text>
+<text x="390" y="105" class="label">Has memory (flip-flops), needs clock</text>
+<text x="390" y="130" class="code">always @(posedge clk)</text>
+<text x="390" y="148" class="code">always @(posedge clk or negedge rst_n)</text>
+<text x="390" y="175" class="label-b" fill="#E67E22">Use non-blocking (&lt;=)</text>
+<text x="390" y="198" class="label-s">Examples: Register, Counter, FSM, Shift Reg</text>
+<rect x="390" y="210" width="270" height="35" rx="4" fill="#FFF" stroke="#E67E22"/>
+<text x="400" y="228" class="code">always @(posedge clk) begin</text>
+<text x="400" y="240" class="code">  q &lt;= d;  // non-blocking</text>
+</svg>

@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 300">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .subtitle { font-size: 12px; fill: #666; }
+  .label { font-size: 12px; fill: #2C3E50; }
+  .label-b { font-size: 12px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .code { font-family: 'Courier New', monospace; font-size: 10px; fill: #2C3E50; }
+  .warn { font-size: 11px; fill: #E74C3C; font-weight: bold; }
+  .note { font-size: 10px; fill: #1B4F72; }
+</style>
+<defs><marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#666"/></marker></defs>
+<text x="325" y="22" text-anchor="middle" class="title">Testbench Architecture</text>
+<!-- TB boundary -->
+<rect x="20" y="35" width="610" height="230" rx="10" fill="#EAECEE" stroke="#666" stroke-width="2"/>
+<text x="35" y="52" class="code">module testbench_tb;  // No ports!</text>
+<!-- Clock Gen -->
+<rect x="40" y="65" width="120" height="60" rx="6" fill="#FEF9E7" stroke="#E67E22"/>
+<text x="100" y="85" text-anchor="middle" class="label-b">Clock Gen</text>
+<text x="100" y="100" text-anchor="middle" class="code">always #10</text>
+<text x="100" y="112" text-anchor="middle" class="code">clk = ~clk</text>
+<!-- Stimulus -->
+<rect x="40" y="140" width="120" height="60" rx="6" fill="#D6EAF8" stroke="#1B4F72"/>
+<text x="100" y="160" text-anchor="middle" class="label-b">Stimulus</text>
+<text x="100" y="175" text-anchor="middle" class="code">initial begin</text>
+<text x="100" y="187" text-anchor="middle" class="code">  test vectors</text>
+<!-- DUT -->
+<rect x="230" y="80" width="160" height="100" rx="8" fill="#D5F5E3" stroke="#1E8449" stroke-width="3"/>
+<text x="310" y="110" text-anchor="middle" class="title" fill="#1E8449">DUT</text>
+<text x="310" y="130" text-anchor="middle" class="label-s">(Design Under Test)</text>
+<text x="310" y="150" text-anchor="middle" class="code">.port(signal)</text>
+<!-- Arrows to DUT -->
+<line x1="160" y1="95" x2="228" y2="110" stroke="#E67E22" stroke-width="2" marker-end="url(#a1)"/>
+<line x1="160" y1="170" x2="228" y2="145" stroke="#1B4F72" stroke-width="2" marker-end="url(#a1)"/>
+<!-- Checker -->
+<rect x="460" y="80" width="140" height="100" rx="6" fill="#E8DAEF" stroke="#8E44AD"/>
+<text x="530" y="105" text-anchor="middle" class="label-b">Self-Checker</text>
+<text x="530" y="125" text-anchor="middle" class="code">expected vs</text>
+<text x="530" y="140" text-anchor="middle" class="code">actual output</text>
+<text x="530" y="160" text-anchor="middle" class="warn" font-size="9">$display ERROR</text>
+<line x1="390" y1="130" x2="458" y2="130" stroke="#1E8449" stroke-width="2" marker-end="url(#a1)"/>
+<!-- Bottom row -->
+<rect x="40" y="215" width="150" height="35" rx="4" fill="#FDEBD0" stroke="#E67E22"/>
+<text x="115" y="237" text-anchor="middle" class="code">$dumpfile / $dumpvars</text>
+<rect x="230" y="215" width="150" height="35" rx="4" fill="#FEF9E7" stroke="#B7950B"/>
+<text x="305" y="237" text-anchor="middle" class="code">$monitor / $display</text>
+<rect x="420" y="215" width="150" height="35" rx="4" fill="#D5F5E3" stroke="#1E8449"/>
+<text x="495" y="232" text-anchor="middle" class="label-b" fill="#1E8449">PASS / FAIL</text>
+</svg>

@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 350">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .subtitle { font-size: 12px; fill: #666; }
+  .label { font-size: 12px; fill: #2C3E50; }
+  .label-b { font-size: 12px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .code { font-family: 'Courier New', monospace; font-size: 10px; fill: #2C3E50; }
+  .warn { font-size: 11px; fill: #E74C3C; font-weight: bold; }
+  .note { font-size: 10px; fill: #1B4F72; }
+</style>
+<defs>
+<marker id="at" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#E74C3C"/></marker>
+</defs>
+<text x="280" y="22" text-anchor="middle" class="title">Traffic Light FSM State Diagram</text>
+<!-- States -->
+<circle cx="130" cy="120" r="45" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/>
+<text x="130" y="115" text-anchor="middle" class="label-b">MAIN</text>
+<text x="130" y="132" text-anchor="middle" class="label-s">GREEN</text>
+<circle cx="430" cy="120" r="45" fill="#FEF9E7" stroke="#B7950B" stroke-width="2"/>
+<text x="430" y="115" text-anchor="middle" class="label-b">MAIN</text>
+<text x="430" y="132" text-anchor="middle" class="label-s">YELLOW</text>
+<circle cx="430" cy="270" r="45" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/>
+<text x="430" y="265" text-anchor="middle" class="label-b">SIDE</text>
+<text x="430" y="282" text-anchor="middle" class="label-s">GREEN</text>
+<circle cx="130" cy="270" r="45" fill="#FEF9E7" stroke="#B7950B" stroke-width="2"/>
+<text x="130" y="265" text-anchor="middle" class="label-b">SIDE</text>
+<text x="130" y="282" text-anchor="middle" class="label-s">YELLOW</text>
+<!-- Transitions (clockwise) -->
+<line x1="177" y1="110" x2="383" y2="110" stroke="#E74C3C" stroke-width="2" marker-end="url(#at)"/>
+<text x="280" y="100" text-anchor="middle" class="label-s" fill="#E74C3C">timeout &amp;&amp; sensor</text>
+<line x1="440" y1="167" x2="440" y2="223" stroke="#E74C3C" stroke-width="2" marker-end="url(#at)"/>
+<text x="455" y="198" class="label-s" fill="#E74C3C">timeout</text>
+<line x1="383" y1="280" x2="177" y2="280" stroke="#E74C3C" stroke-width="2" marker-end="url(#at)"/>
+<text x="280" y="298" text-anchor="middle" class="label-s" fill="#E74C3C">timeout</text>
+<line x1="120" y1="223" x2="120" y2="167" stroke="#E74C3C" stroke-width="2" marker-end="url(#at)"/>
+<text x="85" y="198" class="label-s" fill="#E74C3C">timeout</text>
+<!-- Output table -->
+<rect x="30" y="325" width="500" height="20" rx="4" fill="#EAECEE"/>
+<text x="280" y="340" text-anchor="middle" class="label-s">MG:main=G,side=R | MY:main=Y,side=R | SG:main=R,side=G | SY:main=R,side=Y</text>
+</svg>

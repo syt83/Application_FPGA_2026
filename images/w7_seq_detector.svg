@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 230">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .subtitle { font-size: 12px; fill: #666; }
+  .label { font-size: 12px; fill: #2C3E50; }
+  .label-b { font-size: 12px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .code { font-family: 'Courier New', monospace; font-size: 10px; fill: #2C3E50; }
+  .warn { font-size: 11px; fill: #E74C3C; font-weight: bold; }
+  .note { font-size: 10px; fill: #1B4F72; }
+</style>
+<defs><marker id="aq" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1E8449"/></marker>
+<marker id="aqr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#E74C3C"/></marker>
+<marker id="aqg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#999"/></marker></defs>
+<text x="300" y="18" text-anchor="middle" class="title">Sequence Detector '1011' State Diagram</text>
+<!-- States -->
+<circle cx="80" cy="120" r="32" fill="#D6EAF8" stroke="#1B4F72" stroke-width="2"/><text x="80" y="118" text-anchor="middle" class="label-b">S0</text><text x="80" y="165" text-anchor="middle" class="label-s">(init)</text>
+<circle cx="210" cy="120" r="32" fill="#D6EAF8" stroke="#1B4F72" stroke-width="2"/><text x="210" y="118" text-anchor="middle" class="label-b">S1</text><text x="210" y="165" text-anchor="middle" class="label-s">(got 1)</text>
+<circle cx="340" cy="120" r="32" fill="#D6EAF8" stroke="#1B4F72" stroke-width="2"/><text x="340" y="118" text-anchor="middle" class="label-b">S2</text><text x="340" y="165" text-anchor="middle" class="label-s">(got 10)</text>
+<circle cx="480" cy="120" r="32" fill="#D6EAF8" stroke="#1B4F72" stroke-width="2"/><text x="480" y="118" text-anchor="middle" class="label-b">S3</text><text x="480" y="165" text-anchor="middle" class="label-s">(got 101)</text>
+<!-- Forward -->
+<line x1="114" y1="112" x2="176" y2="112" stroke="#1E8449" stroke-width="2" marker-end="url(#aq)"/><text x="145" y="105" text-anchor="middle" class="label-s" fill="#1E8449">x=1</text>
+<line x1="244" y1="112" x2="306" y2="112" stroke="#1E8449" stroke-width="2" marker-end="url(#aq)"/><text x="275" y="105" text-anchor="middle" class="label-s" fill="#1E8449">x=0</text>
+<line x1="374" y1="112" x2="446" y2="112" stroke="#1E8449" stroke-width="2" marker-end="url(#aq)"/><text x="410" y="105" text-anchor="middle" class="label-s" fill="#1E8449">x=1</text>
+<!-- Detection: S3+x=1 -> S1 (overlap) -->
+<path d="M470,88 Q370,40 220,88" fill="none" stroke="#E74C3C" stroke-width="2" marker-end="url(#aqr)"/>
+<text x="350" y="48" text-anchor="middle" class="warn">x=1: DETECTED! (z=1)</text>
+<text x="350" y="62" text-anchor="middle" class="label-s" fill="#E74C3C">overlap -> back to S1</text>
+<!-- Self loops -->
+<path d="M68,88 Q68,55 92,88" fill="none" stroke="#999" stroke-width="1" marker-end="url(#aqg)"/>
+<text x="80" y="72" text-anchor="middle" class="label-s">x=0</text>
+<path d="M198,88 Q198,55 222,88" fill="none" stroke="#999" stroke-width="1" marker-end="url(#aqg)"/>
+<text x="210" y="72" text-anchor="middle" class="label-s">x=1</text>
+<!-- Back transitions -->
+<path d="M333,153 Q270,185 217,153" fill="none" stroke="#999" stroke-width="1" marker-end="url(#aqg)"/>
+<text x="275" y="192" text-anchor="middle" class="label-s">x=1</text>
+<path d="M473,153 Q400,185 347,153" fill="none" stroke="#999" stroke-width="1" marker-end="url(#aqg)"/>
+<text x="410" y="192" text-anchor="middle" class="label-s">x=0</text>
+<!-- Legend -->
+<rect x="50" y="205" width="500" height="20" rx="4" fill="#EAECEE"/><text x="300" y="220" text-anchor="middle" class="label-s">Overlapping detection: ...1011011... detects pattern twice</text>
+</svg>

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 230">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .subtitle { font-size: 12px; fill: #666; }
+  .label { font-size: 12px; fill: #2C3E50; }
+  .label-b { font-size: 12px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .code { font-family: 'Courier New', monospace; font-size: 10px; fill: #2C3E50; }
+  .warn { font-size: 11px; fill: #E74C3C; font-weight: bold; }
+  .note { font-size: 10px; fill: #1B4F72; }
+</style>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#666"/></marker></defs>
+<text x="325" y="18" text-anchor="middle" class="title">Reaction Timer System Block Diagram</text>
+<!-- Modules -->
+<rect x="20" y="40" width="100" height="55" rx="6" fill="#E8DAEF" stroke="#8E44AD"/><text x="70" y="60" text-anchor="middle" class="label-b">LFSR</text><text x="70" y="78" text-anchor="middle" class="label-s">random delay</text>
+<rect x="150" y="40" width="120" height="55" rx="6" fill="#D6EAF8" stroke="#1B4F72"/><text x="210" y="60" text-anchor="middle" class="label-b">Prescaler</text><text x="210" y="78" text-anchor="middle" class="label-s">50MHz->1kHz</text>
+<rect x="300" y="35" width="140" height="65" rx="8" fill="#FDEBD0" stroke="#E67E22" stroke-width="2"/><text x="370" y="55" text-anchor="middle" class="label-b" fill="#E67E22">FSM Controller</text><text x="370" y="73" text-anchor="middle" class="code">IDLE/WAIT/LED_ON</text><text x="370" y="86" text-anchor="middle" class="code">MEASURE/RESULT</text>
+<rect x="470" y="40" width="80" height="55" rx="6" fill="#D5F5E3" stroke="#1E8449"/><text x="510" y="60" text-anchor="middle" class="label-b">Counter</text><text x="510" y="78" text-anchor="middle" class="label-s">wait / react</text>
+<rect x="560" y="40" width="70" height="55" rx="6" fill="#FEF9E7" stroke="#B7950B"/><text x="595" y="60" text-anchor="middle" class="label-b">seg7</text><text x="595" y="78" text-anchor="middle" class="label-s">display</text>
+<!-- Arrows -->
+<line x1="120" y1="67" x2="148" y2="67" stroke="#666" stroke-width="2" marker-end="url(#ar)"/>
+<line x1="270" y1="67" x2="298" y2="67" stroke="#666" stroke-width="2" marker-end="url(#ar)"/>
+<line x1="440" y1="67" x2="468" y2="67" stroke="#666" stroke-width="2" marker-end="url(#ar)"/>
+<line x1="550" y1="67" x2="558" y2="67" stroke="#666" stroke-width="2" marker-end="url(#ar)"/>
+<!-- I/O -->
+<rect x="20" y="120" width="200" height="50" rx="6" fill="#EAECEE" stroke="#999"/><text x="120" y="142" text-anchor="middle" class="label-b">Inputs</text><text x="120" y="158" text-anchor="middle" class="label-s">KEY: start, react (debounced)</text>
+<rect x="300" y="120" width="330" height="50" rx="6" fill="#EAECEE" stroke="#999"/><text x="465" y="142" text-anchor="middle" class="label-b">Outputs</text><text x="465" y="158" text-anchor="middle" class="label-s">HEX: reaction time (ms) | LED: active/early</text>
+<line x1="120" y1="120" x2="370" y2="102" stroke="#666" stroke-width="2" marker-end="url(#ar)"/>
+<!-- FSM flow -->
+<rect x="20" y="185" width="610" height="35" rx="6" fill="#F8F9FA" stroke="#AEB6BF"/>
+<text x="325" y="200" text-anchor="middle" class="code">IDLE -> WAIT_RND(random) -> LED_ON -> MEASURE(count ms) -> RESULT</text>
+<text x="325" y="215" text-anchor="middle" class="label-s">Press react during WAIT_RND -> TOO_EARLY! | Press react during MEASURE -> show result</text>
+</svg>

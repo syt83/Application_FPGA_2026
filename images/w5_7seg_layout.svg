@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 220">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .subtitle { font-size: 12px; fill: #666; }
+  .label { font-size: 12px; fill: #2C3E50; }
+  .label-b { font-size: 12px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .code { font-family: 'Courier New', monospace; font-size: 10px; fill: #2C3E50; }
+  .warn { font-size: 11px; fill: #E74C3C; font-weight: bold; }
+  .note { font-size: 10px; fill: #1B4F72; }
+</style>
+<text x="300" y="20" text-anchor="middle" class="title">7-Segment Display Layout &amp; Encoding</text>
+<!-- Draw 7-seg -->
+<g transform="translate(50,45)">
+  <rect x="20" y="0" width="50" height="8" rx="2" fill="#E74C3C"/><text x="90" y="8" class="label-s">a [0]</text>
+  <rect x="70" y="5" width="8" height="40" rx="2" fill="#E74C3C"/><text x="85" y="30" class="label-s">b [1]</text>
+  <rect x="70" y="50" width="8" height="40" rx="2" fill="#E74C3C"/><text x="85" y="75" class="label-s">c [2]</text>
+  <rect x="20" y="88" width="50" height="8" rx="2" fill="#E74C3C"/><text x="90" y="95" class="label-s">d [3]</text>
+  <rect x="12" y="50" width="8" height="40" rx="2" fill="#E74C3C"/><text x="-5" y="75" class="label-s">e [4]</text>
+  <rect x="12" y="5" width="8" height="40" rx="2" fill="#E74C3C"/><text x="-5" y="30" class="label-s">f [5]</text>
+  <rect x="20" y="44" width="50" height="8" rx="2" fill="#E74C3C"/><text x="90" y="52" class="label-s">g [6]</text>
+</g>
+<text x="85" y="170" text-anchor="middle" class="code">HEX[6:0]={g,f,e,d,c,b,a}</text>
+<text x="85" y="185" text-anchor="middle" class="warn" font-size="9">Active Low: 0=ON</text>
+<!-- Encoding table -->
+<rect x="220" y="38" width="360" height="175" rx="6" fill="#F8F9FA" stroke="#AEB6BF"/>
+<text x="400" y="55" text-anchor="middle" class="label-b">Encoding Table</text>
+<text x="235" y="75" class="code">0:100_0000  4:001_1001  8:000_0000  C:100_0110</text>
+<text x="235" y="92" class="code">1:111_1001  5:001_0010  9:001_0000  d:010_0001</text>
+<text x="235" y="109" class="code">2:010_0100  6:000_0010  A:000_1000  E:000_0110</text>
+<text x="235" y="126" class="code">3:011_0000  7:111_1000  b:000_0011  F:000_1110</text>
+</svg>

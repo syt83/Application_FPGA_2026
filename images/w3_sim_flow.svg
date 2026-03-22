@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 100">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .subtitle { font-size: 12px; fill: #666; }
+  .label { font-size: 12px; fill: #2C3E50; }
+  .label-b { font-size: 12px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .code { font-family: 'Courier New', monospace; font-size: 10px; fill: #2C3E50; }
+  .warn { font-size: 11px; fill: #E74C3C; font-weight: bold; }
+  .note { font-size: 10px; fill: #1B4F72; }
+</style>
+<defs><marker id="af" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#666"/></marker></defs>
+<rect x="10" y="15" width="100" height="40" rx="6" fill="#D6EAF8" stroke="#1B4F72"/><text x="60" y="40" text-anchor="middle" class="label-s">vlog *.v</text>
+<line x1="112" y1="35" x2="135" y2="35" stroke="#666" stroke-width="2" marker-end="url(#af)"/>
+<rect x="137" y="15" width="110" height="40" rx="6" fill="#D5F5E3" stroke="#1E8449"/><text x="192" y="40" text-anchor="middle" class="label-s">vsim work.tb</text>
+<line x1="249" y1="35" x2="272" y2="35" stroke="#666" stroke-width="2" marker-end="url(#af)"/>
+<rect x="274" y="15" width="110" height="40" rx="6" fill="#FDEBD0" stroke="#E67E22"/><text x="329" y="40" text-anchor="middle" class="label-s">add wave *</text>
+<line x1="386" y1="35" x2="409" y2="35" stroke="#666" stroke-width="2" marker-end="url(#af)"/>
+<rect x="411" y="15" width="100" height="40" rx="6" fill="#E8DAEF" stroke="#8E44AD"/><text x="461" y="40" text-anchor="middle" class="label-s">run -all</text>
+<line x1="513" y1="35" x2="536" y2="35" stroke="#666" stroke-width="2" marker-end="url(#af)"/>
+<rect x="538" y="15" width="150" height="40" rx="6" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/><text x="613" y="40" text-anchor="middle" class="label-b" fill="#1E8449">Check waveform</text>
+<text x="60" y="75" text-anchor="middle" class="label-s">Compile</text>
+<text x="192" y="75" text-anchor="middle" class="label-s">Start Sim</text>
+<text x="329" y="75" text-anchor="middle" class="label-s">Add Signals</text>
+<text x="461" y="75" text-anchor="middle" class="label-s">Execute</text>
+<text x="613" y="75" text-anchor="middle" class="label-s">Analyze</text>
+</svg>

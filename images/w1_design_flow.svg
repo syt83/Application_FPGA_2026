@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 380">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .subtitle { font-size: 12px; fill: #666; }
+  .label { font-size: 12px; fill: #2C3E50; }
+  .label-b { font-size: 12px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .code { font-family: 'Courier New', monospace; font-size: 10px; fill: #2C3E50; }
+  .warn { font-size: 11px; fill: #E74C3C; font-weight: bold; }
+  .note { font-size: 10px; fill: #1B4F72; }
+</style>
+<text x="350" y="25" text-anchor="middle" class="title">FPGA Design Flow</text>
+<!-- Flow boxes -->
+<g transform="translate(40,45)">
+  <rect x="0" y="0" width="150" height="45" rx="8" fill="#D6EAF8" stroke="#1B4F72" stroke-width="2"/>
+  <text x="75" y="18" text-anchor="middle" class="label-b">1. Design Spec</text>
+  <text x="75" y="33" text-anchor="middle" class="label-s">Requirements &amp; I/O definition</text>
+  
+  <line x1="75" y1="45" x2="75" y2="60" stroke="#666" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="0" y="60" width="150" height="45" rx="8" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/>
+  <text x="75" y="78" text-anchor="middle" class="label-b">2. HDL Coding</text>
+  <text x="75" y="93" text-anchor="middle" class="label-s">Write Verilog modules</text>
+  
+  <line x1="75" y1="105" x2="75" y2="120" stroke="#666" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="0" y="120" width="150" height="45" rx="8" fill="#FDEBD0" stroke="#E67E22" stroke-width="2"/>
+  <text x="75" y="138" text-anchor="middle" class="label-b">3. Simulation</text>
+  <text x="75" y="153" text-anchor="middle" class="label-s">ModelSim + Testbench</text>
+  
+  <line x1="75" y1="165" x2="75" y2="180" stroke="#666" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="0" y="180" width="150" height="45" rx="8" fill="#E8DAEF" stroke="#8E44AD" stroke-width="2"/>
+  <text x="75" y="198" text-anchor="middle" class="label-b">4. Synthesis</text>
+  <text x="75" y="213" text-anchor="middle" class="label-s">Quartus Compiler</text>
+  
+  <line x1="75" y1="225" x2="75" y2="240" stroke="#666" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="0" y="240" width="150" height="45" rx="8" fill="#FADBD8" stroke="#E74C3C" stroke-width="2"/>
+  <text x="75" y="258" text-anchor="middle" class="label-b">5. FPGA Download</text>
+  <text x="75" y="273" text-anchor="middle" class="label-s">Program &amp; Test on board</text>
+  
+  <!-- Error feedback -->
+  <path d="M 0,210 L -20,210 L -20,80 L 0,80" fill="none" stroke="#E74C3C" stroke-width="2" marker-end="url(#arrowR)"/>
+  <text x="-25" y="150" text-anchor="end" class="warn" transform="rotate(-90,-25,150)">Error? Fix!</text>
+</g>
+
+<!-- Tool labels -->
+<g transform="translate(230,45)">
+  <text x="0" y="18" class="label-s">Text Editor</text>
+  <text x="0" y="78" class="label-s">Quartus Text Editor</text>
+  <text x="0" y="138" class="label-s">ModelSim Altera Ed.</text>
+  <text x="0" y="198" class="label-s">Quartus Compiler</text>
+  <text x="0" y="258" class="label-s">Quartus Programmer</text>
+</g>
+
+<!-- Board comparison table -->
+<g transform="translate(370,50)">
+  <rect x="0" y="0" width="310" height="280" rx="8" fill="#F8F9FA" stroke="#AEB6BF" stroke-width="1"/>
+  <text x="155" y="20" text-anchor="middle" class="label-b">Board I/O Resources</text>
+  <line x1="10" y1="28" x2="300" y2="28" stroke="#AEB6BF"/>
+  <text x="15" y="45" class="label-s" font-weight="bold">Signal</text>
+  <text x="120" y="45" class="label-s" font-weight="bold">DE0</text>
+  <text x="220" y="45" class="label-s" font-weight="bold">DE1</text>
+  <line x1="10" y1="50" x2="300" y2="50" stroke="#DDD"/>
+  
+  <text x="15" y="68" class="code">CLOCK_50</text><text x="120" y="68" class="code">PIN_G21</text><text x="220" y="68" class="code">PIN_L1</text>
+  <text x="15" y="88" class="code">SW</text><text x="120" y="88" class="code">[7:0] 8ea</text><text x="220" y="88" class="code">[9:0] 10ea</text>
+  <text x="15" y="108" class="code">KEY</text><text x="120" y="108" class="code">[2:0] 3ea</text><text x="220" y="108" class="code">[3:0] 4ea</text>
+  <text x="15" y="128" class="code">LED</text><text x="120" y="128" class="code">LEDG[7:0]</text><text x="220" y="128" class="code">LEDR[9:0]</text>
+  <text x="15" y="148" class="code">LEDG</text><text x="120" y="148" class="code">(same)</text><text x="220" y="148" class="code">LEDG[7:0]</text>
+  <text x="15" y="168" class="code">HEX</text><text x="120" y="168" class="code">HEX0~3</text><text x="220" y="168" class="code">HEX0~3</text>
+  <text x="15" y="188" class="code">7-Seg</text><text x="120" y="188" class="label-s">Active Low</text><text x="220" y="188" class="label-s">Active Low</text>
+  <text x="15" y="208" class="code">FPGA</text><text x="120" y="208" class="label-s">Cyclone III</text><text x="220" y="208" class="label-s">Cyclone II</text>
+  <text x="15" y="228" class="code">Device</text><text x="120" y="228" class="code">EP3C16</text><text x="220" y="228" class="code">EP2C20</text>
+  
+  <rect x="10" y="240" width="290" height="30" rx="4" fill="#FDEDEC" stroke="#E74C3C"/>
+  <text x="155" y="258" text-anchor="middle" class="warn">DE0: No LEDR! Use LEDG. Only 3 KEYs, 8 SWs</text>
+</g>
+
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#666"/>
+  </marker>
+  <marker id="arrowR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#E74C3C"/>
+  </marker>
+</defs>
+</svg>

@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 250">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .subtitle { font-size: 12px; fill: #666; }
+  .label { font-size: 12px; fill: #2C3E50; }
+  .label-b { font-size: 12px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .code { font-family: 'Courier New', monospace; font-size: 10px; fill: #2C3E50; }
+  .warn { font-size: 11px; fill: #E74C3C; font-weight: bold; }
+  .note { font-size: 10px; fill: #1B4F72; }
+</style>
+<text x="325" y="20" text-anchor="middle" class="title">Waveform Example (Counter)</text>
+<text x="80" y="55" class="label-b">CLK</text>
+<text x="80" y="100" class="label-b">rst_n</text>
+<text x="80" y="145" class="label-b">up_dn</text>
+<text x="80" y="195" class="label-b">count</text>
+<!-- CLK waveform -->
+<g transform="translate(120,38)">
+  <polyline points="0,20 0,0 25,0 25,20 50,20 50,0 75,0 75,20 100,20 100,0 125,0 125,20 150,20 150,0 175,0 175,20 200,20 200,0 225,0 225,20 250,20 250,0 275,0 275,20 300,20 300,0 325,0 325,20 350,20 350,0 375,0 375,20 400,20" fill="none" stroke="#1B4F72" stroke-width="2"/>
+</g>
+<!-- rst_n -->
+<g transform="translate(120,83)">
+  <polyline points="0,20 125,20 125,0 400,0" fill="none" stroke="#E74C3C" stroke-width="2"/>
+  <text x="40" y="18" class="label-s" fill="#E74C3C">LOW</text>
+  <text x="200" y="-5" class="label-s" fill="#E74C3C">HIGH</text>
+</g>
+<!-- up_dn -->
+<g transform="translate(120,128)">
+  <polyline points="0,0 275,0 275,20 400,20" fill="none" stroke="#1E8449" stroke-width="2"/>
+  <text x="100" y="-5" class="label-s" fill="#1E8449">UP (1)</text>
+  <text x="310" y="18" class="label-s" fill="#1E8449">DOWN (0)</text>
+</g>
+<!-- count bus -->
+<g transform="translate(120,178)">
+  <rect x="0" y="0" width="125" height="28" fill="#FADBD8" stroke="#E74C3C" rx="2"/>
+  <text x="62" y="18" text-anchor="middle" class="label-s" fill="#E74C3C">X (reset)</text>
+  <rect x="125" y="0" width="50" height="28" fill="#D6EAF8" stroke="#1B4F72" rx="2"/><text x="150" y="18" text-anchor="middle" class="label-b">0</text>
+  <rect x="175" y="0" width="50" height="28" fill="#D6EAF8" stroke="#1B4F72" rx="2"/><text x="200" y="18" text-anchor="middle" class="label-b">1</text>
+  <rect x="225" y="0" width="50" height="28" fill="#D6EAF8" stroke="#1B4F72" rx="2"/><text x="250" y="18" text-anchor="middle" class="label-b">2</text>
+  <rect x="275" y="0" width="50" height="28" fill="#E8DAEF" stroke="#8E44AD" rx="2"/><text x="300" y="18" text-anchor="middle" class="label-b">1</text>
+  <rect x="325" y="0" width="50" height="28" fill="#E8DAEF" stroke="#8E44AD" rx="2"/><text x="350" y="18" text-anchor="middle" class="label-b">0</text>
+</g>
+<!-- Time ruler -->
+<g transform="translate(120,230)">
+  <line x1="0" y1="0" x2="400" y2="0" stroke="#999"/>
+  <text x="0" y="15" class="label-s">0ns</text><text x="125" y="15" class="label-s">100ns</text>
+  <text x="275" y="15" class="label-s">250ns</text><text x="400" y="15" class="label-s">400ns</text>
+</g>
+</svg>

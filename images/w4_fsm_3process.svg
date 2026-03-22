@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 260">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .subtitle { font-size: 12px; fill: #666; }
+  .label { font-size: 12px; fill: #2C3E50; }
+  .label-b { font-size: 12px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .code { font-family: 'Courier New', monospace; font-size: 10px; fill: #2C3E50; }
+  .warn { font-size: 11px; fill: #E74C3C; font-weight: bold; }
+  .note { font-size: 10px; fill: #1B4F72; }
+</style>
+<defs><marker id="a4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#666"/></marker></defs>
+<text x="375" y="20" text-anchor="middle" class="title">3-Process FSM Architecture</text>
+<!-- P1 -->
+<rect x="30" y="40" width="200" height="90" rx="8" fill="#D6EAF8" stroke="#1B4F72" stroke-width="2"/>
+<text x="130" y="60" text-anchor="middle" class="label-b" fill="#1B4F72">Process 1</text>
+<text x="130" y="78" text-anchor="middle" class="label-b">State Register</text>
+<text x="130" y="96" text-anchor="middle" class="code">always @(posedge clk)</text>
+<text x="130" y="112" text-anchor="middle" class="code">state &lt;= next_state</text>
+<!-- P2 -->
+<rect x="275" y="40" width="200" height="90" rx="8" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/>
+<text x="375" y="60" text-anchor="middle" class="label-b" fill="#1E8449">Process 2</text>
+<text x="375" y="78" text-anchor="middle" class="label-b">Next State Logic</text>
+<text x="375" y="96" text-anchor="middle" class="code">always @(*)</text>
+<text x="375" y="112" text-anchor="middle" class="code">case(state) ...</text>
+<!-- P3 -->
+<rect x="520" y="40" width="200" height="90" rx="8" fill="#FDEBD0" stroke="#E67E22" stroke-width="2"/>
+<text x="620" y="60" text-anchor="middle" class="label-b" fill="#E67E22">Process 3</text>
+<text x="620" y="78" text-anchor="middle" class="label-b">Output Logic</text>
+<text x="620" y="96" text-anchor="middle" class="code">always @(*)</text>
+<text x="620" y="112" text-anchor="middle" class="code">Moore: f(state)</text>
+<!-- Arrows -->
+<line x1="230" y1="75" x2="273" y2="75" stroke="#1B4F72" stroke-width="2" marker-end="url(#a4)"/>
+<text x="245" y="68" class="label-s" fill="#1B4F72">state</text>
+<line x1="475" y1="75" x2="518" y2="75" stroke="#1E8449" stroke-width="2" marker-end="url(#a4)"/>
+<text x="488" y="68" class="label-s" fill="#1E8449">state</text>
+<!-- Feedback -->
+<polyline points="375,130 375,155 130,155 130,132" fill="none" stroke="#1E8449" stroke-width="2" marker-end="url(#a4)"/>
+<text x="250" y="170" text-anchor="middle" class="label-s" fill="#1E8449">next_state</text>
+<!-- External -->
+<line x1="375" y1="30" x2="375" y2="38" stroke="#8E44AD" stroke-width="2" marker-end="url(#a4)"/>
+<text x="375" y="25" text-anchor="middle" class="label-s" fill="#8E44AD">inputs</text>
+<line x1="720" y1="85" x2="740" y2="85" stroke="#E67E22" stroke-width="2" marker-end="url(#a4)"/>
+<text x="735" y="100" class="label-s" fill="#E67E22">outputs</text>
+<!-- Key rule -->
+<rect x="30" y="195" width="690" height="50" rx="6" fill="#F8F9FA" stroke="#AEB6BF"/>
+<text x="40" y="215" class="code">P1: sequential (&lt;=)  |  P2: combinational (=)  |  P3: combinational (=)</text>
+<text x="40" y="235" class="warn" font-size="10">KEY: P2 first line must be  next_state = state;  to prevent latch inference</text>
+</svg>

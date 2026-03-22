@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 270">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .subtitle { font-size: 12px; fill: #666; }
+  .label { font-size: 12px; fill: #2C3E50; }
+  .label-b { font-size: 12px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .code { font-family: 'Courier New', monospace; font-size: 10px; fill: #2C3E50; }
+  .warn { font-size: 11px; fill: #E74C3C; font-weight: bold; }
+  .note { font-size: 10px; fill: #1B4F72; }
+</style>
+<defs><marker id="ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#666"/></marker></defs>
+<text x="325" y="18" text-anchor="middle" class="title">Calculator System Block Diagram</text>
+<!-- Input -->
+<rect x="10" y="50" width="90" height="80" rx="6" fill="#D6EAF8" stroke="#1B4F72"/><text x="55" y="72" text-anchor="middle" class="label-b">SW</text><text x="55" y="90" text-anchor="middle" class="label-s">data input</text><text x="55" y="108" text-anchor="middle" class="label-b">KEY</text><text x="55" y="122" text-anchor="middle" class="label-s">enter/op</text>
+<!-- FSM -->
+<rect x="130" y="40" width="150" height="100" rx="8" fill="#FDEBD0" stroke="#E67E22" stroke-width="2"/><text x="205" y="62" text-anchor="middle" class="label-b" fill="#E67E22">Controller FSM</text>
+<text x="140" y="82" class="code">S_A   -> S_OP</text><text x="140" y="96" class="code">S_OP  -> S_B</text><text x="140" y="110" class="code">S_B   -> S_SHOW</text><text x="140" y="124" class="code">S_SHOW-> S_A</text>
+<!-- Registers -->
+<rect x="320" y="40" width="100" height="40" rx="6" fill="#E8DAEF" stroke="#8E44AD"/><text x="370" y="65" text-anchor="middle" class="label-b">Reg A</text>
+<rect x="320" y="90" width="100" height="40" rx="6" fill="#E8DAEF" stroke="#8E44AD"/><text x="370" y="115" text-anchor="middle" class="label-b">Reg B</text>
+<!-- ALU -->
+<rect x="320" y="150" width="100" height="65" rx="8" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/><text x="370" y="175" text-anchor="middle" class="label-b" font-size="14" fill="#1E8449">ALU</text><text x="370" y="198" text-anchor="middle" class="code">8 operations</text>
+<!-- 7-seg -->
+<rect x="480" y="40" width="140" height="80" rx="8" fill="#FEF9E7" stroke="#B7950B"/><text x="550" y="62" text-anchor="middle" class="label-b">7-Segment</text><text x="550" y="82" text-anchor="middle" class="label-s">HEX3~HEX0</text><text x="550" y="100" text-anchor="middle" class="label-s">shows state/value</text>
+<!-- LED -->
+<rect x="480" y="140" width="140" height="50" rx="6" fill="#FADBD8" stroke="#E74C3C"/><text x="550" y="162" text-anchor="middle" class="label-b">LED</text><text x="550" y="180" text-anchor="middle" class="label-s">flags: Z, C, N</text>
+<!-- Arrows -->
+<line x1="100" y1="90" x2="128" y2="90" stroke="#666" stroke-width="2" marker-end="url(#ac)"/>
+<line x1="280" y1="60" x2="318" y2="60" stroke="#E67E22" stroke-width="2" marker-end="url(#ac)"/><text x="292" y="53" class="label-s" fill="#E67E22">load_a</text>
+<line x1="280" y1="110" x2="318" y2="110" stroke="#E67E22" stroke-width="2" marker-end="url(#ac)"/><text x="292" y="123" class="label-s" fill="#E67E22">load_b</text>
+<line x1="370" y1="80" x2="370" y2="148" stroke="#8E44AD" stroke-width="2" marker-end="url(#ac)"/>
+<line x1="370" y1="130" x2="370" y2="148" stroke="#8E44AD" stroke-width="2" marker-end="url(#ac)"/>
+<line x1="420" y1="182" x2="478" y2="90" stroke="#1E8449" stroke-width="2" marker-end="url(#ac)"/>
+<line x1="420" y1="182" x2="478" y2="165" stroke="#1E8449" stroke-width="2" marker-end="url(#ac)"/>
+<!-- Flow -->
+<rect x="10" y="235" width="630" height="28" rx="4" fill="#EAECEE"/><text x="325" y="253" text-anchor="middle" class="label-s">Flow: S_A(SW->RegA) -> S_OP(select op) -> S_B(SW->RegB) -> S_SHOW(ALU result)</text>
+</svg>

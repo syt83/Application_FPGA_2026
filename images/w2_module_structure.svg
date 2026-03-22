@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 320">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .subtitle { font-size: 12px; fill: #666; }
+  .label { font-size: 12px; fill: #2C3E50; }
+  .label-b { font-size: 12px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .code { font-family: 'Courier New', monospace; font-size: 10px; fill: #2C3E50; }
+  .warn { font-size: 11px; fill: #E74C3C; font-weight: bold; }
+  .note { font-size: 10px; fill: #1B4F72; }
+</style>
+<text x="325" y="22" text-anchor="middle" class="title">Verilog Module Structure</text>
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#666"/></marker>
+<marker id="arrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1B4F72"/></marker>
+<marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#E74C3C"/></marker></defs>
+<!-- Main module box -->
+<rect x="170" y="40" width="310" height="240" rx="12" fill="#F8F9FA" stroke="#1B4F72" stroke-width="3"/>
+<text x="325" y="62" text-anchor="middle" class="label-b" font-size="14">module_name</text>
+<line x1="185" y1="68" x2="465" y2="68" stroke="#1B4F72"/>
+<!-- Internal blocks -->
+<rect x="190" y="80" width="130" height="50" rx="6" fill="#D5F5E3" stroke="#1E8449"/>
+<text x="255" y="100" text-anchor="middle" class="label-b">Combinational</text>
+<text x="255" y="115" text-anchor="middle" class="label-s">assign / always @(*)</text>
+<rect x="340" y="80" width="130" height="50" rx="6" fill="#FDEBD0" stroke="#E67E22"/>
+<text x="405" y="100" text-anchor="middle" class="label-b">Sequential</text>
+<text x="405" y="115" text-anchor="middle" class="label-s">always @(posedge clk)</text>
+<rect x="190" y="145" width="130" height="40" rx="6" fill="#EAECEE" stroke="#666"/>
+<text x="255" y="168" text-anchor="middle" class="code">wire signals</text>
+<rect x="340" y="145" width="130" height="40" rx="6" fill="#E8DAEF" stroke="#8E44AD"/>
+<text x="405" y="168" text-anchor="middle" class="code">reg signals</text>
+<rect x="220" y="200" width="220" height="50" rx="6" fill="#FEF9E7" stroke="#E67E22" stroke-width="2"/>
+<text x="330" y="220" text-anchor="middle" class="label-b">Sub-module Instance</text>
+<text x="330" y="237" text-anchor="middle" class="code">.port_name(signal)</text>
+<!-- Input ports -->
+<text x="30" y="90" class="label" fill="#1B4F72">clk</text>
+<line x1="55" y1="87" x2="168" y2="87" stroke="#1B4F72" stroke-width="2" marker-end="url(#arrB)"/>
+<circle cx="170" cy="87" r="4" fill="#1B4F72"/>
+<text x="30" y="130" class="label" fill="#1B4F72">rst_n</text>
+<line x1="65" y1="127" x2="168" y2="127" stroke="#1B4F72" stroke-width="2" marker-end="url(#arrB)"/>
+<circle cx="170" cy="127" r="4" fill="#1B4F72"/>
+<text x="30" y="180" class="label" fill="#1B4F72">data_in[7:0]</text>
+<line x1="120" y1="177" x2="168" y2="177" stroke="#1B4F72" stroke-width="2" marker-end="url(#arrB)"/>
+<circle cx="170" cy="177" r="4" fill="#1B4F72"/>
+<!-- Output ports -->
+<text x="500" y="105" class="label" fill="#E74C3C">data_out[7:0]</text>
+<line x1="482" y1="102" x2="530" y2="102" stroke="#E74C3C" stroke-width="2" marker-end="url(#arrR)"/>
+<circle cx="480" cy="102" r="4" fill="#E74C3C"/>
+<text x="500" y="170" class="label" fill="#E74C3C">valid</text>
+<line x1="482" y1="167" x2="530" y2="167" stroke="#E74C3C" stroke-width="2" marker-end="url(#arrR)"/>
+<circle cx="480" cy="167" r="4" fill="#E74C3C"/>
+<!-- Legend -->
+<rect x="30" y="290" width="15" height="12" fill="#1B4F72"/><text x="50" y="300" class="label-s">Input</text>
+<rect x="120" y="290" width="15" height="12" fill="#E74C3C"/><text x="140" y="300" class="label-s">Output</text>
+<rect x="220" y="290" width="15" height="12" fill="#D5F5E3" stroke="#1E8449"/><text x="240" y="300" class="label-s">Combinational</text>
+<rect x="370" y="290" width="15" height="12" fill="#FDEBD0" stroke="#E67E22"/><text x="390" y="300" class="label-s">Sequential</text>
+</svg>
