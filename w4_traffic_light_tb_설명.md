@@ -2,8 +2,8 @@
 
 ## 개요
 
-`traffic_light` FSM 모듈을 검증하는 간단한 testbench입니다.  
-핵심 아이디어는 **`defparam`으로 타이머를 아주 작게 줄여** 수백 ns 안에 전체 시나리오를 완료하는 것입니다.
+`traffic_light` FSM 모듈을 검증하는 간단한 testbench
+ **`defparam`으로 타이머를 아주 작게 줄여** 수백 ns 안에 전체 시나리오를 완료.
 
 ---
 
@@ -96,7 +96,7 @@ defparam dut.YELLOW_T = 2;   // 원본 24_999_999 → 3 클럭
 - 덕분에 `#30 ~ #50` 딜레이만으로 상태 전이 확인 가능
 
 > **주의:** `defparam`은 Verilog-2001 이후로 deprecated 추세.  
-> Vivado 등 최신 툴에서는 인스턴스 시 `#(.GREEN_T(4), .YELLOW_T(2))` 방식 권장.
+> Vivado 등 최신 툴에서는 인스턴스 시 `#(.GREEN_T(4), .YELLOW_T(2))` 방식으로 권장함
 
 ---
 
@@ -109,7 +109,7 @@ traffic_light dut(
 );
 ```
 
-검증 대상 모듈을 `dut`라는 이름으로 연결합니다.
+검증 대상 모듈을 `dut`라는 이름으로 연결
 
 ---
 
@@ -132,8 +132,7 @@ always #5 clk = ~clk;   // 주기 10 ns (100 MHz)
 $dumpfile("traffic_light_tb.vcd");
 $dumpvars(0, traffic_light_tb);
 ```
-
-GTKWave로 파형 확인 시 필요합니다.
+GTKWave로 파형 확인 시 필요
 
 #### 시나리오 흐름
 
