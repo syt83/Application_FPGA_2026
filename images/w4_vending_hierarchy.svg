@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 400">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .label-b { font-size: 12px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .port { font-family: 'Courier New', monospace; font-size: 9px; fill: #1B4F72; }
+  .sig { font-size: 9px; fill: #E67E22; }
+</style>
+<defs>
+  <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#666"/>
+  </marker>
+  <marker id="aR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#E74C3C"/>
+  </marker>
+  <marker id="aO" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#E67E22"/>
+  </marker>
+  <marker id="aG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#1E8449"/>
+  </marker>
+</defs>
+<text x="360" y="20" text-anchor="middle" class="title">Vending Machine — Module Interconnect</text>
+
+<!-- ====== External Inputs (left) ====== -->
+<text x="10" y="82" class="label-b" fill="#1B4F72">KEY[0]</text>
+<text x="10" y="95" class="label-s">(coin_10)</text>
+
+<text x="10" y="147" class="label-b" fill="#1B4F72">KEY[1]</text>
+<text x="10" y="160" class="label-s">(coin_20)</text>
+
+<text x="10" y="212" class="label-b" fill="#1B4F72">KEY[2]</text>
+<text x="10" y="225" class="label-s">(cancel)</text>
+
+<!-- ====== btn_debounce x3 ====== -->
+<rect x="90" y="65" width="130" height="42" rx="6" fill="#FDEBD0" stroke="#E67E22" stroke-width="1.5"/>
+<text x="155" y="83" text-anchor="middle" class="label-b" fill="#E67E22">btn_debounce</text>
+<text x="155" y="98" text-anchor="middle" class="label-s">u_db0</text>
+
+<rect x="90" y="130" width="130" height="42" rx="6" fill="#FDEBD0" stroke="#E67E22" stroke-width="1.5"/>
+<text x="155" y="148" text-anchor="middle" class="label-b" fill="#E67E22">btn_debounce</text>
+<text x="155" y="163" text-anchor="middle" class="label-s">u_db1</text>
+
+<rect x="90" y="195" width="130" height="42" rx="6" fill="#FDEBD0" stroke="#E67E22" stroke-width="1.5"/>
+<text x="155" y="213" text-anchor="middle" class="label-b" fill="#E67E22">btn_debounce</text>
+<text x="155" y="228" text-anchor="middle" class="label-s">u_db2</text>
+
+<!-- KEY → debounce (horizontal) -->
+<line x1="58" y1="86" x2="88" y2="86" stroke="#666" stroke-width="1.5" marker-end="url(#a)"/>
+<line x1="58" y1="151" x2="88" y2="151" stroke="#666" stroke-width="1.5" marker-end="url(#a)"/>
+<line x1="58" y1="216" x2="88" y2="216" stroke="#666" stroke-width="1.5" marker-end="url(#a)"/>
+<text x="63" y="79" class="port">btn_raw</text>
+<text x="63" y="144" class="port">btn_raw</text>
+<text x="63" y="209" class="port">btn_raw</text>
+
+<!-- ====== vending_fsm ====== -->
+<rect x="305" y="50" width="160" height="220" rx="8" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/>
+<text x="385" y="72" text-anchor="middle" class="label-b" fill="#1E8449">vending_fsm</text>
+
+<!-- FSM input port labels (inside left edge) -->
+<text x="313" y="100" class="port">coin_10_pulse</text>
+<text x="313" y="151" class="port">coin_20_pulse</text>
+<text x="313" y="210" class="port">cancel_pulse</text>
+
+<!-- FSM output port labels (inside right edge) -->
+<text x="395" y="100" class="port">dispense</text>
+<text x="395" y="130" class="port">change[4:0]</text>
+<text x="395" y="170" class="port">balance[3:0]</text>
+<text x="395" y="210" class="port">state[2:0]</text>
+
+<!-- debounce → FSM (horizontal, aligned to each row) -->
+<line x1="220" y1="86" x2="240" y2="86" stroke="#E67E22" stroke-width="1.5"/>
+<line x1="240" y1="86" x2="240" y2="96" stroke="#E67E22" stroke-width="1.5"/>
+<line x1="240" y1="96" x2="303" y2="96" stroke="#E67E22" stroke-width="1.5" marker-end="url(#aO)"/>
+<text x="250" y="90" class="sig">btn_pulse</text>
+
+<line x1="220" y1="151" x2="303" y2="151" stroke="#E67E22" stroke-width="1.5" marker-end="url(#aO)"/>
+<text x="250" y="145" class="sig">btn_pulse</text>
+
+<line x1="220" y1="216" x2="240" y2="216" stroke="#E67E22" stroke-width="1.5"/>
+<line x1="240" y1="216" x2="240" y2="206" stroke="#E67E22" stroke-width="1.5"/>
+<line x1="240" y1="206" x2="303" y2="206" stroke="#E67E22" stroke-width="1.5" marker-end="url(#aO)"/>
+<text x="250" y="212" class="sig">btn_pulse</text>
+
+<!-- ====== seg7_decoder x2 ====== -->
+<rect x="540" y="100" width="110" height="42" rx="6" fill="#E8DAEF" stroke="#8E44AD" stroke-width="1.5"/>
+<text x="595" y="118" text-anchor="middle" class="label-b" fill="#8E44AD">seg7_decoder</text>
+<text x="595" y="133" text-anchor="middle" class="label-s">u_hex0 (balance)</text>
+
+<rect x="540" y="165" width="110" height="42" rx="6" fill="#E8DAEF" stroke="#8E44AD" stroke-width="1.5"/>
+<text x="595" y="183" text-anchor="middle" class="label-b" fill="#8E44AD">seg7_decoder</text>
+<text x="595" y="198" text-anchor="middle" class="label-s">u_hex1 (state)</text>
+
+<!-- FSM → seg7 (right-angle: horizontal then vertical then horizontal) -->
+<line x1="465" y1="166" x2="500" y2="166" stroke="#1E8449" stroke-width="1.5"/>
+<line x1="500" y1="166" x2="500" y2="121" stroke="#1E8449" stroke-width="1.5"/>
+<line x1="500" y1="121" x2="538" y2="121" stroke="#1E8449" stroke-width="1.5" marker-end="url(#aG)"/>
+<text x="505" y="116" class="sig">balance[3:0]</text>
+
+<line x1="465" y1="206" x2="510" y2="206" stroke="#1E8449" stroke-width="1.5"/>
+<line x1="510" y1="206" x2="510" y2="186" stroke="#1E8449" stroke-width="1.5"/>
+<line x1="510" y1="186" x2="538" y2="186" stroke="#1E8449" stroke-width="1.5" marker-end="url(#aG)"/>
+<text x="505" y="202" class="sig">state[2:0]</text>
+
+<!-- ====== External Outputs (right) ====== -->
+<!-- seg7 → HEX (horizontal) -->
+<line x1="650" y1="121" x2="685" y2="121" stroke="#E74C3C" stroke-width="1.5" marker-end="url(#aR)"/>
+<text x="688" y="125" class="label-b" fill="#E74C3C">HEX0</text>
+<text x="688" y="138" class="label-s">balance</text>
+
+<line x1="650" y1="186" x2="685" y2="186" stroke="#E74C3C" stroke-width="1.5" marker-end="url(#aR)"/>
+<text x="688" y="190" class="label-b" fill="#E74C3C">HEX1</text>
+<text x="688" y="203" class="label-s">state</text>
+
+<!-- FSM → LED dispense (right-angle) -->
+<line x1="465" y1="96" x2="490" y2="96" stroke="#E74C3C" stroke-width="1.5"/>
+<line x1="490" y1="96" x2="490" y2="260" stroke="#E74C3C" stroke-width="1.5"/>
+<line x1="490" y1="260" x2="685" y2="260" stroke="#E74C3C" stroke-width="1.5" marker-end="url(#aR)"/>
+<text x="688" y="264" class="label-b" fill="#E74C3C">LED</text>
+<text x="688" y="277" class="label-s">(dispense)</text>
+
+<!-- FSM → LED change (right-angle) -->
+<line x1="465" y1="126" x2="480" y2="126" stroke="#E74C3C" stroke-width="1.5"/>
+<line x1="480" y1="126" x2="480" y2="300" stroke="#E74C3C" stroke-width="1.5"/>
+<line x1="480" y1="300" x2="685" y2="300" stroke="#E74C3C" stroke-width="1.5" marker-end="url(#aR)"/>
+<text x="688" y="304" class="label-b" fill="#E74C3C">LED</text>
+<text x="688" y="317" class="label-s">(change)</text>
+
+<!-- ====== clk/rst shared bus (dashed, bottom) ====== -->
+<line x1="10" y1="340" x2="155" y2="340" stroke="#8E44AD" stroke-width="1" stroke-dasharray="4,2"/>
+<line x1="155" y1="340" x2="155" y2="237" stroke="#8E44AD" stroke-width="1" stroke-dasharray="4,2"/>
+<line x1="155" y1="340" x2="385" y2="340" stroke="#8E44AD" stroke-width="1" stroke-dasharray="4,2"/>
+<line x1="385" y1="340" x2="385" y2="270" stroke="#8E44AD" stroke-width="1" stroke-dasharray="4,2" marker-end="url(#a)"/>
+<text x="10" y="336" class="label-b" fill="#8E44AD">CLOCK_50</text>
+<text x="10" y="352" class="label-b" fill="#8E44AD">rst_n</text>
+<text x="250" y="352" class="label-s" fill="#8E44AD">clk, rst_n (shared to all sequential modules)</text>
+
+<!-- Legend -->
+<rect x="20" y="370" width="680" height="24" rx="4" fill="#F8F9FA" stroke="#AEB6BF"/>
+<text x="30" y="386" class="label-s">KEY → btn_debounce(pulse) → vending_fsm → seg7_decoder → HEX  |  vending_fsm → LED (dispense, change)</text>
+</svg>
