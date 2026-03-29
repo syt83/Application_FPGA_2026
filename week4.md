@@ -10,7 +10,7 @@
 
 ### 1. Moore vs Mealy Machine
 
-![Moore vs Mealy Comparison](images/w4_moore_vs_mealy.svg)
+![Moore vs Mealy Comparison|697](images/w4_moore_vs_mealy.svg)
 
 | 항목 | Moore | Mealy |
 |------|-------|-------|
@@ -24,7 +24,7 @@
 
 ### 2. 3-Process FSM Architecture
 
-![3-Process FSM Architecture](images/w4_fsm_3process.svg)
+![3-Process FSM Architecture|697](images/w4_fsm_3process.svg)
 
 3-Process 스타일의 장점: **상태 레지스터**, **전이 논리**, **출력 논리**가 분리되어 가독성과 디버깅이 용이하다.
 
@@ -76,35 +76,32 @@ endmodule
 
 ### 4. Traffic Light FSM
 
-![Traffic Light FSM State Diagram](images/w4_traffic_fsm.svg)
+![Traffic Light FSM State Diagram|697](images/w4_traffic_fsm.svg)
 
 ```verilog
-module traffic_light(
+module traffic_light (
     input        clk, rst_n,
-    input        sensor,          // vehicle detected
+    input        sensor,
     output reg [2:0] light_main,  // {R,Y,G}
     output reg [2:0] light_side   // {R,Y,G}
 );
     localparam MAIN_GREEN  = 2'd0, MAIN_YELLOW = 2'd1,
                SIDE_GREEN  = 2'd2, SIDE_YELLOW = 2'd3;
-    localparam GREEN_T  = 26'd49_999_999,  // 1s (demo speed)
-               YELLOW_T = 26'd24_999_999;  // 0.5s
+    parameter  GREEN_T  = 26'd49_999_999,                // ✅ parameter로 변경
+               YELLOW_T = 26'd24_999_999;
 
     reg [1:0]  state, next_state;
     reg [25:0] timer;
     wire       timeout = (timer == 0);
 
-    // Timer: reload on state change, decrement otherwise
-    reg [1:0] state_d;  // delayed state for edge detection
+    // Timer
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
-            timer   <= GREEN_T;
-            state_d <= MAIN_GREEN;
+            timer <= GREEN_T;
         end else begin
-            state_d <= state;
-            if (state != state_d)  // state just changed
-                timer <= (state == MAIN_YELLOW || state == SIDE_YELLOW)
-                         ? YELLOW_T : GREEN_T;
+            if (next_state != state)                              // ✅ 오류 수정: state_d 제거
+                timer <= (next_state == MAIN_YELLOW || next_state == SIDE_YELLOW)
+                         ? YELLOW_T : GREEN_T;                   // ✅ 오류 수정: next_state 기준
             else if (timer > 0)
                 timer <= timer - 1;
         end
@@ -129,7 +126,7 @@ module traffic_light(
 
     // P3: Output {R,Y,G}
     always @(*) begin
-        light_main = 3'b100; light_side = 3'b100; // default: both RED
+        light_main = 3'b100; light_side = 3'b100;
         case (state)
             MAIN_GREEN:  begin light_main=3'b001; light_side=3'b100; end
             MAIN_YELLOW: begin light_main=3'b010; light_side=3'b100; end
@@ -138,9 +135,46 @@ module traffic_light(
         endcase
     end
 endmodule
+
+
+
+
+
+
 ```
 
-> 📝 **NOTE (수정사항):** 이전 버전에서는 `state != next_state`로 타이머를 리로드했는데, `next_state`는 조합논리 출력이므로 state 변경 전에 이미 바뀌어 race condition이 발생할 수 있다. 수정 버전에서는 `state_d`(1클럭 지연된 state)와 비교하여 상태 변경 직후에 리로드한다.
+##### Simple Testbench 
+
+```verilog
+
+`timescale 1ns/1ps
+
+module tb_my;
+  reg clk,rst_n,sensor;
+  wire [2:0] light_main, light_side;
+
+ traffic_light  #( .GREEN_T(5), .YELLOW_T(3))  dut (
+        .clk(clk), .rst_n(rst_n), .sensor(sensor),
+        .light_main(light_main), .light_side(light_side)
+    );
+
+initial clk = 0;
+always #5 clk = ~clk;
+
+
+initial begin
+ rst_n = 0;  
+ sensor = 0;
+ #12  rst_n = 1;
+ #200
+
+ sensor = 1;
+ #300 $finish;
+end
+
+endmodule
+```
+
 
 ---
 
@@ -150,12 +184,12 @@ endmodule
 
 기계식 버튼은 누를 때 수 ms 동안 접점이 떨리며(bouncing) 여러 번의 에지가 발생한다.
 
-![Button Bounce and Debounce Waveform](images/w4_debounce_waveform.svg)
+![Button Bounce and Debounce Waveform|697](images/w4_debounce_waveform.svg)
 
-![Debounce FSM State Diagram](images/w4_debounce_fsm.svg)
+![Debounce FSM State Diagram|697](images/w4_debounce_fsm.svg)
 
 ```verilog
-module btn_debounce(
+module btn_debounce (
     input      clk,       // 50MHz
     input      rst_n,     // async reset (added!)
     input      btn_raw,   // raw button (active low)
@@ -204,6 +238,56 @@ endmodule
 
 > ⚠️ **WARNING (수정사항):** 이전 버전에는 `rst_n`이 포트에 없고, P1에 비동기 리셋이 없었다. 리셋 없이는 전원 투입 시 state가 undefined 상태가 되어 정상 동작하지 않는다. 반드시 `rst_n`을 추가하고 모든 sequential 블록에 비동기 리셋을 포함해야 한다.
 
+
+
+######  Testbench 
+``` verilog
+`timescale 1ns/1ps
+
+module btn_debounce_tb;
+
+    reg  clk, rst_n, btn_raw;
+    wire btn_pulse;
+
+    btn_debounce #(.DEBOUNCE_CNT(20'd4)) dut (
+        .clk      (clk),
+        .rst_n    (rst_n),
+        .btn_raw  (btn_raw),
+        .btn_pulse(btn_pulse)
+    );
+
+    initial clk = 0;
+    always #10 clk = ~clk;          // 50MHz ? ?? 20ns
+
+    task wait_clk;
+        input integer n;
+        integer i;
+        begin
+            for (i = 0; i < n; i = i + 1)
+                @(posedge clk);
+        end
+    endtask
+
+    initial begin
+
+        clk=0; rst_n=0; btn_raw=1;   // btn_raw=1: ?? ???(active low)
+        repeat(3) @(posedge clk);        
+        rst_n=1;
+        repeat(2) @(posedge clk);  
+        
+
+        btn_raw = 0;
+        wait_clk(8);                 // DEBOUNCE_CNT(4)+??
+        btn_raw = 1;
+        wait_clk(8);
+
+    end
+
+endmodule
+```
+
+
+
 ### 실습 2: Traffic Light Board Test
 
 위의 traffic_light 모듈을 보드에 구현한다.
@@ -218,16 +302,95 @@ endmodule
 | light_side {R,Y,G} | LEDG[5:3] | LEDR[5:3] |
 | state display | HEX0 | HEX0 |
 
+**DE0 Top Module:**
+```verilog
+module traffic_de0(
+    input        CLOCK_50,     // PIN_G21
+    input  [7:0] SW,           // SW[0] = sensor
+    input  [2:0] KEY,          // KEY[0] = rst
+    output [7:0] LEDG,         // {R,Y,G} for main & side
+    output [6:0] HEX0, HEX1   // state & timer display
+);
+    wire [2:0] light_main, light_side;
+    wire [1:0] state_mon;      // for display (expose from FSM)
+
+    traffic_light u_tl(
+        .clk(CLOCK_50),
+        .rst_n(KEY[0]),
+        .sensor(SW[0]),
+        .light_main(light_main),
+        .light_side(light_side)
+    );
+
+    // LEDG[2:0] = main {R,Y,G}, LEDG[5:3] = side {R,Y,G}
+    assign LEDG = {2'b0, light_side, light_main};
+
+    // HEX0: current state (0~3)
+    seg7_decoder u_h0(.hex({2'b0, u_tl.state}), .seg(HEX0));
+    // HEX1: blank (or timer seconds if exposed)
+    assign HEX1 = 7'b111_1111;  // blank
+endmodule
+```
+
+**DE1 Top Module:**
+```verilog
+module traffic_de1(
+    input         CLOCK_50,    // PIN_L1
+    input   [9:0] SW,          // SW[0] = sensor
+    input   [3:0] KEY,         // KEY[0] = rst
+    output  [9:0] LEDR,        // {R,Y,G} for main & side
+    output  [7:0] LEDG,
+    output  [6:0] HEX0, HEX1
+);
+    wire [2:0] light_main, light_side;
+
+    traffic_light u_tl(
+        .clk(CLOCK_50),
+        .rst_n(KEY[0]),
+        .sensor(SW[0]),
+        .light_main(light_main),
+        .light_side(light_side)
+    );
+
+    // LEDR[2:0] = main {R,Y,G}, LEDR[5:3] = side {R,Y,G}
+    assign LEDR = {4'b0, light_side, light_main};
+    assign LEDG = 8'b0;
+
+    seg7_decoder u_h0(.hex({2'b0, u_tl.state}), .seg(HEX0));
+    assign HEX1 = 7'b111_1111;
+endmodule
+```
+
+> 💡 **TIP:** `u_tl.state`로 내부 신호를 참조하는 것은 시뮬레이션에서는 동작하지만, 합성 시에는 지원되지 않을 수 있다. 확실한 방법은 traffic_light 모듈에 `output [1:0] state_out`을 추가하는 것이다.
+
 ### 4주차 과제
 
 **과제 4-1 (필수): Vending Machine FSM**
 
-![Vending Machine FSM](images/w4_vending_fsm.svg)
+![Vending Machine FSM|697](images/w4_vending_fsm.svg)
 
+**Module Hierarchy:**
+
+![Vending Machine Module Hierarchy|697](images/w4_vending_hierarchy.svg)
+
+설계할 모듈 구조:
+- `vending_top` (Board Top) — DE0 또는 DE1용 핀 연결
+  - `btn_debounce` × 3 — coin_10, coin_20, cancel 각각 디바운스
+  - `vending_fsm` — 3-Process FSM 핵심 로직
+    - P1: State Register
+    - P2: Next State Logic (IDLE→COIN10→COIN20→COIN30→DISPENSE)
+    - P3: Output Logic (dispense, change, current balance)
+  - `seg7_decoder` × 2 — 투입금과 거스름돈 표시
+
+**Requirements:**
 - States: IDLE → COIN_10 → COIN_20 → COIN_30 → DISPENSE
 - Inputs: coin_10, coin_20, cancel (KEY + debounce)
 - Outputs: dispense, change[4:0], 투입금을 HEX에 표시
+- coin_20 from COIN_20 state → DISPENSE (초과 투입 시 change 출력)
+- cancel: any COIN state → IDLE (투입금 반환)
 - 3-Process FSM + Self-Checking TB + Board demo
+
+> 💡 **TIP:** 먼저 `vending_fsm` 모듈을 단독으로 설계하고 TB로 검증한 후, `vending_top`에서 debounce와 seg7_decoder를 연결하여 보드 테스트하라. 모듈 분리 설계의 핵심은 **각 모듈을 독립적으로 검증**하는 것이다.
 
 ---
 ---
