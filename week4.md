@@ -363,7 +363,7 @@ endmodule
 
 > 💡 **TIP:** `u_tl.state`로 내부 신호를 참조하는 것은 시뮬레이션에서는 동작하지만, 합성 시에는 지원되지 않을 수 있다. 확실한 방법은 traffic_light 모듈에 `output [1:0] state_out`을 추가하는 것이다.
 
-### 4주차 과제
+### 4주차 과제 (한번 해보기)
 
 **과제 4-1 (필수): Vending Machine FSM**
 
