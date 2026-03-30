@@ -265,7 +265,7 @@ module btn_debounce_tb;
         begin
             for (i = 0; i < n; i = i + 1)
                 @(posedge clk);
-        end
+        end     // = repeat(8) @always(posedge)
     endtask
 
     initial begin
