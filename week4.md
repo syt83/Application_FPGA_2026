@@ -189,7 +189,7 @@ endmodule
 ![Debounce FSM State Diagram|697](images/w4_debounce_fsm.svg)
 
 ```verilog
-module btn_debounce (
+module btn_debounce (       // 중요! 한번 따라해보기
     input      clk,       // 50MHz
     input      rst_n,     // async reset (added!)
     input      btn_raw,   // raw button (active low)
