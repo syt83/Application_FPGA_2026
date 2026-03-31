@@ -369,6 +369,8 @@ endmodule
 
 ![Vending Machine FSM|697](images/w4_vending_fsm.svg)
 
+![ ] (Pasted image 20260331203555.png)
+
 **Module Hierarchy:**
 
 ![Vending Machine Module Hierarchy|697](images/w4_vending_hierarchy.svg)
