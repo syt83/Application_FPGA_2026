@@ -1,34 +1,136 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 250">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 430">
 <style>
   text { font-family: 'Segoe UI', Arial, sans-serif; }
   .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
-  .subtitle { font-size: 12px; fill: #666; }
-  .label { font-size: 12px; fill: #2C3E50; }
   .label-b { font-size: 12px; fill: #2C3E50; font-weight: bold; }
   .label-s { font-size: 10px; fill: #666; }
-  .code { font-family: 'Courier New', monospace; font-size: 10px; fill: #2C3E50; }
-  .warn { font-size: 11px; fill: #E74C3C; font-weight: bold; }
-  .note { font-size: 10px; fill: #1B4F72; }
+  .trans { font-size: 9px; fill: #1E8449; font-weight: bold; }
+  .transB { font-size: 9px; fill: #1B4F72; font-weight: bold; }
+  .cancel { font-size: 9px; fill: #E74C3C; font-weight: bold; }
+  .auto { font-size: 9px; fill: #8E44AD; font-weight: bold; }
+  .out { font-family: 'Courier New', monospace; font-size: 9px; fill: #8E44AD; }
+  .ret { font-size: 9px; fill: #666; }
 </style>
-<defs><marker id="av" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1E8449"/></marker>
-<marker id="avr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#E74C3C"/></marker></defs>
-<text x="325" y="18" text-anchor="middle" class="title">Vending Machine FSM (Price: 30)</text>
-<circle cx="65" cy="110" r="32" fill="#D6EAF8" stroke="#1B4F72" stroke-width="2"/><text x="65" y="115" text-anchor="middle" class="label-b">IDLE</text>
-<circle cx="185" cy="110" r="32" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/><text x="185" y="108" text-anchor="middle" class="label-b">C10</text><text x="185" y="122" text-anchor="middle" class="label-s">10</text>
-<circle cx="305" cy="110" r="32" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/><text x="305" y="108" text-anchor="middle" class="label-b">C20</text><text x="305" y="122" text-anchor="middle" class="label-s">20</text>
-<circle cx="425" cy="110" r="32" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/><text x="425" y="108" text-anchor="middle" class="label-b">C30</text><text x="425" y="122" text-anchor="middle" class="label-s">30</text>
-<circle cx="565" cy="110" r="32" fill="#FDEBD0" stroke="#E67E22" stroke-width="2"/><text x="565" y="108" text-anchor="middle" class="label-b">DIS-</text><text x="565" y="122" text-anchor="middle" class="label-b">PENSE</text>
-<!-- Forward -->
-<line x1="99" y1="105" x2="151" y2="105" stroke="#1E8449" stroke-width="2" marker-end="url(#av)"/><text x="125" y="98" text-anchor="middle" class="label-s" fill="#1E8449">coin10</text>
-<line x1="219" y1="105" x2="271" y2="105" stroke="#1E8449" stroke-width="2" marker-end="url(#av)"/><text x="245" y="98" text-anchor="middle" class="label-s" fill="#1E8449">coin10</text>
-<line x1="339" y1="105" x2="391" y2="105" stroke="#1E8449" stroke-width="2" marker-end="url(#av)"/><text x="365" y="98" text-anchor="middle" class="label-s" fill="#1E8449">coin10</text>
-<line x1="459" y1="105" x2="531" y2="105" stroke="#E67E22" stroke-width="2" marker-end="url(#av)"/><text x="495" y="98" text-anchor="middle" class="label-s" fill="#E67E22">auto</text>
-<!-- Skip with coin20 -->
-<path d="M85,78 Q185,30 285,78" fill="none" stroke="#1B4F72" stroke-width="1.5" marker-end="url(#av)"/><text x="185" y="45" text-anchor="middle" class="label-s" fill="#1B4F72">coin20</text>
-<path d="M205,78 Q305,30 405,78" fill="none" stroke="#1B4F72" stroke-width="1.5" marker-end="url(#av)"/><text x="305" y="35" text-anchor="middle" class="label-s" fill="#1B4F72">coin20</text>
-<!-- Return -->
-<path d="M565,144 Q325,210 65,144" fill="none" stroke="#E74C3C" stroke-width="2" marker-end="url(#avr)"/>
-<text x="325" y="205" text-anchor="middle" class="label-s" fill="#E74C3C">done -> IDLE</text>
-<!-- Cancel -->
-<rect x="30" y="225" width="590" height="20" rx="4" fill="#FADBD8"/><text x="325" y="240" text-anchor="middle" class="label-s" fill="#E74C3C">cancel: any COIN state -> IDLE (refund deposited amount)</text>
+<defs>
+  <marker id="mg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#1E8449"/></marker>
+  <marker id="mb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#1B4F72"/></marker>
+  <marker id="mr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#E74C3C"/></marker>
+  <marker id="mp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#8E44AD"/></marker>
+  <marker id="my" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#666"/></marker>
+</defs>
+<text x="360" y="22" text-anchor="middle" class="title">Vending Machine FSM State Diagram (Price = 30)</text>
+
+<!-- ====== States ====== -->
+<!-- Row 1 -->
+<circle cx="110" cy="120" r="40" fill="#D6EAF8" stroke="#1B4F72" stroke-width="2.5"/>
+<text x="110" y="116" text-anchor="middle" class="label-b" fill="#1B4F72">S_IDLE</text>
+<text x="110" y="131" text-anchor="middle" class="out">bal = 0</text>
+
+<circle cx="300" cy="120" r="40" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/>
+<text x="300" y="116" text-anchor="middle" class="label-b" fill="#1E8449">S_COIN10</text>
+<text x="300" y="131" text-anchor="middle" class="out">bal = 10</text>
+
+<circle cx="490" cy="120" r="40" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/>
+<text x="490" y="116" text-anchor="middle" class="label-b" fill="#1E8449">S_COIN20</text>
+<text x="490" y="131" text-anchor="middle" class="out">bal = 20</text>
+
+<!-- Row 2 -->
+<circle cx="490" cy="270" r="40" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/>
+<text x="490" y="266" text-anchor="middle" class="label-b" fill="#1E8449">S_COIN30</text>
+<text x="490" y="281" text-anchor="middle" class="out">bal = 30</text>
+
+<circle cx="300" cy="270" r="40" fill="#FDEBD0" stroke="#E67E22" stroke-width="2"/>
+<text x="300" y="266" text-anchor="middle" class="label-b" fill="#E67E22">S_COIN40</text>
+<text x="300" y="281" text-anchor="middle" class="out">bal = 40</text>
+
+<!-- Dispense states -->
+<circle cx="650" cy="270" r="38" fill="#E8DAEF" stroke="#8E44AD" stroke-width="2.5"/>
+<text x="650" y="262" text-anchor="middle" class="label-b" fill="#8E44AD">S_DISP_0</text>
+<text x="650" y="277" text-anchor="middle" class="out">disp=1</text>
+<text x="650" y="289" text-anchor="middle" class="out">chg=0</text>
+
+<circle cx="110" cy="270" r="38" fill="#E8DAEF" stroke="#8E44AD" stroke-width="2.5"/>
+<text x="110" y="262" text-anchor="middle" class="label-b" fill="#8E44AD">S_DISP_10</text>
+<text x="110" y="277" text-anchor="middle" class="out">disp=1</text>
+<text x="110" y="289" text-anchor="middle" class="out">chg=10</text>
+
+<!-- ====== coin_10 transitions (green, curved) ====== -->
+<!-- IDLE -> COIN10 -->
+<path d="M152,112 C200,95 230,95 258,112" fill="none" stroke="#1E8449" stroke-width="1.5" marker-end="url(#mg)"/>
+<text x="205" y="93" text-anchor="middle" class="trans">coin_10</text>
+
+<!-- COIN10 -> COIN20 -->
+<path d="M342,112 C390,95 420,95 448,112" fill="none" stroke="#1E8449" stroke-width="1.5" marker-end="url(#mg)"/>
+<text x="395" y="93" text-anchor="middle" class="trans">coin_10</text>
+
+<!-- COIN20 -> COIN30 -->
+<path d="M500,162 C505,200 505,215 500,228" fill="none" stroke="#1E8449" stroke-width="1.5" marker-end="url(#mg)"/>
+<text x="518" y="200" class="trans">coin_10</text>
+
+<!-- ====== coin_20 transitions (blue, curved) ====== -->
+<!-- IDLE -> COIN20 -->
+<path d="M145,140 C250,185 380,185 470,162" fill="none" stroke="#1B4F72" stroke-width="1.5" marker-end="url(#mb)"/>
+<text x="310" y="180" text-anchor="middle" class="transB">coin_20</text>
+
+<!-- COIN10 -> COIN30 -->
+<path d="M330,148 C370,200 420,220 465,232" fill="none" stroke="#1B4F72" stroke-width="1.5" marker-end="url(#mb)"/>
+<text x="380" y="210" text-anchor="middle" class="transB">coin_20</text>
+
+<!-- COIN20 -> COIN40 -->
+<path d="M455,145 C420,190 370,210 325,232" fill="none" stroke="#1B4F72" stroke-width="1.5" marker-end="url(#mb)"/>
+<text x="410" y="220" text-anchor="middle" class="transB">coin_20</text>
+
+<!-- ====== auto transitions (purple, curved) ====== -->
+<!-- COIN30 -> DISP_0 -->
+<path d="M530,262 C570,250 590,250 610,262" fill="none" stroke="#8E44AD" stroke-width="2.5" marker-end="url(#mp)"/>
+<text x="570" y="248" text-anchor="middle" class="auto">auto</text>
+
+<!-- COIN40 -> DISP_10 -->
+<path d="M260,262 C220,250 170,250 150,262" fill="none" stroke="#8E44AD" stroke-width="2.5" marker-end="url(#mp)"/>
+<text x="205" y="248" text-anchor="middle" class="auto">auto</text>
+
+<!-- ====== return to IDLE (gray, long curve at bottom) ====== -->
+<!-- DISP_0 -> IDLE -->
+<path d="M650,310 C650,380 360,400 110,380 C80,378 80,170 100,162" fill="none" stroke="#666" stroke-width="1.5" marker-end="url(#my)"/>
+<text x="380" y="395" text-anchor="middle" class="ret">next clock → S_IDLE</text>
+
+<!-- DISP_10 -> IDLE -->
+<path d="M105,230 C100,200 100,175 105,162" fill="none" stroke="#666" stroke-width="1.5" marker-end="url(#my)"/>
+
+<!-- ====== cancel transitions (red dashed, curved) ====== -->
+<!-- COIN10 -> IDLE -->
+<path d="M262,128 C220,145 170,145 148,128" fill="none" stroke="#E74C3C" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#mr)"/>
+<text x="205" y="152" text-anchor="middle" class="cancel">cancel</text>
+
+<!-- COIN20 -> IDLE -->
+<path d="M460,92 C380,40 200,40 130,82" fill="none" stroke="#E74C3C" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#mr)"/>
+<text x="300" y="42" text-anchor="middle" class="cancel">cancel</text>
+
+<!-- COIN30 -> IDLE -->
+<path d="M460,298 C420,350 200,370 85,340 C55,332 55,170 80,130" fill="none" stroke="#E74C3C" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#mr)"/>
+<text x="240" y="355" text-anchor="middle" class="cancel">cancel</text>
+
+<!-- ====== Legend ====== -->
+<rect x="15" y="408" width="690" height="18" rx="4" fill="#F8F9FA" stroke="#AEB6BF"/>
+<line x1="25" y1="417" x2="50" y2="417" stroke="#1E8449" stroke-width="1.5"/>
+<text x="55" y="420" class="label-s">coin_10</text>
+<line x1="110" y1="417" x2="135" y2="417" stroke="#1B4F72" stroke-width="1.5"/>
+<text x="140" y="420" class="label-s">coin_20</text>
+<line x1="195" y1="417" x2="220" y2="417" stroke="#8E44AD" stroke-width="2.5"/>
+<text x="225" y="420" class="label-s">auto</text>
+<line x1="265" y1="417" x2="295" y2="417" stroke="#E74C3C" stroke-width="1.5" stroke-dasharray="5,3"/>
+<text x="300" y="420" class="label-s">cancel</text>
+<line x1="345" y1="417" x2="370" y2="417" stroke="#666" stroke-width="1.5"/>
+<text x="375" y="420" class="label-s">return</text>
+<circle cx="440" cy="417" r="6" fill="#D5F5E3" stroke="#1E8449"/>
+<text x="452" y="420" class="label-s">coin state</text>
+<circle cx="530" cy="417" r="6" fill="#E8DAEF" stroke="#8E44AD"/>
+<text x="542" y="420" class="label-s">dispense state</text>
+<circle cx="640" cy="417" r="6" fill="#FDEBD0" stroke="#E67E22"/>
+<text x="652" y="420" class="label-s">overpay</text>
 </svg>
