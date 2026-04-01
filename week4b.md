@@ -79,29 +79,32 @@ endmodule
 ![Traffic Light FSM State Diagram|697](images/w4_traffic_fsm.svg)
 
 ```verilog
-module traffic_light (
+module traffic_light(
     input        clk, rst_n,
-    input        sensor,
+    input        sensor,          // vehicle detected
     output reg [2:0] light_main,  // {R,Y,G}
     output reg [2:0] light_side   // {R,Y,G}
 );
     localparam MAIN_GREEN  = 2'd0, MAIN_YELLOW = 2'd1,
                SIDE_GREEN  = 2'd2, SIDE_YELLOW = 2'd3;
-    parameter  GREEN_T  = 26'd49_999_999,                // ✅ parameter로 변경
-               YELLOW_T = 26'd24_999_999;
+    localparam GREEN_T  = 26'd49_999_999,  // 1s (demo speed)
+               YELLOW_T = 26'd24_999_999;  // 0.5s
 
     reg [1:0]  state, next_state;
     reg [25:0] timer;
     wire       timeout = (timer == 0);
 
-    // Timer
+    // Timer: reload on state change, decrement otherwise
+    reg [1:0] state_d;  // delayed state for edge detection
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
-            timer <= GREEN_T;
+            timer   <= GREEN_T;
+            state_d <= MAIN_GREEN;
         end else begin
-            if (next_state != state)                              // ✅ 오류 수정: state_d 제거
-                timer <= (next_state == MAIN_YELLOW || next_state == SIDE_YELLOW)
-                         ? YELLOW_T : GREEN_T;                   // ✅ 오류 수정: next_state 기준
+            state_d <= state;
+            if (state != state_d)  // state just changed
+                timer <= (state == MAIN_YELLOW || state == SIDE_YELLOW)
+                         ? YELLOW_T : GREEN_T;
             else if (timer > 0)
                 timer <= timer - 1;
         end
@@ -126,7 +129,7 @@ module traffic_light (
 
     // P3: Output {R,Y,G}
     always @(*) begin
-        light_main = 3'b100; light_side = 3'b100;
+        light_main = 3'b100; light_side = 3'b100; // default: both RED
         case (state)
             MAIN_GREEN:  begin light_main=3'b001; light_side=3'b100; end
             MAIN_YELLOW: begin light_main=3'b010; light_side=3'b100; end
@@ -135,46 +138,9 @@ module traffic_light (
         endcase
     end
 endmodule
-
-
-
-
-
-
 ```
 
-##### Simple Testbench 
-
-```verilog
-
-`timescale 1ns/1ps
-
-module tb_my;
-  reg clk,rst_n,sensor;
-  wire [2:0] light_main, light_side;
-
- traffic_light  #( .GREEN_T(5), .YELLOW_T(3))  dut (
-        .clk(clk), .rst_n(rst_n), .sensor(sensor),
-        .light_main(light_main), .light_side(light_side)
-    );
-
-initial clk = 0;
-always #5 clk = ~clk;
-
-
-initial begin
- rst_n = 0;  
- sensor = 0;
- #12  rst_n = 1;
- #200
-
- sensor = 1;
- #300 $finish;
-end
-
-endmodule
-```
-
+> 📝 **NOTE (수정사항):** 이전 버전에서는 `state != next_state`로 타이머를 리로드했는데, `next_state`는 조합논리 출력이므로 state 변경 전에 이미 바뀌어 race condition이 발생할 수 있다. 수정 버전에서는 `state_d`(1클럭 지연된 state)와 비교하여 상태 변경 직후에 리로드한다.
 
 ---
 
@@ -189,7 +155,7 @@ endmodule
 ![Debounce FSM State Diagram|697](images/w4_debounce_fsm.svg)
 
 ```verilog
-module btn_debounce (       // 중요! 한번 따라해보기
+module btn_debounce(
     input      clk,       // 50MHz
     input      rst_n,     // async reset (added!)
     input      btn_raw,   // raw button (active low)
@@ -237,56 +203,6 @@ endmodule
 ```
 
 > ⚠️ **WARNING (수정사항):** 이전 버전에는 `rst_n`이 포트에 없고, P1에 비동기 리셋이 없었다. 리셋 없이는 전원 투입 시 state가 undefined 상태가 되어 정상 동작하지 않는다. 반드시 `rst_n`을 추가하고 모든 sequential 블록에 비동기 리셋을 포함해야 한다.
-
-
-
-######  Testbench 
-``` verilog
-`timescale 1ns/1ps
-
-module btn_debounce_tb;
-
-    reg  clk, rst_n, btn_raw;
-    wire btn_pulse;
-
-    btn_debounce #(.DEBOUNCE_CNT(20'd4)) dut (
-        .clk      (clk),
-        .rst_n    (rst_n),
-        .btn_raw  (btn_raw),
-        .btn_pulse(btn_pulse)
-    );
-
-    initial clk = 0;
-    always #10 clk = ~clk;          // 50MHz ? ?? 20ns
-
-    task wait_clk;
-        input integer n;
-        integer i;
-        begin
-            for (i = 0; i < n; i = i + 1)
-                @(posedge clk);
-        end     // = repeat(8) @always(posedge)
-    endtask
-
-    initial begin
-
-        clk=0; rst_n=0; btn_raw=1;   // btn_raw=1: ?? ???(active low)
-        repeat(3) @(posedge clk);        
-        rst_n=1;
-        repeat(2) @(posedge clk);  
-        
-
-        btn_raw = 0;
-        wait_clk(8);                 // DEBOUNCE_CNT(4)+??
-        btn_raw = 1;
-        wait_clk(8);
-
-    end
-
-endmodule
-```
-
-
 
 ### 실습 2: Traffic Light Board Test
 
@@ -363,16 +279,11 @@ endmodule
 
 > 💡 **TIP:** `u_tl.state`로 내부 신호를 참조하는 것은 시뮬레이션에서는 동작하지만, 합성 시에는 지원되지 않을 수 있다. 확실한 방법은 traffic_light 모듈에 `output [1:0] state_out`을 추가하는 것이다.
 
-### 4주차 과제 (한번 해보기)
+### 4주차 과제
 
 **과제 4-1 (필수): Vending Machine FSM**
 
 ![Vending Machine FSM|697](images/w4_vending_fsm.svg)
-
-
-<img width="1440" height="872" alt="vendin_fsm2" src="https://github.com/user-attachments/assets/cda19c6e-094a-49d4-98e9-eb040cb6b005" />
-
-
 
 **Module Hierarchy:**
 
