@@ -1,0 +1,92 @@
+# ============================================================
+# DE0 Board Pin Assignments (Cyclone III EP3C16F484C6)
+# ============================================================
+# Source: DE0_pin_assignments.csv (Terasic official)
+# Verified: 2026-04-05
+#
+# Usage in Quartus:
+#   Assignments -> Import Assignments -> select this file
+#   Or copy/paste into .qsf file
+#
+# Board: DE0 (Altera/Terasic)
+# FPGA:  Cyclone III EP3C16F484C6
+# ============================================================
+
+# ---- Clock ----
+set_location_assignment PIN_G21 -to CLOCK_50
+
+# ---- Slide Switches SW[7:0] (Active High, 8 switches only!) ----
+set_location_assignment PIN_J6  -to SW[0]
+set_location_assignment PIN_H5  -to SW[1]
+set_location_assignment PIN_H6  -to SW[2]
+set_location_assignment PIN_G4  -to SW[3]
+set_location_assignment PIN_G5  -to SW[4]
+set_location_assignment PIN_J7  -to SW[5]
+set_location_assignment PIN_H7  -to SW[6]
+set_location_assignment PIN_E3  -to SW[7]
+
+# ---- Push Buttons KEY[2:0] (Active Low, 3 buttons only!) ----
+set_location_assignment PIN_H2  -to KEY[0]
+set_location_assignment PIN_G3  -to KEY[1]
+set_location_assignment PIN_F1  -to KEY[2]
+
+# ---- Green LEDs LEDG[7:0] (Active High, NO LEDR on DE0!) ----
+set_location_assignment PIN_J1  -to LEDG[0]
+set_location_assignment PIN_J2  -to LEDG[1]
+set_location_assignment PIN_J3  -to LEDG[2]
+set_location_assignment PIN_H1  -to LEDG[3]
+set_location_assignment PIN_F2  -to LEDG[4]
+set_location_assignment PIN_E1  -to LEDG[5]
+set_location_assignment PIN_C1  -to LEDG[6]
+set_location_assignment PIN_C2  -to LEDG[7]
+
+# ---- 7-Segment HEX0 [6:0] = {g,f,e,d,c,b,a} (Active Low) ----
+set_location_assignment PIN_E11 -to HEX0[0]
+set_location_assignment PIN_F11 -to HEX0[1]
+set_location_assignment PIN_H12 -to HEX0[2]
+set_location_assignment PIN_H13 -to HEX0[3]
+set_location_assignment PIN_G12 -to HEX0[4]
+set_location_assignment PIN_F12 -to HEX0[5]
+set_location_assignment PIN_F13 -to HEX0[6]
+
+# ---- 7-Segment HEX1 [6:0] = {g,f,e,d,c,b,a} (Active Low) ----
+set_location_assignment PIN_A13 -to HEX1[0]
+set_location_assignment PIN_B13 -to HEX1[1]
+set_location_assignment PIN_C13 -to HEX1[2]
+set_location_assignment PIN_A14 -to HEX1[3]
+set_location_assignment PIN_B14 -to HEX1[4]
+set_location_assignment PIN_E14 -to HEX1[5]
+set_location_assignment PIN_A15 -to HEX1[6]
+
+# ---- 7-Segment HEX2 [6:0] = {g,f,e,d,c,b,a} (Active Low) ----
+set_location_assignment PIN_D15 -to HEX2[0]
+set_location_assignment PIN_A16 -to HEX2[1]
+set_location_assignment PIN_B16 -to HEX2[2]
+set_location_assignment PIN_E15 -to HEX2[3]
+set_location_assignment PIN_A17 -to HEX2[4]
+set_location_assignment PIN_B17 -to HEX2[5]
+set_location_assignment PIN_F14 -to HEX2[6]
+
+# ---- 7-Segment HEX3 [6:0] = {g,f,e,d,c,b,a} (Active Low) ----
+set_location_assignment PIN_B18 -to HEX3[0]
+set_location_assignment PIN_F15 -to HEX3[1]
+set_location_assignment PIN_A19 -to HEX3[2]
+set_location_assignment PIN_B19 -to HEX3[3]
+set_location_assignment PIN_C19 -to HEX3[4]
+set_location_assignment PIN_D19 -to HEX3[5]
+set_location_assignment PIN_G15 -to HEX3[6]
+
+# ============================================================
+# DE0 Quick Reference
+# ============================================================
+# CLOCK_50  : PIN_G21   (50MHz oscillator)
+# SW[7:0]   : 8 switches (Active High)
+# KEY[2:0]  : 3 buttons  (Active Low, directly connected)
+# LEDG[7:0] : 8 green LEDs (Active High)
+# HEX0~HEX3: 4 x 7-segment (Active Low, common anode)
+#             HEX[6:0] = {g, f, e, d, c, b, a}
+#
+# WARNING: DE0 has NO LEDR (red LEDs)!
+#          DE0 has NO KEY[3]!
+#          DE0 has NO SW[8], SW[9]!
+# ============================================================
