@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 220">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .subtitle { font-size: 12px; fill: #666; }
+  .label { font-size: 12px; fill: #2C3E50; }
+  .label-b { font-size: 12px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .code { font-family: 'Courier New', monospace; font-size: 10px; fill: #2C3E50; }
+  .warn { font-size: 11px; fill: #E74C3C; font-weight: bold; }
+  .note { font-size: 10px; fill: #1B4F72; }
+</style>
+<defs><marker id="as" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#666"/></marker></defs>
+<text x="350" y="18" text-anchor="middle" class="title">Stopwatch Block Diagram</text>
+<!-- Prescaler -->
+<rect x="20" y="40" width="110" height="55" rx="6" fill="#D6EAF8" stroke="#1B4F72"/><text x="75" y="60" text-anchor="middle" class="label-b">Prescaler</text><text x="75" y="78" text-anchor="middle" class="label-s">50MHz->100Hz</text>
+<!-- BCD chain -->
+<rect x="160" y="40" width="80" height="55" rx="6" fill="#D5F5E3" stroke="#1E8449"/><text x="200" y="60" text-anchor="middle" class="label-b">cs_lo</text><text x="200" y="78" text-anchor="middle" class="label-s">0.01s</text>
+<rect x="260" y="40" width="80" height="55" rx="6" fill="#D5F5E3" stroke="#1E8449"/><text x="300" y="60" text-anchor="middle" class="label-b">cs_hi</text><text x="300" y="78" text-anchor="middle" class="label-s">0.1s</text>
+<rect x="360" y="40" width="80" height="55" rx="6" fill="#D5F5E3" stroke="#1E8449"/><text x="400" y="60" text-anchor="middle" class="label-b">sec_lo</text><text x="400" y="78" text-anchor="middle" class="label-s">1s</text>
+<rect x="460" y="40" width="80" height="55" rx="6" fill="#D5F5E3" stroke="#1E8449"/><text x="500" y="60" text-anchor="middle" class="label-b">sec_hi</text><text x="500" y="78" text-anchor="middle" class="label-s">10s</text>
+<!-- 7-seg -->
+<rect x="580" y="40" width="100" height="55" rx="6" fill="#FDEBD0" stroke="#E67E22"/><text x="630" y="60" text-anchor="middle" class="label-b">4x seg7</text><text x="630" y="78" text-anchor="middle" class="label-s">decoder</text>
+<!-- Arrows -->
+<line x1="130" y1="67" x2="158" y2="67" stroke="#666" stroke-width="2" marker-end="url(#as)"/><text x="140" y="60" class="label-s">tick</text>
+<line x1="240" y1="67" x2="258" y2="67" stroke="#666" stroke-width="2" marker-end="url(#as)"/><text x="245" y="60" class="label-s">c</text>
+<line x1="340" y1="67" x2="358" y2="67" stroke="#666" stroke-width="2" marker-end="url(#as)"/><text x="345" y="60" class="label-s">c</text>
+<line x1="440" y1="67" x2="458" y2="67" stroke="#666" stroke-width="2" marker-end="url(#as)"/><text x="445" y="60" class="label-s">c</text>
+<line x1="540" y1="67" x2="578" y2="67" stroke="#666" stroke-width="2" marker-end="url(#as)"/>
+<!-- Control -->
+<rect x="20" y="120" width="200" height="70" rx="6" fill="#E8DAEF" stroke="#8E44AD"/>
+<text x="120" y="142" text-anchor="middle" class="label-b">Control FSM</text>
+<text x="120" y="162" text-anchor="middle" class="label-s">running: Start/Stop</text>
+<text x="120" y="178" text-anchor="middle" class="label-s">lap_held: Freeze display</text>
+<line x1="120" y1="118" x2="75" y2="97" stroke="#8E44AD" stroke-width="2" marker-end="url(#as)"/>
+<text x="90" y="110" class="label-s" fill="#8E44AD">enable</text>
+<!-- Output -->
+<rect x="260" y="130" width="420" height="55" rx="6" fill="#FEF9E7" stroke="#B7950B"/>
+<text x="470" y="152" text-anchor="middle" class="label-b">Display: HEX3:HEX2 = SS | HEX1:HEX0 = CC</text>
+<text x="470" y="172" text-anchor="middle" class="label-s">LED = running status</text>
+</svg>
