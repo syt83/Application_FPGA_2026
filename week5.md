@@ -10,7 +10,7 @@
 
 ### 1. 7-Segment Display Structure
 
-![7-Segment Display Layout](images/w5_7seg_layout.svg)
+![7-Segment Display Layout|697](images/w5_7seg_layout.svg)
 
 > 📝 **NOTE:** 두 보드 모두 7-seg는 **Active Low**: 세그먼트를 켜려면 0, 끄려면 1을 출력. HEX[6:0] = {g,f,e,d,c,b,a}.
 
@@ -39,17 +39,18 @@ endmodule
 
 ### 2. Stopwatch System Structure
 
-![Stopwatch Block Diagram](images/w5_stopwatch.svg)
+![Stopwatch Block Diagram|697](images/w5_stopwatch.svg)
 
 ### 3. Prescaler
 
 ```verilog
 // 50MHz -> 100Hz Prescaler (10ms tick)
-module prescaler_100hz(
+module prescaler_100hz #(
+    parameter MAX = 26'd499_999  // 50M/100 - 1 (parameter for TB override)
+)(
     input      clk, rst_n, enable,
     output reg tick
 );
-    localparam MAX = 26'd499_999; // 50M/100 - 1
     reg [25:0] cnt;
 
     always @(posedge clk or negedge rst_n) begin
@@ -63,7 +64,7 @@ endmodule
 
 ### 4. BCD Counter
 
-![BCD Counter Chain](images/w5_bcd_chain.svg)
+![BCD Counter Chain|697](images/w5_bcd_chain.svg)
 
 ```verilog
 // Single BCD digit counter (0~9, carry output)
@@ -126,8 +127,9 @@ module stopwatch(
         if (!rst_n) lap_held <= 0;
         else if (btn_lap) lap_held <= ~lap_held;
 
-    always @(posedge clk)
-        if (!lap_held) {dh3,dh2,dh1,dh0} <= {sec_hi,sec_lo,cs_hi,cs_lo};
+    always @(posedge clk or negedge rst_n)
+        if (!rst_n) {dh3,dh2,dh1,dh0} <= 16'b0;
+        else if (!lap_held) {dh3,dh2,dh1,dh0} <= {sec_hi,sec_lo,cs_hi,cs_lo};
 
     seg7_decoder h0(.hex(dh0), .seg(HEX0));
     seg7_decoder h1(.hex(dh1), .seg(HEX1));
@@ -150,6 +152,8 @@ module stopwatch_de0(
     output [7:0] LEDG      // green LEDs
 );
     wire btn_ss, btn_lap;
+    // NOTE: btn_debounce must use parameter DEBOUNCE_CNT (not localparam!)
+    // See Week 4 corrected version
     btn_debounce db1(.clk(CLOCK_50),.rst_n(KEY[0]),
                      .btn_raw(KEY[1]),.btn_pulse(btn_ss));
     btn_debounce db2(.clk(CLOCK_50),.rst_n(KEY[0]),
@@ -202,7 +206,8 @@ module stopwatch_tb;
     always #10 clk = ~clk;
 
     // Override prescaler MAX for fast simulation
-    defparam uut.u_pre.MAX = 4; // tick every 5 clocks instead of 500,000
+    // MAX=4 means tick every 5 clocks instead of 500,000
+    defparam uut.u_pre.MAX = 4;
 
     task pulse_btn;
         input integer which; // 0=ss, 1=lap
@@ -269,6 +274,10 @@ endmodule
 **과제 5-2 (가산점): Split Timer**
 - 최근 3개 랩 타임을 register array에 저장
 - KEY로 순환 표시 (DE0: KEY[2], DE1: KEY[3])
+
+
+
+
 
 ---
 ---
