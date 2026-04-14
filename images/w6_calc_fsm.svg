@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 340">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .label-b { font-size: 12px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .trans { font-size: 10px; fill: #1E8449; font-weight: bold; }
+  .out { font-family: 'Courier New', monospace; font-size: 9px; fill: #8E44AD; }
+  .act { font-size: 9px; fill: #E67E22; }
+</style>
+<defs>
+  <marker id="mg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1E8449"/></marker>
+  <marker id="mo" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#E67E22"/></marker>
+  <marker id="my" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#666"/></marker>
+</defs>
+<text x="360" y="24" text-anchor="middle" class="title">Calculator FSM State Diagram</text>
+
+<!-- ══════ 4 States ══════ -->
+
+<!-- S_A -->
+<circle cx="120" cy="140" r="48" fill="#D6EAF8" stroke="#1B4F72" stroke-width="2.5"/>
+<text x="120" y="130" text-anchor="middle" class="label-b" fill="#1B4F72">S_A</text>
+<text x="120" y="145" text-anchor="middle" class="out">HEX: "A0 xx"</text>
+<text x="120" y="158" text-anchor="middle" class="out">SW → display</text>
+
+<!-- S_OP -->
+<circle cx="330" cy="140" r="48" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/>
+<text x="330" y="125" text-anchor="middle" class="label-b" fill="#1E8449">S_OP</text>
+<text x="330" y="140" text-anchor="middle" class="out">HEX: "0n 00"</text>
+<text x="330" y="153" text-anchor="middle" class="out">n = op (0~7)</text>
+<text x="330" y="166" text-anchor="middle" class="act">btn_op: cycle</text>
+
+<!-- S_B -->
+<circle cx="540" cy="140" r="48" fill="#D6EAF8" stroke="#1B4F72" stroke-width="2"/>
+<text x="540" y="130" text-anchor="middle" class="label-b" fill="#1B4F72">S_B</text>
+<text x="540" y="145" text-anchor="middle" class="out">HEX: "b0 xx"</text>
+<text x="540" y="158" text-anchor="middle" class="out">SW → display</text>
+
+<!-- S_SHOW -->
+<circle cx="330" cy="280" r="48" fill="#FDEBD0" stroke="#E67E22" stroke-width="2.5"/>
+<text x="330" y="268" text-anchor="middle" class="label-b" fill="#E67E22">S_SHOW</text>
+<text x="330" y="283" text-anchor="middle" class="out">HEX: "E0 rr"</text>
+<text x="330" y="296" text-anchor="middle" class="out">rr = ALU result</text>
+<text x="330" y="309" text-anchor="middle" class="act">LED = flags</text>
+
+<!-- ══════ Transitions ══════ -->
+
+<!-- S_A → S_OP: btn_enter (reg_a ← SW) -->
+<line x1="170" y1="130" x2="280" y2="130" stroke="#1E8449" stroke-width="2" marker-end="url(#mg)"/>
+<text x="225" y="122" text-anchor="middle" class="trans">btn_enter</text>
+<text x="225" y="145" text-anchor="middle" class="act">reg_a ← SW</text>
+
+<!-- S_OP → S_B: btn_enter -->
+<line x1="380" y1="130" x2="490" y2="130" stroke="#1E8449" stroke-width="2" marker-end="url(#mg)"/>
+<text x="435" y="122" text-anchor="middle" class="trans">btn_enter</text>
+
+<!-- S_B → S_SHOW: btn_enter (reg_b ← SW) -->
+<line x1="540" y1="190" x2="540" y2="250" stroke="#1E8449" stroke-width="1.5"/>
+<line x1="540" y1="250" x2="380" y2="280" stroke="#1E8449" stroke-width="1.5" marker-end="url(#mg)"/>
+<text x="530" y="230" class="trans">btn_enter</text>
+<text x="475" y="260" class="act">reg_b ← SW</text>
+
+<!-- S_SHOW → S_A: btn_enter -->
+<line x1="280" y1="280" x2="150" y2="250" stroke="#1E8449" stroke-width="1.5"/>
+<line x1="150" y1="250" x2="120" y2="190" stroke="#1E8449" stroke-width="1.5" marker-end="url(#mg)"/>
+<text x="180" y="250" class="trans">btn_enter</text>
+<text x="172" y="237" class="act">(next calc)</text>
+
+<!-- S_OP self-loop: btn_op cycles alu_op -->
+<path d="M310,92 Q280,55 350,92" fill="none" stroke="#E67E22" stroke-width="1.5" marker-end="url(#mo)"/>
+<text x="330" y="65" text-anchor="middle" class="act">btn_op</text>
+<text x="330" y="78" text-anchor="middle" class="act">op: 0→1→...→7→0</text>
+
+<!-- ══════ Legend ══════ -->
+<rect x="15" y="42" width="90" height="20" rx="4" fill="#F8F9FA" stroke="#AEB6BF"/>
+<text x="60" y="56" text-anchor="middle" class="label-s">reset → S_A</text>
+
+<rect x="600" y="42" width="110" height="58" rx="4" fill="#F8F9FA" stroke="#AEB6BF"/>
+<text x="655" y="56" text-anchor="middle" class="label-s" font-weight="bold">ALU operations</text>
+<text x="610" y="70" class="label-s">0:ADD 1:SUB</text>
+<text x="610" y="82" class="label-s">2:AND 3:OR 4:XOR</text>
+<text x="610" y="94" class="label-s">5:SHL 6:SHR 7:SLT</text>
+</svg>
