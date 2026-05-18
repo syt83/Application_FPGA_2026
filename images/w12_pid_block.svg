@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 400">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .subtitle { font-size: 12px; fill: #1B4F72; font-weight: bold; }
+  .label-b { font-size: 11px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .code { font-family: 'Courier New', monospace; font-size: 9px; fill: #2C3E50; }
+  .sig { font-family: 'Courier New', monospace; font-size: 9px; fill: #1B4F72; font-weight: bold; }
+  .note { font-size: 10px; fill: #1B4F72; }
+  .math { font-family: 'Times New Roman', serif; font-size: 11px; font-style: italic; fill: #2C3E50; }
+</style>
+<defs>
+  <marker id="mb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#1B4F72"/>
+  </marker>
+  <marker id="mg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#1E8449"/>
+  </marker>
+  <marker id="mr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#E74C3C"/>
+  </marker>
+  <marker id="my" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#B7950B"/>
+  </marker>
+</defs>
+
+<text x="360" y="22" text-anchor="middle" class="title">Digital PID Controller — Simulink Closed-Loop Model</text>
+<text x="360" y="40" text-anchor="middle" class="label-s">Source for HDL Coder generation — entire diagram becomes Verilog</text>
+
+<!-- ========== Block: Reference (Step) ========== -->
+<rect x="30" y="80" width="100" height="55" rx="6" fill="#D6EAF8" stroke="#1B4F72" stroke-width="1.5"/>
+<text x="80" y="100" text-anchor="middle" class="label-b">Reference</text>
+<text x="80" y="115" text-anchor="middle" class="label-s">Step input</text>
+<!-- step waveform inside -->
+<g transform="translate(40,118)">
+  <line x1="0" y1="10" x2="30" y2="10" stroke="#1B4F72" stroke-width="1.5"/>
+  <line x1="30" y1="10" x2="30" y2="0" stroke="#1B4F72" stroke-width="1.5"/>
+  <line x1="30" y1="0" x2="80" y2="0" stroke="#1B4F72" stroke-width="1.5"/>
+</g>
+
+<!-- ========== Block: Sum (+/-) ========== -->
+<circle cx="190" cy="107" r="22" fill="#FFFFFF" stroke="#2C3E50" stroke-width="2"/>
+<text x="180" y="103" class="label-b">+</text>
+<text x="180" y="120" class="label-b" fill="#E74C3C">−</text>
+<text x="190" y="143" text-anchor="middle" class="label-s">Sum</text>
+
+<!-- ========== Block: Discrete PID Controller (HIGHLIGHT) ========== -->
+<rect x="245" y="80" width="160" height="80" rx="6" fill="#D5F5E3" stroke="#1E8449" stroke-width="2.5"/>
+<text x="325" y="98" text-anchor="middle" class="subtitle" fill="#1E8449">Discrete PID</text>
+<text x="325" y="113" text-anchor="middle" class="subtitle" fill="#1E8449">Controller</text>
+<line x1="255" y1="120" x2="395" y2="120" stroke="#1E8449" stroke-width="0.5"/>
+<text x="255" y="133" class="code">Kp = 2.0</text>
+<text x="255" y="144" class="code">Ki = 0.5</text>
+<text x="255" y="155" class="code">Kd = 0.1</text>
+<text x="370" y="133" class="code" font-size="8">Ts =</text>
+<text x="370" y="144" class="code" font-size="8">0.01</text>
+<text x="370" y="155" class="code" font-size="8" fill="#1E8449">(10ms)</text>
+
+<!-- ========== Block: Saturation ========== -->
+<rect x="430" y="80" width="90" height="55" rx="6" fill="#FDEBD0" stroke="#E67E22" stroke-width="1.5"/>
+<text x="475" y="100" text-anchor="middle" class="label-b">Saturation</text>
+<!-- saturation curve inside -->
+<g transform="translate(440,108)">
+  <line x1="5" y1="22" x2="65" y2="22" stroke="#AEB6BF" stroke-width="0.5"/>
+  <line x1="35" y1="5" x2="35" y2="22" stroke="#AEB6BF" stroke-width="0.5"/>
+  <path d="M 10,22 L 25,22 L 45,5 L 60,5" fill="none" stroke="#E67E22" stroke-width="1.5"/>
+</g>
+
+<!-- ========== Block: Output ========== -->
+<rect x="555" y="80" width="85" height="55" rx="6" fill="#FEF9E7" stroke="#B7950B" stroke-width="1.5"/>
+<text x="597" y="100" text-anchor="middle" class="label-b">u_out</text>
+<text x="597" y="115" text-anchor="middle" class="label-s">to plant</text>
+<text x="597" y="127" text-anchor="middle" class="code" font-size="8">sfix16_En12</text>
+
+<!-- ========== Block: Plant ========== -->
+<rect x="385" y="230" width="170" height="60" rx="6" fill="#E8DAEF" stroke="#8E44AD" stroke-width="2"/>
+<text x="470" y="248" text-anchor="middle" class="subtitle" fill="#8E44AD">Plant Model</text>
+<text x="470" y="266" text-anchor="middle" class="math">G(s) = 1 / (s² + 2s + 1)</text>
+<text x="470" y="282" text-anchor="middle" class="label-s">second-order system</text>
+
+<!-- ========== Block: Sensor Gain ========== -->
+<rect x="175" y="240" width="100" height="40" rx="6" fill="#FFFFFF" stroke="#2C3E50" stroke-width="1.5"/>
+<text x="225" y="258" text-anchor="middle" class="label-b">Sensor Gain</text>
+<text x="225" y="272" text-anchor="middle" class="label-s">K = 1.0</text>
+
+<!-- ========== Block: Scope ========== -->
+<rect x="610" y="230" width="80" height="60" rx="6" fill="#D6EAF8" stroke="#1B4F72" stroke-width="1.5"/>
+<text x="650" y="248" text-anchor="middle" class="label-b">Scope</text>
+<!-- mini step response inside -->
+<g transform="translate(618,255)">
+  <line x1="0" y1="28" x2="60" y2="28" stroke="#AEB6BF" stroke-width="0.5"/>
+  <line x1="0" y1="5" x2="0" y2="28" stroke="#AEB6BF" stroke-width="0.5"/>
+  <path d="M 0,28 C 5,28 10,10 18,5 C 22,3 26,7 30,12 C 35,16 40,15 50,15" fill="none" stroke="#1B4F72" stroke-width="1.5"/>
+</g>
+
+<!-- ========== Signal arrows ========== -->
+<!-- Reference → Sum -->
+<path d="M 130,107 C 145,107 155,107 168,107" fill="none" stroke="#1B4F72" stroke-width="1.5" marker-end="url(#mb)"/>
+<text x="148" y="100" class="sig" fill="#1B4F72">ref</text>
+
+<!-- Sum → PID -->
+<path d="M 212,107 C 225,107 235,107 245,107" fill="none" stroke="#1E8449" stroke-width="1.5" marker-end="url(#mg)"/>
+<text x="220" y="100" class="sig" fill="#1E8449">error</text>
+
+<!-- PID → Saturation -->
+<path d="M 405,107 C 415,107 420,107 430,107" fill="none" stroke="#1E8449" stroke-width="1.5" marker-end="url(#mg)"/>
+<text x="412" y="100" class="sig" fill="#1E8449">u_pid</text>
+
+<!-- Saturation → Output -->
+<path d="M 520,107 C 535,107 545,107 555,107" fill="none" stroke="#B7950B" stroke-width="1.5" marker-end="url(#my)"/>
+
+<!-- Output → Plant (down) -->
+<path d="M 597,135 C 597,180 470,180 470,230" fill="none" stroke="#B7950B" stroke-width="1.5" marker-end="url(#my)"/>
+<text x="585" y="195" class="sig" fill="#B7950B">u_out</text>
+
+<!-- Plant → Scope -->
+<path d="M 555,260 C 590,260 605,260 610,260" fill="none" stroke="#1B4F72" stroke-width="1.5" marker-end="url(#mb)"/>
+<text x="570" y="255" class="sig" fill="#1B4F72">y</text>
+
+<!-- Plant → Sensor (feedback path) -->
+<path d="M 385,260 C 350,260 320,260 275,260" fill="none" stroke="#E74C3C" stroke-width="1.5" marker-end="url(#mr)"/>
+<text x="320" y="255" class="sig" fill="#E74C3C">y</text>
+
+<!-- Sensor → Sum (feedback up) -->
+<path d="M 175,260 C 160,260 190,150 190,129" fill="none" stroke="#E74C3C" stroke-width="1.5" marker-end="url(#mr)"/>
+<text x="135" y="205" class="sig" fill="#E74C3C">feedback</text>
+
+<!-- ========== Discrete PID equation box ========== -->
+<rect x="30" y="170" width="335" height="55" rx="6" fill="#F8F9FA" stroke="#AEB6BF" stroke-width="1"/>
+<text x="40" y="187" class="label-b">Discrete PID equation:</text>
+<text x="40" y="207" class="math">u[n] = Kp·e[n] + Ki·Ts·Σe[k] + (Kd/Ts)·(e[n] − e[n−1])</text>
+<text x="40" y="220" class="label-s">~150 lines if hand-coded; one block in Simulink</text>
+
+<!-- ========== Right info box: HDL Coder annotations ========== -->
+<rect x="385" y="305" width="305" height="75" rx="6" fill="#FEF9E7" stroke="#B7950B" stroke-width="1.5"/>
+<text x="395" y="322" class="subtitle" fill="#B7950B">After HDL Coder generation:</text>
+<text x="395" y="338" class="code">module pid_controller(clk, reset, enb,</text>
+<text x="395" y="349" class="code">      Reference, Feedback, Out);</text>
+<text x="395" y="362" class="label-s">• Reset name depends on options chosen</text>
+<text x="395" y="374" class="label-s">• Pipeline registers auto-inserted (option)</text>
+
+<!-- ========== Left info box: Step 1-2 reminder ========== -->
+<rect x="30" y="240" width="135" height="60" rx="6" fill="#F8F9FA" stroke="#AEB6BF" stroke-width="1"/>
+<text x="40" y="258" class="label-b">This is Step 1+2</text>
+<text x="40" y="271" class="label-s">of the 5-step workflow</text>
+<text x="40" y="284" class="label-s">(see w12_hdl_workflow)</text>
+<text x="40" y="297" class="note">Sim ▶ first, then HDL.</text>
+</svg>

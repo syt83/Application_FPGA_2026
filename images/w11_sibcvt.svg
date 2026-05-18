@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 480">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .subtitle { font-size: 13px; fill: #1B4F72; font-weight: bold; }
+  .label { font-size: 12px; fill: #2C3E50; }
+  .label-b { font-size: 12px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .code { font-family: 'Courier New', monospace; font-size: 10px; fill: #2C3E50; }
+  .warn { font-size: 11px; fill: #E74C3C; font-weight: bold; }
+  .note { font-size: 10px; fill: #1B4F72; }
+  .big-letter { font-size: 22px; font-weight: bold; }
+</style>
+<defs>
+  <marker id="mp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#8E44AD"/>
+  </marker>
+  <marker id="mg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#1E8449"/>
+  </marker>
+  <marker id="mr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#E74C3C"/>
+  </marker>
+</defs>
+
+<text x="360" y="24" text-anchor="middle" class="title">SIBCVT — Six Elements of a Good Verilog Prompt</text>
+<text x="360" y="42" text-anchor="middle" class="label-s">Each element closes one type of specification gap that AI would otherwise fill with its default</text>
+
+<!-- ===== Six element cards in a 3x2 grid ===== -->
+<!-- Card S -->
+<rect x="30" y="60" width="210" height="100" rx="8" fill="#D6EAF8" stroke="#1B4F72" stroke-width="2"/>
+<text x="50" y="88" class="big-letter" fill="#1B4F72">S</text>
+<text x="85" y="82" class="subtitle">Spec</text>
+<text x="85" y="98" class="label-s">one-line summary + board</text>
+<rect x="40" y="108" width="190" height="42" rx="4" fill="#F8F9FA" stroke="#AEB6BF"/>
+<text x="48" y="123" class="code">"DE0 board, 7-seg HEX0~3,</text>
+<text x="48" y="135" class="code"> display hex 0~F"</text>
+<text x="48" y="147" class="label-s" fill="#1E8449">closes: board type gap</text>
+
+<!-- Card I -->
+<rect x="255" y="60" width="210" height="100" rx="8" fill="#D6EAF8" stroke="#1B4F72" stroke-width="2"/>
+<text x="275" y="88" class="big-letter" fill="#1B4F72">I</text>
+<text x="305" y="82" class="subtitle">Interface</text>
+<text x="305" y="98" class="label-s">ports, widths, directions</text>
+<rect x="265" y="108" width="190" height="42" rx="4" fill="#F8F9FA" stroke="#AEB6BF"/>
+<text x="273" y="123" class="code">module foo(input [3:0] hex,</text>
+<text x="273" y="135" class="code">           output reg [6:0] seg);</text>
+<text x="273" y="147" class="label-s" fill="#1E8449">closes: port name/width gap</text>
+
+<!-- Card B -->
+<rect x="480" y="60" width="210" height="100" rx="8" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/>
+<text x="500" y="88" class="big-letter" fill="#1E8449">B</text>
+<text x="530" y="82" class="subtitle" fill="#1E8449">Behavior</text>
+<text x="530" y="98" class="label-s">normal + corner cases</text>
+<rect x="490" y="108" width="190" height="42" rx="4" fill="#F8F9FA" stroke="#AEB6BF"/>
+<text x="498" y="123" class="code">"0~9 decimal, A~F alphabet,</text>
+<text x="498" y="135" class="code"> default all OFF"</text>
+<text x="498" y="147" class="label-s" fill="#1E8449">closes: corner case gap</text>
+
+<!-- Card C -->
+<rect x="30" y="180" width="210" height="100" rx="8" fill="#FDEBD0" stroke="#E67E22" stroke-width="2"/>
+<text x="50" y="208" class="big-letter" fill="#E67E22">C</text>
+<text x="85" y="202" class="subtitle" fill="#E67E22">Clock/Reset</text>
+<text x="85" y="218" class="label-s">style explicit</text>
+<rect x="40" y="228" width="190" height="42" rx="4" fill="#F8F9FA" stroke="#AEB6BF"/>
+<text x="48" y="243" class="code">"50MHz clk, async</text>
+<text x="48" y="255" class="code"> active-low rst_n"</text>
+<text x="48" y="267" class="label-s" fill="#1E8449">closes: reset polarity gap</text>
+
+<!-- Card V -->
+<rect x="255" y="180" width="210" height="100" rx="8" fill="#FADBD8" stroke="#E74C3C" stroke-width="2"/>
+<text x="275" y="208" class="big-letter" fill="#E74C3C">V</text>
+<text x="305" y="202" class="subtitle" fill="#E74C3C">Verilog Rules</text>
+<text x="305" y="218" class="label-s">course + board standards</text>
+<rect x="265" y="228" width="190" height="42" rx="4" fill="#F8F9FA" stroke="#AEB6BF"/>
+<text x="273" y="243" class="code">"active-low, {g,f,e,d,c,b,a},</text>
+<text x="273" y="255" class="code"> parameter, Verilog-2001"</text>
+<text x="273" y="267" class="warn">★ closes the biggest gap</text>
+
+<!-- Card T -->
+<rect x="480" y="180" width="210" height="100" rx="8" fill="#E8DAEF" stroke="#8E44AD" stroke-width="2"/>
+<text x="500" y="208" class="big-letter" fill="#8E44AD">T</text>
+<text x="530" y="202" class="subtitle" fill="#8E44AD">Testbench</text>
+<text x="530" y="218" class="label-s">TB included</text>
+<rect x="490" y="228" width="190" height="42" rx="4" fill="#F8F9FA" stroke="#AEB6BF"/>
+<text x="498" y="243" class="code">"self-checking TB, 16 cases,</text>
+<text x="498" y="255" class="code"> $monitor + $display FAIL"</text>
+<text x="498" y="267" class="label-s" fill="#1E8449">closes: verification gap</text>
+
+<!-- ===== Bottom: Bad vs Good comparison ===== -->
+<line x1="30" y1="300" x2="690" y2="300" stroke="#AEB6BF" stroke-width="1" stroke-dasharray="3,3"/>
+
+<!-- Bad side -->
+<rect x="30" y="315" width="310" height="120" rx="8" fill="#FADBD8" stroke="#E74C3C" stroke-width="2"/>
+<text x="185" y="335" text-anchor="middle" class="subtitle" fill="#E74C3C">Without SIBCVT</text>
+<text x="40" y="358" class="code">"Make a 7-seg decoder"</text>
+<text x="40" y="378" class="label-s" fill="#E74C3C">AI fills gaps with its defaults:</text>
+<text x="40" y="392" class="label-s">  • active-HIGH</text>
+<text x="40" y="404" class="label-s">  • MSB=a bit order</text>
+<text x="40" y="416" class="label-s">  • no parameter, no TB</text>
+<text x="40" y="428" class="warn">Result: code compiles, board fails</text>
+
+<!-- Good side -->
+<rect x="380" y="315" width="310" height="120" rx="8" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/>
+<text x="535" y="335" text-anchor="middle" class="subtitle" fill="#1E8449">With SIBCVT</text>
+<text x="390" y="358" class="code">[S] DE0 7-seg HEX 0~F display</text>
+<text x="390" y="370" class="code">[I] module foo(...)</text>
+<text x="390" y="382" class="code">[B] 0~9 dec, A~F alpha</text>
+<text x="390" y="394" class="code">[C] combinational</text>
+<text x="390" y="406" class="code">[V] active-low, {g,f,e,...,a}</text>
+<text x="390" y="418" class="code">[T] self-checking TB</text>
+<text x="390" y="430" class="note" fill="#1E8449">Result: 1-shot working code</text>
+
+<!-- Arrow Bad → Good -->
+<path d="M 340,375 C 355,375 365,375 380,375" fill="none" stroke="#8E44AD" stroke-width="2.5" marker-end="url(#mp)"/>
+<text x="360" y="367" text-anchor="middle" class="label-s" fill="#8E44AD">add</text>
+<text x="360" y="390" text-anchor="middle" class="label-s" fill="#8E44AD">SIBCVT</text>
+
+<!-- Legend / mnemonic -->
+<rect x="30" y="450" width="660" height="22" rx="4" fill="#FEF9E7" stroke="#B7950B" stroke-width="1"/>
+<text x="40" y="465" class="note">Mnemonic: 사·인·동·시·규·검  (Spec · Interface · Behavior · Clock · Verilog rules · Test)  — AI changes yearly, SIBCVT doesn't.</text>
+</svg>

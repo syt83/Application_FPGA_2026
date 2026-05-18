@@ -1,0 +1,168 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 520">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .subtitle { font-size: 13px; fill: #1B4F72; font-weight: bold; }
+  .label-b { font-size: 11px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .code { font-family: 'Courier New', monospace; font-size: 9px; fill: #2C3E50; }
+  .col-title { font-size: 14px; font-weight: bold; }
+  .note { font-size: 10px; fill: #1B4F72; }
+</style>
+<defs>
+  <marker id="mb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#1B4F72"/>
+  </marker>
+  <marker id="mg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#1E8449"/>
+  </marker>
+  <marker id="my" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#B7950B"/>
+  </marker>
+</defs>
+
+<text x="360" y="22" text-anchor="middle" class="title">Three Tools for Verilog Generation — Same Output, Different Inputs</text>
+<text x="360" y="40" text-anchor="middle" class="label-s">All three roads lead to Verilog, but the engineer's input differs fundamentally</text>
+
+<!-- ========== Column 1: Hand Coding ========== -->
+<rect x="20" y="60" width="220" height="35" rx="6" fill="#D6EAF8" stroke="#1B4F72" stroke-width="2"/>
+<text x="130" y="78" text-anchor="middle" class="col-title" fill="#1B4F72">Hand Coding</text>
+<text x="130" y="90" text-anchor="middle" class="label-s">Weeks 1~10</text>
+
+<!-- input -->
+<rect x="40" y="115" width="180" height="55" rx="6" fill="#FFFFFF" stroke="#1B4F72" stroke-width="1.5"/>
+<text x="130" y="133" text-anchor="middle" class="label-b">Engineer's Input</text>
+<text x="50" y="151" class="code">always @(posedge clk) begin</text>
+<text x="50" y="162" class="code">  if (!rst_n) count &lt;= 0;</text>
+
+<!-- tool -->
+<rect x="40" y="185" width="180" height="40" rx="6" fill="#D6EAF8" stroke="#1B4F72" stroke-width="1.5"/>
+<text x="130" y="203" text-anchor="middle" class="label-b">Text Editor + Quartus</text>
+<text x="130" y="217" text-anchor="middle" class="label-s">no automation</text>
+
+<!-- output -->
+<rect x="40" y="240" width="180" height="40" rx="6" fill="#FEF9E7" stroke="#B7950B" stroke-width="1.5"/>
+<text x="130" y="258" text-anchor="middle" class="label-b">Verilog (.v)</text>
+<text x="130" y="272" text-anchor="middle" class="label-s">~150 lines, manually written</text>
+
+<!-- arrows -->
+<path d="M 130,170 C 130,175 130,180 130,185" fill="none" stroke="#1B4F72" stroke-width="1.5" marker-end="url(#mb)"/>
+<path d="M 130,225 C 130,230 130,235 130,240" fill="none" stroke="#B7950B" stroke-width="1.5" marker-end="url(#my)"/>
+
+<!-- characteristics -->
+<rect x="40" y="295" width="180" height="80" rx="4" fill="#F8F9FA" stroke="#AEB6BF"/>
+<text x="50" y="310" class="label-b">Strengths:</text>
+<text x="50" y="323" class="label-s">• FSM, debounce, 7-seg</text>
+<text x="50" y="335" class="label-s">• Full control, hardware-aware</text>
+<text x="50" y="350" class="label-b">Weaknesses:</text>
+<text x="50" y="363" class="label-s">• Slow for complex math</text>
+<text x="50" y="374" class="label-s">• Manual fixed-point error-prone</text>
+
+<!-- ========== Column 2: AI Coding ========== -->
+<rect x="250" y="60" width="220" height="35" rx="6" fill="#FDEBD0" stroke="#E67E22" stroke-width="2"/>
+<text x="360" y="78" text-anchor="middle" class="col-title" fill="#E67E22">AI Coding</text>
+<text x="360" y="90" text-anchor="middle" class="label-s">Week 11</text>
+
+<!-- input -->
+<rect x="270" y="115" width="180" height="55" rx="6" fill="#FFFFFF" stroke="#E67E22" stroke-width="1.5"/>
+<text x="360" y="133" text-anchor="middle" class="label-b">Engineer's Input</text>
+<text x="280" y="151" class="code">[S] DE0 board, 7-seg ...</text>
+<text x="280" y="162" class="code">[V] active-low, MSB=g ...</text>
+
+<!-- tool -->
+<rect x="270" y="185" width="180" height="40" rx="6" fill="#FDEBD0" stroke="#E67E22" stroke-width="1.5"/>
+<text x="360" y="203" text-anchor="middle" class="label-b">ChatGPT / Claude / etc.</text>
+<text x="360" y="217" text-anchor="middle" class="label-s">SIBCVT prompt</text>
+
+<!-- output -->
+<rect x="270" y="240" width="180" height="40" rx="6" fill="#FEF9E7" stroke="#B7950B" stroke-width="1.5"/>
+<text x="360" y="258" text-anchor="middle" class="label-b">Verilog (.v)</text>
+<text x="360" y="272" text-anchor="middle" class="label-s">~150 lines, AI-generated</text>
+
+<!-- arrows -->
+<path d="M 360,170 C 360,175 360,180 360,185" fill="none" stroke="#E67E22" stroke-width="1.5" marker-end="url(#mb)"/>
+<path d="M 360,225 C 360,230 360,235 360,240" fill="none" stroke="#B7950B" stroke-width="1.5" marker-end="url(#my)"/>
+
+<!-- characteristics -->
+<rect x="270" y="295" width="180" height="80" rx="4" fill="#F8F9FA" stroke="#AEB6BF"/>
+<text x="280" y="310" class="label-b">Strengths:</text>
+<text x="280" y="323" class="label-s">• Fast for known patterns</text>
+<text x="280" y="335" class="label-s">• Testbench scaffolding</text>
+<text x="280" y="350" class="label-b">Weaknesses:</text>
+<text x="280" y="363" class="label-s">• Spec gap risk (Week 11)</text>
+<text x="280" y="374" class="label-s">• Must verify every line</text>
+
+<!-- ========== Column 3: MBD ========== -->
+<rect x="480" y="60" width="220" height="35" rx="6" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/>
+<text x="590" y="78" text-anchor="middle" class="col-title" fill="#1E8449">Model-Based Design</text>
+<text x="590" y="90" text-anchor="middle" class="label-s">Week 12 (NEW)</text>
+
+<!-- input -->
+<rect x="500" y="115" width="180" height="55" rx="6" fill="#FFFFFF" stroke="#1E8449" stroke-width="1.5"/>
+<text x="590" y="133" text-anchor="middle" class="label-b">Engineer's Input</text>
+<!-- mini block diagram -->
+<g transform="translate(515,140)">
+  <rect x="0" y="3" width="22" height="14" rx="2" fill="#D5F5E3" stroke="#1E8449" stroke-width="1"/>
+  <text x="11" y="13" text-anchor="middle" class="code" font-size="7">PID</text>
+  <line x1="22" y1="10" x2="35" y2="10" stroke="#1E8449" stroke-width="1"/>
+  <rect x="35" y="3" width="22" height="14" rx="2" fill="#FEF9E7" stroke="#B7950B" stroke-width="1"/>
+  <text x="46" y="13" text-anchor="middle" class="code" font-size="7">Sat</text>
+  <line x1="57" y1="10" x2="70" y2="10" stroke="#1E8449" stroke-width="1"/>
+  <rect x="70" y="3" width="22" height="14" rx="2" fill="#D5F5E3" stroke="#1E8449" stroke-width="1"/>
+  <text x="81" y="13" text-anchor="middle" class="code" font-size="7">Plant</text>
+  <line x1="92" y1="10" x2="105" y2="10" stroke="#1E8449" stroke-width="1"/>
+  <line x1="105" y1="10" x2="105" y2="25" stroke="#1E8449" stroke-width="1"/>
+  <line x1="105" y1="25" x2="-5" y2="25" stroke="#1E8449" stroke-width="1"/>
+  <line x1="-5" y1="25" x2="-5" y2="10" stroke="#1E8449" stroke-width="1"/>
+  <polygon points="-5,10 -2,8 -2,12" fill="#1E8449"/>
+</g>
+<text x="590" y="167" text-anchor="middle" class="label-s">block diagram in Simulink</text>
+
+<!-- tool -->
+<rect x="500" y="185" width="180" height="40" rx="6" fill="#D5F5E3" stroke="#1E8449" stroke-width="1.5"/>
+<text x="590" y="201" text-anchor="middle" class="label-b">Simulink + HDL Coder</text>
+<text x="590" y="215" text-anchor="middle" class="label-s">automated workflow</text>
+
+<!-- output -->
+<rect x="500" y="240" width="180" height="40" rx="6" fill="#FEF9E7" stroke="#B7950B" stroke-width="1.5"/>
+<text x="590" y="258" text-anchor="middle" class="label-b">Verilog (.v)</text>
+<text x="590" y="272" text-anchor="middle" class="label-s">~300 lines, auto-generated</text>
+
+<!-- arrows -->
+<path d="M 590,170 C 590,175 590,180 590,185" fill="none" stroke="#1E8449" stroke-width="1.5" marker-end="url(#mg)"/>
+<path d="M 590,225 C 590,230 590,235 590,240" fill="none" stroke="#B7950B" stroke-width="1.5" marker-end="url(#my)"/>
+
+<!-- characteristics -->
+<rect x="500" y="295" width="180" height="80" rx="4" fill="#F8F9FA" stroke="#AEB6BF"/>
+<text x="510" y="310" class="label-b">Strengths:</text>
+<text x="510" y="323" class="label-s">• DSP, PID, FIR, FFT</text>
+<text x="510" y="335" class="label-s">• Auto fixed-point + pipeline</text>
+<text x="510" y="350" class="label-b">Weaknesses:</text>
+<text x="510" y="363" class="label-s">• Hard to debug at HDL level</text>
+<text x="510" y="374" class="label-s">• Bulky, tool-version sensitive</text>
+
+<!-- ========== Bottom convergence ========== -->
+<line x1="130" y1="280" x2="130" y2="395" stroke="#B7950B" stroke-width="1" stroke-dasharray="3,2"/>
+<line x1="360" y1="280" x2="360" y2="395" stroke="#B7950B" stroke-width="1" stroke-dasharray="3,2"/>
+<line x1="590" y1="280" x2="590" y2="395" stroke="#B7950B" stroke-width="1" stroke-dasharray="3,2"/>
+
+<!-- Convergence box -->
+<rect x="40" y="400" width="640" height="50" rx="8" fill="#FEF9E7" stroke="#B7950B" stroke-width="2"/>
+<text x="360" y="420" text-anchor="middle" class="subtitle" fill="#B7950B">All three produce synthesizable Verilog (.v) — Quartus + ModelSim + DE0/DE1</text>
+<text x="360" y="438" text-anchor="middle" class="label-s">The verification skill (read warnings, identify latches, check FSM dead code) — same for all three</text>
+
+<!-- Legend -->
+<rect x="20" y="465" width="680" height="40" rx="4" fill="#F8F9FA" stroke="#AEB6BF" stroke-width="1"/>
+<text x="30" y="481" class="label-b">Tool selection guide:</text>
+
+<rect x="170" y="473" width="14" height="11" fill="#D6EAF8" stroke="#1B4F72"/>
+<text x="190" y="482" class="label-s">FSM, debounce, 7-seg, AXI</text>
+
+<rect x="335" y="473" width="14" height="11" fill="#FDEBD0" stroke="#E67E22"/>
+<text x="355" y="482" class="label-s">Boilerplate, testbenches</text>
+
+<rect x="485" y="473" width="14" height="11" fill="#D5F5E3" stroke="#1E8449"/>
+<text x="505" y="482" class="label-s">PID, FIR, FFT, modulation, control</text>
+
+<text x="30" y="498" class="note">"AI is a hammer, MBD is a precision saw, verification skill is the eye." (Week 12 motto)</text>
+</svg>

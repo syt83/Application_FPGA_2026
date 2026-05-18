@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 460">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .subtitle { font-size: 12px; fill: #1B4F72; font-weight: bold; }
+  .label { font-size: 12px; fill: #2C3E50; }
+  .label-b { font-size: 12px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .code { font-family: 'Courier New', monospace; font-size: 10px; fill: #2C3E50; }
+  .code-b { font-family: 'Courier New', monospace; font-size: 10px; fill: #2C3E50; font-weight: bold; }
+  .warn { font-size: 11px; fill: #E74C3C; font-weight: bold; }
+  .note { font-size: 10px; fill: #1B4F72; }
+  .ok { fill: #1E8449; font-weight: bold; }
+  .bad { fill: #E74C3C; font-weight: bold; }
+</style>
+<defs>
+  <marker id="mb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#1B4F72"/>
+  </marker>
+  <marker id="mr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#E74C3C"/>
+  </marker>
+  <marker id="mp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#8E44AD"/>
+  </marker>
+</defs>
+
+<text x="360" y="22" text-anchor="middle" class="title">Specification Gap — Polarity and Bit Order Mismatch</text>
+
+<!-- ===== LEFT: AI's assumption ===== -->
+<rect x="20" y="50" width="220" height="170" rx="8" fill="#E8DAEF" stroke="#8E44AD" stroke-width="2"/>
+<text x="130" y="70" text-anchor="middle" class="subtitle" fill="#8E44AD">AI's Default Assumption</text>
+
+<text x="35" y="95" class="label-b">Polarity</text>
+<text x="35" y="110" class="code">active-HIGH (1 = ON)</text>
+
+<text x="35" y="133" class="label-b">Bit order</text>
+<text x="35" y="148" class="code">seg[6]=a, seg[5]=b, ...</text>
+<text x="35" y="160" class="code">seg[1]=f, seg[0]=g</text>
+<text x="35" y="172" class="label-s">MSB = a segment</text>
+
+<text x="35" y="195" class="code">For "0": seg = 7'b111_1110</text>
+<text x="35" y="205" class="label-s">(a,b,c,d,e,f ON ; g OFF)</text>
+
+<!-- ===== RIGHT: Board standard ===== -->
+<rect x="480" y="50" width="220" height="170" rx="8" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/>
+<text x="590" y="70" text-anchor="middle" class="subtitle" fill="#1E8449">DE0/DE1 Board Standard</text>
+
+<text x="495" y="95" class="label-b">Polarity</text>
+<text x="495" y="110" class="code">active-LOW (0 = ON)</text>
+
+<text x="495" y="133" class="label-b">Bit order</text>
+<text x="495" y="148" class="code">HEX[6]=g, HEX[5]=f, ...</text>
+<text x="495" y="160" class="code">HEX[1]=b, HEX[0]=a</text>
+<text x="495" y="172" class="label-s">MSB = g segment</text>
+
+<text x="495" y="195" class="code">For "0": HEX = 7'b100_0000</text>
+<text x="495" y="205" class="label-s">(a,b,c,d,e,f ON ; g OFF)</text>
+
+<!-- ===== CENTER: Mismatch ===== -->
+<rect x="265" y="80" width="190" height="140" rx="8" fill="#FADBD8" stroke="#E74C3C" stroke-width="2"/>
+<text x="360" y="100" text-anchor="middle" class="subtitle" fill="#E74C3C">SPEC GAP</text>
+<text x="275" y="122" class="warn">Polarity flip</text>
+<text x="275" y="136" class="label-s">1=ON  vs  0=ON</text>
+<text x="275" y="158" class="warn">Bit-order reverse</text>
+<text x="275" y="172" class="label-s">MSB=a  vs  MSB=g</text>
+<text x="275" y="193" class="code-b" fill="#E74C3C">→ each segment hits</text>
+<text x="275" y="204" class="code-b" fill="#E74C3C">  the wrong pin AND</text>
+<text x="275" y="215" class="code-b" fill="#E74C3C">  with inverted sense</text>
+
+<!-- Arrows from left/right boxes pointing to center -->
+<path d="M 240,135 C 252,135 252,150 265,150" fill="none" stroke="#8E44AD" stroke-width="1.5" marker-end="url(#mp)"/>
+<path d="M 480,135 C 470,135 470,150 455,150" fill="none" stroke="#1E8449" stroke-width="1.5" marker-end="url(#mp)"/>
+
+<!-- ===== Display Result ===== -->
+<rect x="20" y="230" width="680" height="180" rx="8" fill="#F8F9FA" stroke="#AEB6BF" stroke-width="1.5"/>
+<text x="360" y="252" text-anchor="middle" class="subtitle" fill="#1B4F72">What appears on HEX0 for input hex_num = 4'h0 (intent: digit "0")</text>
+
+<!-- 7-segment display rendering: intended "0" -->
+<text x="130" y="275" text-anchor="middle" class="label-b" fill="#1E8449">Intended display</text>
+<g transform="translate(95,285)">
+  <!-- Drawing of "0" all segments except g -->
+  <line x1="8" y1="0" x2="32" y2="0" stroke="#1E8449" stroke-width="5" stroke-linecap="round"/>
+  <line x1="0" y1="8" x2="0" y2="40" stroke="#1E8449" stroke-width="5" stroke-linecap="round"/>
+  <line x1="40" y1="8" x2="40" y2="40" stroke="#1E8449" stroke-width="5" stroke-linecap="round"/>
+  <line x1="0" y1="48" x2="0" y2="80" stroke="#1E8449" stroke-width="5" stroke-linecap="round"/>
+  <line x1="40" y1="48" x2="40" y2="80" stroke="#1E8449" stroke-width="5" stroke-linecap="round"/>
+  <line x1="8" y1="88" x2="32" y2="88" stroke="#1E8449" stroke-width="5" stroke-linecap="round"/>
+  <line x1="8" y1="44" x2="32" y2="44" stroke="#D5D8DC" stroke-width="5" stroke-linecap="round"/>
+</g>
+
+<!-- Drawing of actual display result -->
+<text x="500" y="275" text-anchor="middle" class="label-b" fill="#E74C3C">Actual display on board</text>
+<g transform="translate(465,285)">
+  <!-- Only a-segment ON (top horizontal), all others OFF -->
+  <line x1="8" y1="0" x2="32" y2="0" stroke="#E74C3C" stroke-width="5" stroke-linecap="round"/>
+  <line x1="0" y1="8" x2="0" y2="40" stroke="#D5D8DC" stroke-width="5" stroke-linecap="round"/>
+  <line x1="40" y1="8" x2="40" y2="40" stroke="#D5D8DC" stroke-width="5" stroke-linecap="round"/>
+  <line x1="0" y1="48" x2="0" y2="80" stroke="#D5D8DC" stroke-width="5" stroke-linecap="round"/>
+  <line x1="40" y1="48" x2="40" y2="80" stroke="#D5D8DC" stroke-width="5" stroke-linecap="round"/>
+  <line x1="8" y1="88" x2="32" y2="88" stroke="#D5D8DC" stroke-width="5" stroke-linecap="round"/>
+  <line x1="8" y1="44" x2="32" y2="44" stroke="#D5D8DC" stroke-width="5" stroke-linecap="round"/>
+</g>
+
+<!-- Arrow between displays -->
+<path d="M 200,325 C 280,325 320,325 400,325" fill="none" stroke="#E74C3C" stroke-width="2" marker-end="url(#mr)"/>
+<text x="300" y="318" text-anchor="middle" class="warn">on board</text>
+
+<!-- Bottom note box -->
+<rect x="30" y="380" width="660" height="22" rx="4" fill="#FEF9E7" stroke="#B7950B" stroke-width="1"/>
+<text x="40" y="395" class="note">Sim PASS, Synth PASS, but board shows top-bar only. Hardest type of bug — AI is right, spec was missing.</text>
+
+<!-- Legend bar -->
+<rect x="20" y="420" width="680" height="25" rx="4" fill="#F8F9FA" stroke="#AEB6BF" stroke-width="1"/>
+<rect x="30" y="427" width="14" height="11" fill="#E8DAEF" stroke="#8E44AD"/>
+<text x="50" y="437" class="label-s">AI assumption</text>
+<rect x="155" y="427" width="14" height="11" fill="#D5F5E3" stroke="#1E8449"/>
+<text x="175" y="437" class="label-s">Board standard</text>
+<rect x="285" y="427" width="14" height="11" fill="#FADBD8" stroke="#E74C3C"/>
+<text x="305" y="437" class="label-s">Spec gap (mismatch)</text>
+<rect x="445" y="427" width="14" height="11" fill="#FEF9E7" stroke="#B7950B"/>
+<text x="465" y="437" class="label-s">Key lesson</text>
+</svg>
