@@ -71,7 +71,7 @@ endmodule
 
 #### 그러나 DE0 보드에 그대로 올리면?
 
-![Spec Gap — Polarity and Bit Order Mismatch|697](images/w11_spec_gap.svg)
+![Spec Gap — Polarity and Bit Order Mismatch](images/w11_spec_gap.svg)
 
 두 가지 **명시되지 않은 가정**:
 
@@ -89,7 +89,7 @@ endmodule
 
 #### SIBCVT 6요소 — 명세 공백을 메꾸는 도구
 
-![SIBCVT — 6 Elements of a Good Verilog Prompt|697](images/w11_sibcvt.svg)
+![SIBCVT — 6 Elements of a Good Verilog Prompt](images/w11_sibcvt.svg)
 
 | 약자 | 한글 | 명시 내용 | 7-seg 예시 |
 |:---:|---|---|---|
@@ -254,12 +254,22 @@ end
 ```
 다음 사양으로 1ms tick generator를 작성하라.
 
-[S] 
-[I] 
-[B] 
-[C] 
-[V] 
-[T] 
+[S] 50MHz 단일 클럭에서 1ms 주기로 1-clk 길이 enable pulse 발생.
+[I] module tick_1ms #(
+        parameter DIV = 50_000      // 50MHz / 50000 = 1kHz = 1ms
+    ) (
+        input  clk, rst_n,
+        output reg tick             // 1-clk pulse at 1ms interval
+    );
+[B] DIV-1 cycle마다 1-clk 동안 tick=1, 그 외에는 tick=0.
+[C] 50MHz clk, async active-low rst_n. reset 시 counter=0, tick=0.
+[V] **별도 clock 신호 생성 금지** (multi-clock domain 회피).
+    단일 clk만 사용, 출력은 enable pulse.
+    counter bit-width 충분히 ($clog2(DIV) 이상, 안전하게 17-bit).
+    parameter DIV로 testbench에서 짧은 값으로 override 가능.
+    Verilog-2001, 모든 reg reset 초기화.
+[T] testbench에서 DIV=10으로 override.
+    10 cycle마다 tick=1이 1 cycle 동안만 발생함을 검증.
 ```
 
 #### 사용 측 패턴
@@ -316,12 +326,27 @@ endmodule
 ```
 다음 사양으로 주차장 카운트 모듈을 작성하라.
 
-[S] 
-[I] 
-[B] 
-[C] 
-[V] 
-[T] 
+[S] DE0 보드용 주차장 차량 카운터.
+    외부 디바운스 모듈에서 입차/출차 pulse를 받음.
+[I] module parking_counter(
+        input        clk,                 // 50MHz
+        input        rst_n,               // KEY[0], async active-low
+        input        enter_pulse,         // 1-clk pulse (debounced)
+        input        exit_pulse,          // 1-clk pulse (debounced)
+        input  [4:0] capacity,            // SW[4:0], max 31
+        output reg [4:0] count,
+        output       full
+    );
+[B] enter_pulse=1 시 count+1 (단, count<capacity).
+    exit_pulse=1 시 count-1 (단, count>0).
+    count==capacity 시 full=1.
+    enter_pulse, exit_pulse 동시 입력 시 count 변경 없음 (상쇄).
+    reset 시 count=0.
+[C] 50MHz clk, async active-low rst_n.
+[V] 본 모듈은 디바운스 미포함 — pulse 입력 가정.
+    Verilog-2001, non-blocking 사용, 모든 reg 초기화.
+    full은 assign문으로.
+[T] testbench: capacity=4'd5로 입차 7회(2회는 무시), 출차 8회(3회는 무시) 검증.
 ```
 
 #### 보완 프롬프트 (필요시)
@@ -470,15 +495,45 @@ end
 
 ---
 
-## 11-2. [Wed] 도전 — 반응속도 측정기 완성하기
+## 11-2. [Wed] 도전 — 반응속도 측정기 팀 작업
 
 ### 학습 목표
 
-- Mon에서 익힌 SIBCVT 프롬프트 기법으로 시스템 수준 설계를 완성한다
-- 7개 모듈을 AI로 생성·통합·검증하여 동작하는 반응속도 측정기를 만든다
-- AI 코딩의 진짜 가치 = **빠른 반복 + 검증 능력**을 체득한다
+- 3명 팀으로 역할을 분담하여 70분 안에 시스템 하나를 통합·검증한다
+- 사전에 합의된 인터페이스에 따라 모듈을 만들고, 충돌 없이 결합한다
+- 본인이 담당한 부분의 책임을 지고, 통합·디버깅을 팀과 협업한다
 
----
+### 팀 구성 — 3명
+
+본 강의의 9~10주 미니 프로젝트 조 그대로 유지. 각 조는 다음 역할로 구성:
+
+| 역할 | 인원 | 책임 |
+|:---:|:---:|---|
+| **Integrator** | 1명 | top.v / 핀 할당 / Quartus 프로젝트 / 합성 / 보드 검증 |
+| **Coder** | 2명 | AI 코딩으로 신규 모듈 3개 생성 + Testbench 시뮬 |
+
+> 💡 **TIP:** 9~10주 미니 프로젝트에서 합성·핀 할당을 주도한 학생이 Integrator를 맡으면 자연스럽다.
+
+### 사전 배포 — `wed_team_starter/` 폴더
+
+강의 1주 전 LMS에 다음 폴더가 배포된다:
+
+```
+wed_team_starter/
+├── README.md                ← 팀 작업 안내
+├── SETUP.md                 ← Integrator용 사전 준비 가이드
+├── INTERFACE.md             ← Coder용 인터페이스 명세
+├── reaction_top.v           ← top wrapper 완성판 (사전 배포)
+├── reaction_pins_de0.qsf    ← DE0 핀 할당 (사전 배포)
+├── seg7_decoder.v           ← Mon 카드 #1 표준 결과
+├── btn_debounce.v           ← Mon 카드 #2 표준 결과
+├── tick_1ms.v               ← Mon 카드 #3 표준 결과
+└── run.do                   ← ModelSim 자동 실행
+```
+
+**Integrator는 강의 전에 `SETUP.md`에 따라 환경 셋업을 완료해야 한다** — 약 30분 소요. Quartus 13 새 프로젝트 생성, 4개 .v 파일 add, 핀 할당 import, Analysis & Synthesis로 환경 검증. 강의 당일 0:00부터 통합·시뮬에 즉시 진입할 수 있도록.
+
+**Coder는 강의 전에 `INTERFACE.md`를 읽어둔다** — 3개 신규 모듈의 정확한 port 사양이 들어있다. 강의 당일 본인 AI에 SIBCVT 프롬프트로 입력할 때 [I] Interface 섹션에 그대로 복사한다.
 
 ### 1. 도전 사양
 
@@ -497,309 +552,226 @@ end
 7. 다시 KEY[1] 누르면 1단계로
 ```
 
-#### 1.2 성공 기준
+#### 1.2 성공 기준 (계층적)
 
-| 단계 | 기준 |
-|---|---|
-| 최소 | 모듈 7개 모두 컴파일 통과 (Quartus warnings 허용) |
-| 기본 | ModelSim에서 정상 동작 시나리오 PASS |
-| 추가 | CHEAT 시나리오 PASS |
-| 보너스 | Quartus 합성 통과 (Critical Warning 0개) |
-| 더 보너스 | DE0 보드에서 실제 동작 |
+| 단계 | 기준 | 목표 |
+|---|---|---|
+| 최소 | 모듈 7개 컴파일 통과 | 모든 팀 |
+| 기본 | ModelSim 정상 시나리오 PASS | **80% 팀 (★ 본 도전 기본 목표)** |
+| 추가 | CHEAT 시나리오 PASS | 60% |
+| 보너스 | Quartus 합성 통과 | 40% |
+| 더 보너스 | DE0 보드 실제 동작 | 20% |
 
----
-
-### 2. 시스템 분해
-
-![Reaction Time Tester — System Overview|697](images/w11_reaction_block.svg)
-
-#### 2.1 모듈 구성 (7개)
-
-```
-                ┌──────────────── reaction_top ─────────────────┐
-                │                                                │
-KEY[0]──────────┼─────rst_n────┐                                 │
-KEY[1]──────────┼──btn1────┐   │  ┌─────────────┐                │
-KEY[2]──────────┼──btn2─┐  │   └──│             │                │
-                │       │  └──────│ btn_deb_S   │── start_pulse  │
-                │       │         └─────────────┘                │
-                │       │         ┌─────────────┐                │
-                │       └─────────│ btn_deb_R   │── react_pulse  │
-                │                 └─────────────┘                │
-CLOCK_50────────┼─clk──┐                                         │
-                │      │          ┌─────────────┐                │
-                │      ├──────────│ tick_1ms    │── tick         │
-                │      │          └─────────────┘                │
-                │      │          ┌─────────────┐                │
-                │      ├──────────│ lfsr_8bit   │── rand[7:0]    │
-                │      │          └─────────────┘                │
-                │      │          ┌──────────────────────┐       │
-                │      ├──────────│ reaction_fsm         │       │
-                │      │          │  - led_on            │── LEDR[9]
-                │      │          │  - react_time [13:0] │       │
-                │      │          │  - cheat / timeout   │       │
-                │      │          └──────────────────────┘       │
-                │      │          ┌─────────────┐                │
-                │      └──────────│ bin2bcd_16  │── bcd3,2,1,0   │
-                │                 └─────────────┘                │
-                │                 ┌─────────────┐ ×4             │
-                │                 │ seg7_decoder│── HEX0,1,2,3   │
-                │                 └─────────────┘                │
-                └────────────────────────────────────────────────┘
-```
-
-#### 2.2 핵심 신호 흐름
-
-1. **KEY 입력** → btn_debounce × 2 → start_pulse, react_pulse
-2. **start_pulse** → reaction_fsm을 IDLE에서 깨움
-3. **lfsr_8bit** → 8-bit random → 500~2540 ms 무작위 (스케일링)
-4. **tick_1ms** → reaction_fsm의 내부 ms counter 증가
-5. **reaction_fsm** → state에 따라 led_on, react_time 출력
-6. **react_time (14-bit binary)** → bin2bcd_16bit → 4개 BCD digit
-7. **각 BCD digit** → seg7_decoder → HEX0~3
-8. **cheat 시:** 표시 단계에서 BCD를 강제로 `4'hE`로 교체 (top에서 mux)
+> **본 도전의 본질은 보드 다운로드가 아니라 ModelSim PASS다.** 팀이 AI 도구로 시스템 하나를 통합·검증하는 경험을 체득하면 성공이다.
 
 ---
 
-### 3. Phase 1 — 신규 모듈 3개 생성
+### 2. 시스템 구성
 
-본인 AI에 다음 3개 모듈을 SIBCVT 프롬프트로 요청한다.
+![Reaction Time Tester — System Overview](images/w11_reaction_block.svg)
 
-#### 3.1 모듈 1: lfsr_8bit
+시스템은 7개 모듈로 구성된다. 사전 배포된 4개와 강의 중 작성하는 3개:
 
-```
-[S] 
-[I]
-[B] 
-[C] 
-[V] 
-[T] 
-```
+| 모듈 | 사전 배포? | 작성자 | 역할 |
+|---|:---:|---|---|
+| `reaction_top.v` | ✅ | (사전 배포) | DE0 wrapper, 모든 모듈 인스턴스화 |
+| `seg7_decoder.v` | ✅ | (Mon 결과) | 4-bit hex → 7-seg active-low |
+| `btn_debounce.v` | ✅ | (Mon 결과) | KEY 디바운스 + 1-clk pulse |
+| `tick_1ms.v` | ✅ | (Mon 결과) | 1ms enable pulse |
+| `lfsr_8bit.v` | ❌ | **Coder** | 8-bit LFSR — random delay 생성 |
+| `reaction_fsm.v` | ❌ | **Coder** | 4-state Moore FSM — 메인 컨트롤러 |
+| `bin2bcd_16bit.v` | ❌ | **Coder** | Double-Dabble BCD 변환 |
 
-#### 3.2 모듈 2: reaction_fsm
-
-```
-[S] 반응속도 측정 메인 FSM.
-[I] module reaction_fsm(
-        input        clk, rst_n,
-        input        tick_1ms,
-        input        start_pulse,
-        input        react_pulse,
-        input [13:0] random_delay,    // 500~2500 ms 범위
-        output       led_on,
-        output [13:0] react_time,
-        output       cheat,
-        output       timeout
-    );
-[B] 4개 상태 (3-Process Moore):
-      S_IDLE:    초기. start_pulse 받으면 S_WAIT_R로.
-      S_WAIT_R:  random_delay만큼 대기. tick_1ms마다 internal counter+1.
-                 counter >= random_delay 도달 시 S_WAIT_K로 (counter 리셋).
-                 도달 전 react_pulse 들어오면 S_SHOW + cheat=1.
-      S_WAIT_K:  led_on=1. tick_1ms마다 counter+1.
-                 react_pulse 들어오면 react_time=counter, S_SHOW로.
-                 counter >= 9999 도달하면 timeout=1, S_SHOW로.
-      S_SHOW:    결과 유지. start_pulse 들어오면 S_IDLE로.
-[C] 50MHz clk, async active-low rst_n. reset 시 S_IDLE, 모든 출력 0.
-[V] **반드시 3-Process Moore**: state register / next-state / output 각각 분리.
-    출력 led_on, cheat, timeout은 **P3에서 state case로** 결정.
-    react_time은 sequential하게 latch (S_WAIT_K → S_SHOW 천이 시).
-    internal counter는 14-bit, tick_1ms로만 증가.
-    cheat, timeout은 SR-like: S_IDLE에서 0, 해당 조건 충족 시 1.
-[T] testbench: random_delay=14'd100, tick_1ms는 #10ns마다 1-clk pulse.
-    시나리오 1: IDLE → start → WAIT_R → 100 tick → WAIT_K → 50 tick → react → SHOW (react_time=50).
-    시나리오 2: IDLE → start → WAIT_R → 30 tick → react → SHOW (cheat=1).
-```
-
-#### 3.3 모듈 3: bin2bcd_16bit
-
-```
-[S] 
-[I] 
-[B] 
-[C] 
-[V] 
-[T]
-```
-
-> 💡 **TIP:** Double-Dabble은 처음 보면 어렵지만 **AI가 잘 구현**한다. 받은 코드를 그대로 ModelSim에서 5개 케이스로 검증하면 충분.
+Coder는 위 3개를 AI로 생성한다. Integrator는 사전 배포된 4개를 그대로 사용한다.
 
 ---
 
-### 4. Phase 2 — Top 통합
+### 3. 인터페이스 합의
 
-#### 4.1 reaction_top 구조
+Coder가 만들 3개 모듈의 port 사양은 `INTERFACE.md`에 명시되어 있다. Coder는 이 사양에 따라 모듈을 만들고, Integrator의 `reaction_top.v`는 이미 같은 사양에 맞춰 작성되어 있다 — **사전 합의된 인터페이스**.
+
+### 3.1 `lfsr_8bit` 인터페이스
 
 ```verilog
-module reaction_top(
-    input         CLOCK_50,
-    input  [2:0]  KEY,             // [0]=rst_n, [1]=START, [2]=REACT
-    output [9:0]  LEDR,             // LEDR[9] = light
-    output [6:0]  HEX0, HEX1, HEX2, HEX3
+module lfsr_8bit #(
+    parameter [7:0] SEED = 8'hA5
+)(
+    input            clk,
+    input            rst_n,
+    input            enable,
+    output reg [7:0] rand_out
 );
-    wire rst_n = KEY[0];
-
-    // === Debounce ===
-    wire start_pulse, react_pulse;
-    btn_debounce u_db_s (.clk(CLOCK_50), .rst_n(rst_n),
-                         .btn_in(KEY[1]), .btn_pulse(start_pulse));
-    btn_debounce u_db_r (.clk(CLOCK_50), .rst_n(rst_n),
-                         .btn_in(KEY[2]), .btn_pulse(react_pulse));
-
-    // === Tick generator ===
-    wire tick;
-    tick_1ms u_tick (.clk(CLOCK_50), .rst_n(rst_n), .tick(tick));
-
-    // === LFSR for random delay ===
-    wire [7:0] lfsr_val;
-    lfsr_8bit u_lfsr (.clk(CLOCK_50), .rst_n(rst_n),
-                      .enable(1'b1), .rand_out(lfsr_val));
-    // Scale to 500~2500 ms range:
-    wire [13:0] random_delay = 14'd500 + ({6'd0, lfsr_val} << 3);
-
-    // === Reaction FSM ===
-    wire        led_on, cheat, timeout;
-    wire [13:0] react_time;
-    reaction_fsm u_fsm (
-        .clk(CLOCK_50), .rst_n(rst_n), .tick_1ms(tick),
-        .start_pulse(start_pulse), .react_pulse(react_pulse),
-        .random_delay(random_delay),
-        .led_on(led_on), .react_time(react_time),
-        .cheat(cheat), .timeout(timeout)
-    );
-
-    // === LED output ===
-    assign LEDR[9]   = led_on;
-    assign LEDR[8:0] = 9'd0;
-
-    // === BCD conversion ===
-    wire [3:0] bcd3, bcd2, bcd1, bcd0;
-    bin2bcd_16bit u_b2b (.bin(react_time),
-                         .bcd3(bcd3), .bcd2(bcd2),
-                         .bcd1(bcd1), .bcd0(bcd0));
-
-    // === Display mux: normal vs cheat ===
-    wire [3:0] d3, d2, d1, d0;
-    assign d3 = cheat ? 4'hE : bcd3;
-    assign d2 = cheat ? 4'hE : bcd2;
-    assign d1 = cheat ? 4'hE : bcd1;
-    assign d0 = cheat ? 4'hE : bcd0;
-
-    // === 7-seg decoders ===
-    seg7_decoder u_s0 (.hex(d0), .seg(HEX0));
-    seg7_decoder u_s1 (.hex(d1), .seg(HEX1));
-    seg7_decoder u_s2 (.hex(d2), .seg(HEX2));
-    seg7_decoder u_s3 (.hex(d3), .seg(HEX3));
-endmodule
 ```
 
-#### 4.2 Testbench 작성 프롬프트
+### 3.2 `reaction_fsm` 인터페이스
 
-```
-[S] 
-[I] 
-[B] 
-[C] 
-[V] 
-[T] 
-```
-
-#### 4.3 ModelSim 시뮬 실행
-
-```tcl
-vlib work
-vlog -novopt *.v
-vsim -novopt work.reaction_top_tb
-add wave -position end /reaction_top_tb/*
-run -all
+```verilog
+module reaction_fsm(
+    input             clk,
+    input             rst_n,
+    input             tick_1ms,
+    input             start_pulse,
+    input             react_pulse,
+    input      [13:0] random_delay,
+    output reg        led_on,
+    output reg [13:0] react_time,
+    output reg        cheat,
+    output reg        timeout
+);
 ```
 
-파형에서 확인할 것:
+### 3.3 `bin2bcd_16bit` 인터페이스
 
-- start_pulse 발생 후 LEDR[9] 점등까지의 지연
-- LEDR[9] 점등 후 카운터 증가
-- react_pulse 발생 시 카운터 latch
-- HEX0~3에 BCD 표시 (또는 EEEE)
+```verilog
+module bin2bcd_16bit(
+    input      [13:0] bin,
+    output reg [3:0]  bcd3,
+    output reg [3:0]  bcd2,
+    output reg [3:0]  bcd1,
+    output reg [3:0]  bcd0
+);
+```
+
+자세한 동작 사양과 SIBCVT 프롬프트 권장 형태는 `INTERFACE.md` 참조.
 
 ---
 
-### 5. Phase 3 — 디버깅 + 합성
+### 4. Coder 자율 분배 패턴
 
-#### 5.1 자주 발생하는 문제
+3개 모듈을 Coder 2명이 나눠 맡되, 강제하지 않는다. 다음 패턴 중 선택:
+
+**패턴 A — 단순 분배 (1:2)**
+- Coder 1: `lfsr_8bit` + `bin2bcd_16bit` (단순 2개)
+- Coder 2: `reaction_fsm` (복잡 1개)
+
+**패턴 B — 짝 코딩**
+- 두 사람이 `reaction_fsm`을 함께 작성 (가장 어려운 부분)
+- 끝나면 한 사람은 `lfsr`, 다른 사람은 `bin2bcd`
+
+**패턴 C — Testbench 분담**
+- Coder 1: `lfsr_8bit` + `bin2bcd_16bit` 작성
+- Coder 2: `reaction_fsm` + 전체 testbench 작성
+
+조 내에서 토론해서 결정. Mon 카드 결과를 잘 만든 사람이 본인 강점 영역을 맡는 것이 자연스럽다.
+
+---
+
+### 5. Phase별 작업
+
+각 phase의 시간 배분과 운영은 `week11_guide.md` (강의자 가이드) 참조. 학생 입장에서 각 phase의 핵심 활동은 다음과 같다.
+
+### 5.1 Phase 0 — 도전 시작 (0:00 ~ 0:10)
+
+- 도전 사양 함께 듣기
+- `INTERFACE.md` 함께 읽기, 역할 분배 합의
+- 통합 마감 시간 합의 (0:25까지 본인 모듈 완성)
+
+### 5.2 Phase 1 — 병렬 작업 (0:10 ~ 0:25)
+
+**Integrator:**
+- ModelSim sim 폴더 준비
+- testbench 시나리오 설계 (정상 + cheat 시나리오)
+- Coder들에게 인터페이스 재확인
+
+**Coder × 2:**
+- 본인 담당 모듈 AI 생성 (`INTERFACE.md`의 SIBCVT 프롬프트 사용)
+- 본인 모듈 단독 컴파일 통과 확인
+- (시간 여유 시) 단독 testbench 작성
+
+### 5.3 Phase 2 — 통합 + ModelSim (0:25 ~ 0:50)
+
+- Coder가 만든 3개 모듈을 Integrator에게 전달
+- Integrator가 Quartus 프로젝트에 add (Add/Remove Files in Project)
+- 전체 testbench (`reaction_top_tb.v`) 작성 — Coder 중 한 명이 AI로 생성
+- ModelSim 시뮬 실행: `vsim -do "do run.do"`
+- 파형 분석, 디버깅
+
+### 5.4 Phase 3 — 합성 + 보드 (0:50 ~ 1:00)
+
+- Quartus Full Compilation 실행
+- Compilation Report 분석 (LE, Fmax)
+- (보너스) DE0 보드 다운로드 + 시연
+
+### 5.5 Phase 4 — 시연 + 회고 (1:00 ~ 1:10)
+
+- 팀 시연: ModelSim 파형 또는 보드 동작
+- 회고: 가장 막혔던 부분, AI 활용 경험, 인터페이스 합의의 효과
+
+---
+
+### 6. 통합 시 자주 발생하는 문제
 
 | 증상 | 원인 | 해결 |
 |---|---|---|
-| 합성 시 "design has no clock" | top wrapper에서 클럭 연결 누락 | CLOCK_50 연결 확인 |
-| HEX 모두 어두움 | seg7_decoder의 active-low 미적용 | Mon 카드 #1 결과 사용 |
-| LEDR[9] 안 켜짐 | FSM이 S_IDLE에서 안 깨어남 | start_pulse 폭 확인 (1 clk만) |
-| 카운터가 안 증가 | tick_1ms가 안 옴 | tick_1ms TB에서 단독 검증 |
-| cheat가 항상 1 | reset 후 cheat 안 클리어 | FSM의 S_IDLE에서 cheat<=0 |
-
-#### 5.2 Quartus 합성 (보너스)
-
-```
-Project → Compile (DE0: Cyclone III EP3C16F484C6)
-```
-
-Compilation Report 예상치:
-
-- **Total logic elements:** 200~400 LE
-- **Total registers:** 약 40~70
-- **Fmax:** 100MHz 이상 (50MHz 충분히 만족)
-
-#### 5.3 보드 다운로드 (더 보너스)
-
-```
-Programmer → Add File → reaction_top.sof → Start
-```
-
-직접 KEY 눌러보면서 반응속도 측정.
+| 합성 시 "module not found" | Coder 모듈을 프로젝트에 add 안 함 | Project → Add/Remove Files |
+| 합성 경고 "width mismatch" | INTERFACE 명세 위반 (비트 폭) | INTERFACE.md 재확인, Coder 수정 |
+| ModelSim에서 X 값 propagation | reg 초기화 누락 | reset 분기에서 모든 reg 명시 |
+| LEDR[9] 안 켜짐 | `reaction_fsm`의 led_on 출력 미생성 | P3 output logic 확인 |
+| HEX = EEEE 항상 표시 | cheat 신호가 stuck | `reaction_fsm`의 cheat reset 확인 |
+| 합성 통과인데 시뮬에서 결과 이상 | parameter override 누락 | TB의 defparam 확인 |
 
 ---
 
-### 6. 강의 종합
+### 7. 평가 기준
 
-여러분이 만든 반응속도 측정기는:
+| 항목 | 비중 | 평가 대상 |
+|---|:---:|---|
+| 시스템 동작 (ModelSim PASS) | 40% | 팀 |
+| 본인 역할 수행도 | 30% | **개인** |
+| 발표 시 본인 부분 설명 | 20% | **개인** |
+| 협업·인터페이스 합의 품질 | 10% | 팀 |
+
+**Integrator 개인 평가:** Quartus 프로젝트 완성도, 통합 시 mismatch 해결, 합성 결과 분석.
+
+**Coder 개인 평가:** AI 프롬프트 SIBCVT 적용, 생성 모듈 정확도, 단독 TB 작성.
+
+---
+
+### 8. 강의 종합
+
+여러분이 70분 안에 팀으로 만든 반응속도 측정기는:
 
 - 7개 모듈
 - FSM 1개, 카운터 2개, 디바운스 2개
 - 4자리 7-seg 디스플레이
 - 약 300~400 라인의 Verilog
 
-**이걸 손코딩으로 했다면 며칠 걸렸을 작업이다.**
+**이걸 혼자 손코딩으로 했다면 며칠** 걸렸을 작업이다. 그러나 검증·통합·디버깅은 결국 손코딩 1~10주의 hardware-aware 사고가 있어야 가능했다. 그리고 **팀 협업**이 있었기에 70분 안에 가능했다.
 
-그러나 검증·통합·디버깅은 결국 손코딩 1~10주의 hardware-aware 사고가 있어야 가능했다:
+> **AI는 망치, 검증 능력은 눈, 팀워크는 손발** — 셋 다 있어야 시스템이 완성된다.
 
-- 명세 공백을 알아채는 능력
-- inferred latch와 dead code를 식별하는 능력
-- ModelSim 파형 읽는 능력
-- Quartus 경고 메시지 해석하는 능력
+#### 다음 차시 (회3) 예고
 
-> **AI는 망치, 검증 능력은 눈** — 망치만으로는 집을 짓지 못한다.
-
-다음 주 Mon (회3)부터는 **세 번째 도구 — Model-Based Design (Simulink HDL Coder)**. PID 컨트롤러를 Simulink로 그리면 Verilog가 자동 생성된다. 손코딩·AI 코딩·MBD 3자의 적합 영역을 비교한다.
+다음 주 Mon (회3)부터는 **세 번째 도구 — Model-Based Design (Simulink HDL Coder)**.
+PID 컨트롤러를 Simulink로 그리면 Verilog가 자동 생성된다. 손코딩·AI 코딩·MBD 3자의 적합 영역을 비교한다.
 
 ---
 
-### 과제 (1주일 내 제출, 5점)
+### 과제 (1주일 내 제출, 5점, 개인)
 
-다음 둘 중 하나 선택:
+다음 중 하나 선택:
 
-#### 과제 옵션 1 — 도전 완성
+**과제 옵션 1 — 본인 모듈 심화**
 
-- 강의에서 못 끝낸 부분 완성 (보드 다운로드까지)
-- 최종 코드 7개 모듈 + TB 1개 제출
-- 보드 시연 영상 첨부 (스마트폰 촬영 OK)
-- 어느 모듈에서 AI 추가 보완을 몇 번 했는지 보고서 작성
+본인이 강의에서 담당한 모듈에 대해:
+- 사용한 SIBCVT 프롬프트 (6요소 모두 명시)
+- AI 응답에서 채택한 부분과 수정한 부분
+- 단독 testbench + 시뮬 파형 캡처
+- 합성 결과 (해당 모듈만 — module-level Quartus 합성)
 
-#### 과제 옵션 2 — 확장 도전
+**과제 옵션 2 — 통합 후 합성·보드 (Integrator 추천)**
 
-반응속도 측정기에 추가 기능 1개 구현 (택1):
+강의 중 ModelSim PASS까지만 갔으면:
+- Quartus 합성 통과 + Compilation Report 첨부
+- (가능하면) DE0 보드 다운로드 + 시연 영상
 
-- 최고기록 저장 (KEY[3]으로 reset)
+**과제 옵션 3 — 확장 도전 (팀 합의 가능)**
+
+반응속도 측정기에 추가 기능 1개 구현:
+- 최고기록 저장
 - 부저 추가 (LEDR[9] 점등 시 짧은 beep)
-- 3회 평균 모드 (3회 반응 후 평균 표시)
+- 3회 평균 모드
 
-제출물: SIBCVT 프롬프트 + 통합 코드 + 시연 영상
+제출물: 확장 코드 + 시뮬 영상 + 본인 기여 설명.
 
 ---
