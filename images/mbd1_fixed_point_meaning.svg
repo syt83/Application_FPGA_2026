@@ -1,0 +1,248 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 600">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .subtitle { font-size: 13px; fill: #1B4F72; font-weight: bold; }
+  .label-b { font-size: 11px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .code { font-family: 'Courier New', monospace; font-size: 10px; fill: #2C3E50; }
+  .code-b { font-family: 'Courier New', monospace; font-size: 10px; fill: #2C3E50; font-weight: bold; }
+  .bit { font-family: 'Courier New', monospace; font-size: 12px; font-weight: bold; fill: #2C3E50; }
+  .weight { font-family: 'Courier New', monospace; font-size: 9px; fill: #1B4F72; }
+  .note { font-size: 10px; fill: #1B4F72; }
+  .warn { font-size: 11px; fill: #E74C3C; font-weight: bold; }
+</style>
+<defs>
+  <marker id="mr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#E74C3C"/>
+  </marker>
+  <marker id="mb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#1B4F72"/>
+  </marker>
+</defs>
+
+<text x="360" y="22" text-anchor="middle" class="title">Fixed-Point Representation — "Fixed" Means Decimal Point, NOT Integer</text>
+<text x="360" y="40" text-anchor="middle" class="label-s">Same bits, different meaning. The hardware stores integers; the engineer decides where the decimal point lives.</text>
+
+<!-- ============================================== -->
+<!-- SECTION 1: Same bit string, three meanings    -->
+<!-- ============================================== -->
+<rect x="20" y="55" width="680" height="100" rx="8" fill="#D6EAF8" stroke="#1B4F72" stroke-width="1.5"/>
+<text x="30" y="75" class="subtitle">① Same 8-bit pattern, three different values — depending on type</text>
+
+<!-- Common bit string -->
+<text x="115" y="100" class="label-b">Bit pattern:</text>
+<g transform="translate(200,88)">
+  <rect x="0"   y="0" width="22" height="22" fill="#FFFFFF" stroke="#2C3E50"/>
+  <text x="11" y="16" text-anchor="middle" class="bit">0</text>
+  <rect x="22"  y="0" width="22" height="22" fill="#FFFFFF" stroke="#2C3E50"/>
+  <text x="33" y="16" text-anchor="middle" class="bit">1</text>
+  <rect x="44"  y="0" width="22" height="22" fill="#FFFFFF" stroke="#2C3E50"/>
+  <text x="55" y="16" text-anchor="middle" class="bit">0</text>
+  <rect x="66"  y="0" width="22" height="22" fill="#FFFFFF" stroke="#2C3E50"/>
+  <text x="77" y="16" text-anchor="middle" class="bit">1</text>
+  <rect x="88"  y="0" width="22" height="22" fill="#FFFFFF" stroke="#2C3E50"/>
+  <text x="99" y="16" text-anchor="middle" class="bit">0</text>
+  <rect x="110" y="0" width="22" height="22" fill="#FFFFFF" stroke="#2C3E50"/>
+  <text x="121" y="16" text-anchor="middle" class="bit">0</text>
+  <rect x="132" y="0" width="22" height="22" fill="#FFFFFF" stroke="#2C3E50"/>
+  <text x="143" y="16" text-anchor="middle" class="bit">0</text>
+  <rect x="154" y="0" width="22" height="22" fill="#FFFFFF" stroke="#2C3E50"/>
+  <text x="165" y="16" text-anchor="middle" class="bit">0</text>
+</g>
+<text x="395" y="103" class="label-s">= 0x50 (in memory)</text>
+
+<!-- Three interpretations -->
+<g transform="translate(40,125)">
+  <rect x="0" y="0" width="200" height="22" rx="4" fill="#FFFFFF" stroke="#1E8449" stroke-width="1.5"/>
+  <text x="10" y="15" class="code-b">ufix8_En0</text>
+  <text x="90" y="15" class="code">→</text>
+  <text x="105" y="15" class="code-b">80</text>
+  <text x="140" y="15" class="label-s">(integer)</text>
+</g>
+
+<g transform="translate(255,125)">
+  <rect x="0" y="0" width="200" height="22" rx="4" fill="#FFFFFF" stroke="#E67E22" stroke-width="1.5"/>
+  <text x="10" y="15" class="code-b">ufix8_En4</text>
+  <text x="90" y="15" class="code">→</text>
+  <text x="105" y="15" class="code-b">5.0</text>
+  <text x="140" y="15" class="label-s">(80 × 2⁻⁴)</text>
+</g>
+
+<g transform="translate(470,125)">
+  <rect x="0" y="0" width="200" height="22" rx="4" fill="#FFFFFF" stroke="#8E44AD" stroke-width="1.5"/>
+  <text x="10" y="15" class="code-b">ufix8_En7</text>
+  <text x="90" y="15" class="code">→</text>
+  <text x="105" y="15" class="code-b">0.625</text>
+  <text x="150" y="15" class="label-s">(80 × 2⁻⁷)</text>
+</g>
+
+<!-- ============================================== -->
+<!-- SECTION 2: Bit weighting                       -->
+<!-- ============================================== -->
+<rect x="20" y="170" width="680" height="125" rx="8" fill="#D5F5E3" stroke="#1E8449" stroke-width="1.5"/>
+<text x="30" y="190" class="subtitle">② Bit weighting (example: ufix8_En4) — each bit has weight 2ⁿ</text>
+
+<!-- Bit position indicators -->
+<g transform="translate(150,205)">
+  <!-- Bit boxes -->
+  <rect x="0"   y="20" width="40" height="32" fill="#D6EAF8" stroke="#1B4F72" stroke-width="1.5"/>
+  <text x="20" y="42" text-anchor="middle" class="bit">b7</text>
+  <rect x="40"  y="20" width="40" height="32" fill="#D6EAF8" stroke="#1B4F72" stroke-width="1.5"/>
+  <text x="60" y="42" text-anchor="middle" class="bit">b6</text>
+  <rect x="80"  y="20" width="40" height="32" fill="#D6EAF8" stroke="#1B4F72" stroke-width="1.5"/>
+  <text x="100" y="42" text-anchor="middle" class="bit">b5</text>
+  <rect x="120" y="20" width="40" height="32" fill="#D6EAF8" stroke="#1B4F72" stroke-width="1.5"/>
+  <text x="140" y="42" text-anchor="middle" class="bit">b4</text>
+  
+  <!-- DECIMAL POINT marker -->
+  <line x1="160" y1="15" x2="160" y2="60" stroke="#E74C3C" stroke-width="2" stroke-dasharray="3,2"/>
+  <text x="160" y="12" text-anchor="middle" class="warn">↓ decimal point ↓</text>
+  
+  <rect x="160" y="20" width="40" height="32" fill="#FDEBD0" stroke="#E67E22" stroke-width="1.5"/>
+  <text x="180" y="42" text-anchor="middle" class="bit">b3</text>
+  <rect x="200" y="20" width="40" height="32" fill="#FDEBD0" stroke="#E67E22" stroke-width="1.5"/>
+  <text x="220" y="42" text-anchor="middle" class="bit">b2</text>
+  <rect x="240" y="20" width="40" height="32" fill="#FDEBD0" stroke="#E67E22" stroke-width="1.5"/>
+  <text x="260" y="42" text-anchor="middle" class="bit">b1</text>
+  <rect x="280" y="20" width="40" height="32" fill="#FDEBD0" stroke="#E67E22" stroke-width="1.5"/>
+  <text x="300" y="42" text-anchor="middle" class="bit">b0</text>
+  
+  <!-- Weight labels (2^n) -->
+  <text x="20" y="70" text-anchor="middle" class="weight">2³</text>
+  <text x="60" y="70" text-anchor="middle" class="weight">2²</text>
+  <text x="100" y="70" text-anchor="middle" class="weight">2¹</text>
+  <text x="140" y="70" text-anchor="middle" class="weight">2⁰</text>
+  <text x="180" y="70" text-anchor="middle" class="weight">2⁻¹</text>
+  <text x="220" y="70" text-anchor="middle" class="weight">2⁻²</text>
+  <text x="260" y="70" text-anchor="middle" class="weight">2⁻³</text>
+  <text x="300" y="70" text-anchor="middle" class="weight">2⁻⁴</text>
+  
+  <!-- Actual values -->
+  <text x="20" y="84" text-anchor="middle" class="code">8</text>
+  <text x="60" y="84" text-anchor="middle" class="code">4</text>
+  <text x="100" y="84" text-anchor="middle" class="code">2</text>
+  <text x="140" y="84" text-anchor="middle" class="code">1</text>
+  <text x="180" y="84" text-anchor="middle" class="code">0.5</text>
+  <text x="220" y="84" text-anchor="middle" class="code">0.25</text>
+  <text x="260" y="84" text-anchor="middle" class="code">0.125</text>
+  <text x="300" y="84" text-anchor="middle" class="code">.0625</text>
+</g>
+
+<text x="490" y="265" class="label-s">Integer part: 4 bits (b7~b4)</text>
+<text x="490" y="280" class="label-s">Fraction part: 4 bits (b3~b0)</text>
+<text x="490" y="290" class="note">Total: 8-bit, "En4" = LSB weight 2⁻⁴</text>
+
+<!-- ============================================== -->
+<!-- SECTION 3: fi() function decomposition         -->
+<!-- ============================================== -->
+<rect x="20" y="310" width="680" height="145" rx="8" fill="#FDEBD0" stroke="#E67E22" stroke-width="1.5"/>
+<text x="30" y="330" class="subtitle">③ fi() function — MATLAB Fixed-Point Designer's value creator</text>
+
+<!-- fi() syntax -->
+<rect x="40" y="345" width="380" height="30" rx="4" fill="#FFFFFF" stroke="#E67E22"/>
+<text x="50" y="365" class="code-b">fi( value , signed , wordLength , fractionLength )</text>
+
+<!-- 4 argument breakdown -->
+<g transform="translate(40,385)">
+  <rect x="0" y="0" width="80" height="60" rx="4" fill="#FEF9E7" stroke="#B7950B"/>
+  <text x="40" y="15" text-anchor="middle" class="label-b">value</text>
+  <text x="40" y="32" text-anchor="middle" class="label-s">real number</text>
+  <text x="40" y="48" text-anchor="middle" class="code-b">1.27</text>
+  
+  <rect x="90" y="0" width="80" height="60" rx="4" fill="#FEF9E7" stroke="#B7950B"/>
+  <text x="130" y="15" text-anchor="middle" class="label-b">signed</text>
+  <text x="130" y="32" text-anchor="middle" class="label-s">0=unsigned</text>
+  <text x="130" y="46" text-anchor="middle" class="label-s">1=signed</text>
+  <text x="130" y="58" text-anchor="middle" class="code-b">1</text>
+  
+  <rect x="180" y="0" width="100" height="60" rx="4" fill="#FEF9E7" stroke="#B7950B"/>
+  <text x="230" y="15" text-anchor="middle" class="label-b">wordLength</text>
+  <text x="230" y="32" text-anchor="middle" class="label-s">total bits</text>
+  <text x="230" y="48" text-anchor="middle" class="code-b">16</text>
+  
+  <rect x="290" y="0" width="120" height="60" rx="4" fill="#FEF9E7" stroke="#B7950B"/>
+  <text x="350" y="15" text-anchor="middle" class="label-b">fractionLength</text>
+  <text x="350" y="32" text-anchor="middle" class="label-s">bits after point</text>
+  <text x="350" y="48" text-anchor="middle" class="code-b">12</text>
+</g>
+
+<!-- Example expression -->
+<rect x="455" y="345" width="245" height="100" rx="4" fill="#FFFFFF" stroke="#E67E22" stroke-width="1.5"/>
+<text x="465" y="362" class="label-b">Example we'll use today:</text>
+<text x="465" y="382" class="code-b">a = fi(1.27, 1, 16, 12);</text>
+<text x="465" y="402" class="label-s">→ Type name: sfix16_En12</text>
+<text x="465" y="416" class="label-s">→ Range: -8.0 ~ +7.99976</text>
+<text x="465" y="430" class="label-s">→ Resolution: 2⁻¹² ≈ 0.000244</text>
+<text x="465" y="442" class="label-s">→ Integer part: 16-1-12 = 3 bits</text>
+
+<!-- ============================================== -->
+<!-- SECTION 4: How 1.27 is actually stored        -->
+<!-- ============================================== -->
+<rect x="20" y="470" width="680" height="120" rx="8" fill="#E8DAEF" stroke="#8E44AD" stroke-width="2"/>
+<text x="30" y="490" class="subtitle" fill="#8E44AD">④ How fi(1.27, 1, 16, 12) is ACTUALLY stored in 16-bit memory ★</text>
+
+<g transform="translate(40,500)">
+  <text x="0" y="13" class="code">Step 1:</text>
+  <text x="55" y="13" class="code-b">1.27 × 2¹² = 1.27 × 4096 = 5201.92</text>
+  <text x="350" y="13" class="code">→ round to</text>
+  <text x="425" y="13" class="code-b">5202</text>
+  
+  <text x="0" y="33" class="code">Step 2:</text>
+  <text x="55" y="33" class="code-b">5202 in 16-bit binary:</text>
+  
+  <g transform="translate(220,21)">
+    <!-- Sign bit -->
+    <rect x="0"   y="0" width="18" height="18" fill="#FADBD8" stroke="#E74C3C" stroke-width="1.5"/>
+    <text x="9" y="13" text-anchor="middle" class="code-b">0</text>
+    <!-- Integer part -->
+    <rect x="18"  y="0" width="18" height="18" fill="#D6EAF8" stroke="#1B4F72"/>
+    <text x="27" y="13" text-anchor="middle" class="code-b">0</text>
+    <rect x="36"  y="0" width="18" height="18" fill="#D6EAF8" stroke="#1B4F72"/>
+    <text x="45" y="13" text-anchor="middle" class="code-b">0</text>
+    <rect x="54"  y="0" width="18" height="18" fill="#D6EAF8" stroke="#1B4F72"/>
+    <text x="63" y="13" text-anchor="middle" class="code-b">1</text>
+    <!-- Fraction part -->
+    <rect x="72"  y="0" width="18" height="18" fill="#FDEBD0" stroke="#E67E22"/>
+    <text x="81" y="13" text-anchor="middle" class="code-b">0</text>
+    <rect x="90"  y="0" width="18" height="18" fill="#FDEBD0" stroke="#E67E22"/>
+    <text x="99" y="13" text-anchor="middle" class="code-b">1</text>
+    <rect x="108" y="0" width="18" height="18" fill="#FDEBD0" stroke="#E67E22"/>
+    <text x="117" y="13" text-anchor="middle" class="code-b">0</text>
+    <rect x="126" y="0" width="18" height="18" fill="#FDEBD0" stroke="#E67E22"/>
+    <text x="135" y="13" text-anchor="middle" class="code-b">0</text>
+    <rect x="144" y="0" width="18" height="18" fill="#FDEBD0" stroke="#E67E22"/>
+    <text x="153" y="13" text-anchor="middle" class="code-b">0</text>
+    <rect x="162" y="0" width="18" height="18" fill="#FDEBD0" stroke="#E67E22"/>
+    <text x="171" y="13" text-anchor="middle" class="code-b">1</text>
+    <rect x="180" y="0" width="18" height="18" fill="#FDEBD0" stroke="#E67E22"/>
+    <text x="189" y="13" text-anchor="middle" class="code-b">0</text>
+    <rect x="198" y="0" width="18" height="18" fill="#FDEBD0" stroke="#E67E22"/>
+    <text x="207" y="13" text-anchor="middle" class="code-b">1</text>
+    <rect x="216" y="0" width="18" height="18" fill="#FDEBD0" stroke="#E67E22"/>
+    <text x="225" y="13" text-anchor="middle" class="code-b">0</text>
+    <rect x="234" y="0" width="18" height="18" fill="#FDEBD0" stroke="#E67E22"/>
+    <text x="243" y="13" text-anchor="middle" class="code-b">0</text>
+    <rect x="252" y="0" width="18" height="18" fill="#FDEBD0" stroke="#E67E22"/>
+    <text x="261" y="13" text-anchor="middle" class="code-b">1</text>
+    <rect x="270" y="0" width="18" height="18" fill="#FDEBD0" stroke="#E67E22"/>
+    <text x="279" y="13" text-anchor="middle" class="code-b">0</text>
+  </g>
+  
+  <!-- Annotations under bits -->
+  <text x="229" y="56" class="label-s" fill="#E74C3C">sign</text>
+  <text x="265" y="56" class="label-s" fill="#1B4F72">3 integer bits</text>
+  <text x="380" y="56" class="label-s" fill="#E67E22">12 fraction bits</text>
+  
+  <text x="0" y="78" class="code">Step 3:</text>
+  <text x="55" y="78" class="code">Hardware stores integer</text>
+  <text x="210" y="78" class="code-b">5202</text>
+  <text x="245" y="78" class="code">; engineer interprets as</text>
+  <text x="395" y="78" class="code-b">5202 × 2⁻¹² = 1.27001953125</text>
+  
+  <text x="0" y="92" class="code">         </text>
+  <text x="55" y="92" class="label-s">Quantization error:</text>
+  <text x="170" y="92" class="code-b">1.27001953125 − 1.27 = 0.00001953125</text>
+  <text x="415" y="92" class="label-s">(≈ 0.0015%)</text>
+</g>
+</svg>

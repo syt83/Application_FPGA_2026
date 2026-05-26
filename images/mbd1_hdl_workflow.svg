@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 480">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .subtitle { font-size: 12px; fill: #1B4F72; font-weight: bold; }
+  .label-b { font-size: 11px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .code { font-family: 'Courier New', monospace; font-size: 9px; fill: #2C3E50; }
+  .step-num { font-size: 18px; font-weight: bold; fill: #FFFFFF; }
+  .tool-name { font-size: 11px; font-weight: bold; }
+  .note { font-size: 10px; fill: #1B4F72; }
+  .warn { font-size: 10px; fill: #E74C3C; font-weight: bold; }
+</style>
+<defs>
+  <marker id="mg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#1E8449"/>
+  </marker>
+  <marker id="mp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#8E44AD"/>
+  </marker>
+  <marker id="my" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#B7950B"/>
+  </marker>
+</defs>
+
+<text x="360" y="22" text-anchor="middle" class="title">HDL Coder 5-Step Workflow — From Block Diagram to FPGA</text>
+<text x="360" y="40" text-anchor="middle" class="label-s">Each step uses a different toolbox; understanding the flow is key to debugging</text>
+
+<!-- ========== Step 1: Algorithm Modeling ========== -->
+<rect x="30" y="60" width="660" height="60" rx="8" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/>
+<circle cx="60" cy="90" r="18" fill="#1E8449"/>
+<text x="60" y="96" text-anchor="middle" class="step-num">1</text>
+<text x="95" y="80" class="subtitle" fill="#1E8449">Algorithm Modeling</text>
+<text x="95" y="96" class="label-s">Build the block diagram in floating-point. Focus on correctness, not hardware.</text>
+<text x="95" y="111" class="code">Reference → [+/-] → Discrete PID → Saturation → Plant → Feedback</text>
+
+<rect x="520" y="73" width="160" height="34" rx="4" fill="#FFFFFF" stroke="#1E8449" stroke-width="1"/>
+<text x="600" y="86" text-anchor="middle" class="tool-name" fill="#1E8449">Simulink</text>
+<text x="600" y="100" text-anchor="middle" class="label-s">Required toolbox</text>
+
+<!-- Arrow 1→2 -->
+<path d="M 360,120 C 360,128 360,132 360,140" fill="none" stroke="#1E8449" stroke-width="2" marker-end="url(#mg)"/>
+
+<!-- ========== Step 2: Functional Verification ========== -->
+<rect x="30" y="140" width="660" height="60" rx="8" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/>
+<circle cx="60" cy="170" r="18" fill="#1E8449"/>
+<text x="60" y="176" text-anchor="middle" class="step-num">2</text>
+<text x="95" y="160" class="subtitle" fill="#1E8449">Functional Verification</text>
+<text x="95" y="176" class="label-s">Run simulation, tune gains (Kp, Ki, Kd), check step response.</text>
+<text x="95" y="191" class="code">Run ▶ → Scope shows overshoot, settling time, steady-state error</text>
+
+<rect x="520" y="153" width="160" height="34" rx="4" fill="#FFFFFF" stroke="#1E8449" stroke-width="1"/>
+<text x="600" y="166" text-anchor="middle" class="tool-name" fill="#1E8449">Simulink Scope</text>
+<text x="600" y="180" text-anchor="middle" class="label-s">+ Control System Toolbox</text>
+
+<!-- Arrow 2→3 -->
+<path d="M 360,200 C 360,208 360,212 360,220" fill="none" stroke="#E67E22" stroke-width="2" marker-end="url(#mp)"/>
+
+<!-- ========== Step 3: Fixed-Point Conversion ========== -->
+<rect x="30" y="220" width="660" height="60" rx="8" fill="#FDEBD0" stroke="#E67E22" stroke-width="2"/>
+<circle cx="60" cy="250" r="18" fill="#E67E22"/>
+<text x="60" y="256" text-anchor="middle" class="step-num">3</text>
+<text x="95" y="240" class="subtitle" fill="#E67E22">Fixed-Point Conversion</text>
+<text x="95" y="256" class="label-s">Collect signal ranges → assign bit-widths → verify quantization error.</text>
+<text x="95" y="271" class="code">sfix16_En12  (16-bit signed, 12-bit fraction)  ← auto-suggested by tool</text>
+
+<rect x="520" y="233" width="160" height="34" rx="4" fill="#FFFFFF" stroke="#E67E22" stroke-width="1"/>
+<text x="600" y="246" text-anchor="middle" class="tool-name" fill="#E67E22">Fixed-Point Designer</text>
+<text x="600" y="260" text-anchor="middle" class="label-s">★ Required toolbox</text>
+
+<!-- Arrow 3→4 -->
+<path d="M 360,280 C 360,288 360,292 360,300" fill="none" stroke="#8E44AD" stroke-width="2" marker-end="url(#mp)"/>
+
+<!-- ========== Step 4: HDL Generation ========== -->
+<rect x="30" y="300" width="660" height="60" rx="8" fill="#E8DAEF" stroke="#8E44AD" stroke-width="2"/>
+<circle cx="60" cy="330" r="18" fill="#8E44AD"/>
+<text x="60" y="336" text-anchor="middle" class="step-num">4</text>
+<text x="95" y="320" class="subtitle" fill="#8E44AD">HDL Generation</text>
+<text x="95" y="336" class="label-s">Workflow Advisor: set options (Verilog-2001, async active-low) → Generate.</text>
+<text x="95" y="351" class="code">Output: pid_controller.v (~300 lines) + pid_controller_tb.v</text>
+
+<rect x="520" y="313" width="160" height="34" rx="4" fill="#FFFFFF" stroke="#8E44AD" stroke-width="1"/>
+<text x="600" y="326" text-anchor="middle" class="tool-name" fill="#8E44AD">HDL Coder</text>
+<text x="600" y="340" text-anchor="middle" class="label-s">★ Required toolbox</text>
+
+<!-- Arrow 4→5 -->
+<path d="M 360,360 C 360,368 360,372 360,380" fill="none" stroke="#B7950B" stroke-width="2" marker-end="url(#my)"/>
+
+<!-- ========== Step 5: HDL Verification ========== -->
+<rect x="30" y="380" width="660" height="60" rx="8" fill="#FEF9E7" stroke="#B7950B" stroke-width="2"/>
+<circle cx="60" cy="410" r="18" fill="#B7950B"/>
+<text x="60" y="416" text-anchor="middle" class="step-num">5</text>
+<text x="95" y="400" class="subtitle" fill="#B7950B">HDL Verification + Synthesis</text>
+<text x="95" y="416" class="label-s">Import .v into Quartus 13, write top wrapper, simulate in ModelSim.</text>
+<text x="95" y="431" class="code">Quartus 13 → Compilation Report → DE0/DE1 board</text>
+
+<rect x="520" y="393" width="160" height="34" rx="4" fill="#FFFFFF" stroke="#B7950B" stroke-width="1"/>
+<text x="600" y="406" text-anchor="middle" class="tool-name" fill="#B7950B">Quartus 13 + ModelSim</text>
+<text x="600" y="420" text-anchor="middle" class="label-s">course-standard tools</text>
+
+<!-- Bottom warning bar -->
+<rect x="30" y="450" width="660" height="22" rx="4" fill="#FADBD8" stroke="#E74C3C" stroke-width="1"/>
+<text x="40" y="465" class="warn">⚠ Step 4 options critical: must select "Verilog-2001" + "Async active-low reset" for Quartus 13 compatibility.</text>
+</svg>

@@ -1,0 +1,169 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 520">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .subtitle { font-size: 13px; fill: #1B4F72; font-weight: bold; }
+  .label-b { font-size: 11px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .code { font-family: 'Courier New', monospace; font-size: 9px; fill: #2C3E50; }
+  .col-title { font-size: 13px; font-weight: bold; }
+  .note { font-size: 10px; fill: #1B4F72; }
+</style>
+<defs>
+  <marker id="my" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#B7950B"/>
+  </marker>
+</defs>
+
+<text x="360" y="22" text-anchor="middle" class="title">Same 7-seg Decoder — Four Ways to Make It</text>
+<text x="360" y="40" text-anchor="middle" class="label-s">All four roads end at synthesizable Verilog — but engineer's input differs</text>
+
+<!-- ========== Column 1: Hand Coding ========== -->
+<rect x="15" y="60" width="170" height="32" rx="6" fill="#D6EAF8" stroke="#1B4F72" stroke-width="2"/>
+<text x="100" y="78" text-anchor="middle" class="col-title" fill="#1B4F72">Hand Coding</text>
+<text x="100" y="88" text-anchor="middle" class="label-s">Weeks 1~10</text>
+
+<rect x="20" y="100" width="160" height="115" rx="6" fill="#FFFFFF" stroke="#1B4F72" stroke-width="1.5"/>
+<text x="100" y="115" text-anchor="middle" class="label-b">Engineer's Input</text>
+<line x1="25" y1="120" x2="175" y2="120" stroke="#1B4F72" stroke-width="0.5"/>
+<text x="28" y="133" class="code">always @(*) begin</text>
+<text x="28" y="144" class="code">  case (hex)</text>
+<text x="28" y="155" class="code">    4'h0: seg=7'b1000000;</text>
+<text x="28" y="166" class="code">    4'h1: seg=7'b1111001;</text>
+<text x="28" y="177" class="code">    4'h2: seg=7'b0100100;</text>
+<text x="28" y="188" class="code">    ...</text>
+<text x="28" y="199" class="code">    default: seg=7'h7F;</text>
+<text x="28" y="210" class="code">  endcase</text>
+
+<rect x="20" y="223" width="160" height="60" rx="4" fill="#F8F9FA" stroke="#AEB6BF"/>
+<text x="100" y="238" text-anchor="middle" class="label-b">Result</text>
+<text x="28" y="255" class="label-s">• ~30 lines hand-typed</text>
+<text x="28" y="267" class="label-s">• Verilog-2001 native</text>
+<text x="28" y="279" class="label-s">• Engineer types every bit</text>
+
+<!-- ========== Column 2: AI Coding ========== -->
+<rect x="195" y="60" width="170" height="32" rx="6" fill="#FDEBD0" stroke="#E67E22" stroke-width="2"/>
+<text x="280" y="78" text-anchor="middle" class="col-title" fill="#E67E22">AI Coding</text>
+<text x="280" y="88" text-anchor="middle" class="label-s">Week 11 (SIBCVT)</text>
+
+<rect x="200" y="100" width="160" height="115" rx="6" fill="#FFFFFF" stroke="#E67E22" stroke-width="1.5"/>
+<text x="280" y="115" text-anchor="middle" class="label-b">Engineer's Input</text>
+<line x1="205" y1="120" x2="355" y2="120" stroke="#E67E22" stroke-width="0.5"/>
+<text x="208" y="133" class="code">[S] DE0 board, 7-seg</text>
+<text x="208" y="144" class="code">    hex 0~F display</text>
+<text x="208" y="155" class="code">[I] input [3:0] hex,</text>
+<text x="208" y="166" class="code">    output [6:0] seg</text>
+<text x="208" y="177" class="code">[V] active-low,</text>
+<text x="208" y="188" class="code">    {g,f,e,d,c,b,a}</text>
+<text x="208" y="199" class="code">[T] self-checking TB</text>
+<text x="208" y="210" class="code">SIBCVT prompt → AI</text>
+
+<rect x="200" y="223" width="160" height="60" rx="4" fill="#F8F9FA" stroke="#AEB6BF"/>
+<text x="280" y="238" text-anchor="middle" class="label-b">Result</text>
+<text x="208" y="255" class="label-s">• Prompt 6 lines</text>
+<text x="208" y="267" class="label-s">• AI generates ~30 lines</text>
+<text x="208" y="279" class="label-s">• Engineer specifies, AI types</text>
+
+<!-- ========== Column 3: MBD - Block ========== -->
+<rect x="375" y="60" width="170" height="32" rx="6" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/>
+<text x="460" y="78" text-anchor="middle" class="col-title" fill="#1E8449">MBD — Block</text>
+<text x="460" y="88" text-anchor="middle" class="label-s">Today (Simulink blocks)</text>
+
+<rect x="380" y="100" width="160" height="115" rx="6" fill="#FFFFFF" stroke="#1E8449" stroke-width="1.5"/>
+<text x="460" y="115" text-anchor="middle" class="label-b">Engineer's Input</text>
+<line x1="385" y1="120" x2="535" y2="120" stroke="#1E8449" stroke-width="0.5"/>
+
+<!-- Mini block diagram: Multiport Switch with 16 constants -->
+<g transform="translate(390,128)">
+  <rect x="0" y="0" width="22" height="14" rx="2" fill="#D6EAF8" stroke="#1B4F72" stroke-width="1"/>
+  <text x="11" y="10" text-anchor="middle" class="code" font-size="7">hex</text>
+  
+  <line x1="22" y1="7" x2="40" y2="7" stroke="#1E8449" stroke-width="0.8"/>
+  
+  <rect x="40" y="0" width="50" height="50" rx="2" fill="#D5F5E3" stroke="#1E8449" stroke-width="1"/>
+  <text x="65" y="12" text-anchor="middle" class="code" font-size="7">Multiport</text>
+  <text x="65" y="22" text-anchor="middle" class="code" font-size="7">Switch</text>
+  <text x="65" y="35" text-anchor="middle" class="code" font-size="7">(16 inputs)</text>
+  
+  <!-- 16 constant blocks (simplified) -->
+  <rect x="95" y="-3" width="35" height="10" rx="1" fill="#FDEBD0" stroke="#E67E22" stroke-width="0.5"/>
+  <text x="113" y="4" text-anchor="middle" class="code" font-size="6">0x40 (=0)</text>
+  <rect x="95" y="9" width="35" height="10" rx="1" fill="#FDEBD0" stroke="#E67E22" stroke-width="0.5"/>
+  <text x="113" y="16" text-anchor="middle" class="code" font-size="6">0x79 (=1)</text>
+  <rect x="95" y="21" width="35" height="10" rx="1" fill="#FDEBD0" stroke="#E67E22" stroke-width="0.5"/>
+  <text x="113" y="28" text-anchor="middle" class="code" font-size="6">...</text>
+  <rect x="95" y="33" width="35" height="10" rx="1" fill="#FDEBD0" stroke="#E67E22" stroke-width="0.5"/>
+  <text x="113" y="40" text-anchor="middle" class="code" font-size="6">0x71 (=F)</text>
+  
+  <line x1="130" y1="3" x2="135" y2="3" stroke="#E67E22" stroke-width="0.5"/>
+  <line x1="135" y1="3" x2="135" y2="22" stroke="#E67E22" stroke-width="0.5"/>
+  <line x1="130" y1="13" x2="135" y2="13" stroke="#E67E22" stroke-width="0.5"/>
+  <line x1="130" y1="25" x2="135" y2="25" stroke="#E67E22" stroke-width="0.5"/>
+  <line x1="130" y1="38" x2="135" y2="38" stroke="#E67E22" stroke-width="0.5"/>
+</g>
+
+<text x="385" y="200" class="label-s">Drag: Multiport Switch</text>
+<text x="385" y="211" class="label-s">+ 16 Constant blocks</text>
+
+<rect x="380" y="223" width="160" height="60" rx="4" fill="#F8F9FA" stroke="#AEB6BF"/>
+<text x="460" y="238" text-anchor="middle" class="label-b">Result</text>
+<text x="388" y="255" class="label-s">• 17 blocks dragged</text>
+<text x="388" y="267" class="label-s">• HDL Coder → 30 lines .v</text>
+<text x="388" y="279" class="label-s">• Engineer wires blocks</text>
+
+<!-- ========== Column 4: MBD - Function ========== -->
+<rect x="555" y="60" width="150" height="32" rx="6" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/>
+<text x="630" y="78" text-anchor="middle" class="col-title" fill="#1E8449">MBD — Function</text>
+<text x="630" y="88" text-anchor="middle" class="label-s">Today (MATLAB Func)</text>
+
+<rect x="560" y="100" width="140" height="115" rx="6" fill="#FFFFFF" stroke="#1E8449" stroke-width="1.5"/>
+<text x="630" y="115" text-anchor="middle" class="label-b">Engineer's Input</text>
+<line x1="565" y1="120" x2="695" y2="120" stroke="#1E8449" stroke-width="0.5"/>
+<text x="568" y="133" class="code">function s = decode(h)</text>
+<text x="568" y="144" class="code">  switch h</text>
+<text x="568" y="155" class="code">    case 0, s=64;</text>
+<text x="568" y="166" class="code">    case 1, s=121;</text>
+<text x="568" y="177" class="code">    case 2, s=36;</text>
+<text x="568" y="188" class="code">    ...</text>
+<text x="568" y="199" class="code">    otherwise,</text>
+<text x="568" y="210" class="code">      s=127;</text>
+<text x="568" y="221" class="code">  end</text>
+
+<rect x="560" y="230" width="140" height="53" rx="4" fill="#F8F9FA" stroke="#AEB6BF"/>
+<text x="630" y="245" text-anchor="middle" class="label-b">Result</text>
+<text x="568" y="261" class="label-s">• ~15 lines script</text>
+<text x="568" y="272" class="label-s">• HDL Coder → 30 .v lines</text>
+<text x="568" y="281" class="label-s" font-size="9">• Engineer writes math</text>
+
+<!-- ========== Convergence arrows ========== -->
+<line x1="100" y1="288" x2="100" y2="310" stroke="#B7950B" stroke-width="1" stroke-dasharray="3,2"/>
+<line x1="280" y1="288" x2="280" y2="310" stroke="#B7950B" stroke-width="1" stroke-dasharray="3,2"/>
+<line x1="460" y1="288" x2="460" y2="310" stroke="#B7950B" stroke-width="1" stroke-dasharray="3,2"/>
+<line x1="630" y1="288" x2="630" y2="310" stroke="#B7950B" stroke-width="1" stroke-dasharray="3,2"/>
+
+<!-- ========== Common output box ========== -->
+<rect x="20" y="315" width="680" height="58" rx="8" fill="#FEF9E7" stroke="#B7950B" stroke-width="2"/>
+<text x="360" y="335" text-anchor="middle" class="subtitle" fill="#B7950B">All four produce equivalent Verilog (.v) — synthesizes to identical hardware</text>
+<text x="360" y="352" text-anchor="middle" class="label-s">Same LE count, same Fmax, same behavior on the DE0 board.</text>
+<text x="360" y="366" text-anchor="middle" class="label-s">The difference is in what the engineer puts into the keyboard.</text>
+
+<!-- ========== Comparison key insights ========== -->
+<rect x="20" y="385" width="335" height="85" rx="6" fill="#F8F9FA" stroke="#AEB6BF" stroke-width="1"/>
+<text x="30" y="402" class="label-b">When to use each approach:</text>
+<text x="30" y="418" class="label-s">• Hand: small modules, learning, interview</text>
+<text x="30" y="432" class="label-s">• AI: known patterns, testbenches, fast draft</text>
+<text x="30" y="446" class="label-s">• MBD-Block: signal flow, control, filters</text>
+<text x="30" y="460" class="label-s">• MBD-Function: math, FSM, complex logic</text>
+
+<rect x="365" y="385" width="335" height="85" rx="6" fill="#F8F9FA" stroke="#AEB6BF" stroke-width="1"/>
+<text x="375" y="402" class="label-b">Key insight from today:</text>
+<text x="375" y="418" class="label-s">The synthesized hardware is the same.</text>
+<text x="375" y="432" class="label-s">The verification skill is the same.</text>
+<text x="375" y="446" class="label-s">What changes is the engineer's productivity</text>
+<text x="375" y="460" class="label-s">and the form of the design specification.</text>
+
+<!-- ========== Bottom note ========== -->
+<rect x="20" y="480" width="680" height="30" rx="4" fill="#FADBD8" stroke="#E74C3C" stroke-width="1"/>
+<text x="30" y="498" class="label-b" fill="#E74C3C">⚠ Caution:</text>
+<text x="105" y="498" class="label-s">Regardless of tool, the engineer must verify the result. Hardware-aware thinking (weeks 1~10) is the foundation.</text>
+</svg>
