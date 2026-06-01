@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 540">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .subtitle { font-size: 12px; fill: #1B4F72; font-weight: bold; }
+  .col-title { font-size: 13px; font-weight: bold; }
+  .label-b { font-size: 11px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .code { font-family: 'Courier New', monospace; font-size: 9px; fill: #2C3E50; }
+  .code-b { font-family: 'Courier New', monospace; font-size: 10px; fill: #2C3E50; font-weight: bold; }
+  .big-op { font-size: 17px; font-weight: bold; fill: #E67E22; }
+</style>
+<defs>
+  <marker id="mo" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#E67E22"/>
+  </marker>
+  <marker id="mg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#1E8449"/>
+  </marker>
+  <marker id="my" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#B7950B"/>
+  </marker>
+</defs>
+
+<text x="360" y="22" text-anchor="middle" class="title">Phase Accumulator - Two Ways, Same Result</text>
+<text x="360" y="40" text-anchor="middle" class="label-s">The same 32-bit accumulator, designed in two different styles</text>
+
+<rect x="20" y="55" width="335" height="32" rx="6" fill="#FDEBD0" stroke="#E67E22" stroke-width="2"/>
+<text x="187" y="76" text-anchor="middle" class="col-title" fill="#E67E22">Way 1 - Simulink Block</text>
+
+<rect x="20" y="95" width="335" height="195" rx="8" fill="#FFFFFF" stroke="#E67E22" stroke-width="1.5"/>
+
+<text x="35" y="150" class="label-b" fill="#1B4F72">phase_inc</text>
+<line x1="92" y1="155" x2="120" y2="155" stroke="#1B4F72" stroke-width="1.6" marker-end="url(#mo)"/>
+
+<circle cx="150" cy="165" r="26" fill="#FDEBD0" stroke="#E67E22" stroke-width="2"/>
+<text x="150" y="171" text-anchor="middle" class="big-op">+</text>
+<text x="133" y="152" class="label-b" fill="#E67E22">+</text>
+<text x="133" y="188" class="label-b" fill="#E67E22">+</text>
+<text x="150" y="208" text-anchor="middle" class="label-s">Sum</text>
+
+<line x1="176" y1="165" x2="225" y2="165" stroke="#E67E22" stroke-width="1.6" marker-end="url(#mo)"/>
+
+<rect x="225" y="142" width="85" height="46" rx="5" fill="#FDEBD0" stroke="#E67E22" stroke-width="2"/>
+<text x="267" y="160" text-anchor="middle" class="label-s">Unit Delay</text>
+<rect x="240" y="165" width="55" height="18" rx="3" fill="#FFFFFF" stroke="#E67E22"/>
+<text x="267" y="178" text-anchor="middle" class="code-b">1 / z</text>
+
+<line x1="310" y1="165" x2="345" y2="165" stroke="#B7950B" stroke-width="1.8" marker-end="url(#my)"/>
+
+<path d="M 327,165 L 327,245 L 150,245 L 150,193" fill="none" stroke="#E67E22" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#mo)"/>
+<text x="238" y="262" text-anchor="middle" class="label-s" fill="#E67E22">feedback</text>
+
+<text x="187" y="282" text-anchor="middle" class="label-s">Drag 2 blocks, wire the feedback loop</text>
+
+<rect x="365" y="55" width="335" height="32" rx="6" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/>
+<text x="532" y="76" text-anchor="middle" class="col-title" fill="#1E8449">Way 2 - MATLAB Function</text>
+
+<rect x="365" y="95" width="335" height="195" rx="8" fill="#FFFFFF" stroke="#1E8449" stroke-width="1.5"/>
+
+<rect x="375" y="106" width="315" height="160" rx="4" fill="#F8F9FA" stroke="#1E8449" stroke-width="1"/>
+<text x="383" y="121" class="code">function phase_acc = phase_accum(phase_inc)</text>
+<text x="383" y="136" class="code">  persistent ACC</text>
+<text x="383" y="151" class="code">  if isempty(ACC)</text>
+<text x="383" y="166" class="code">    ACC = fi(0, 0, 33, 0);</text>
+<text x="383" y="181" class="code">  end</text>
+<text x="383" y="199" class="code-b">  phase_acc = uint32(ACC);</text>
+<text x="383" y="214" class="code-b">  ACC(:) = ACC + phase_inc;</text>
+<text x="383" y="229" class="code">  if ACC &gt;= fi(2^32, 0, 33, 0)</text>
+<text x="383" y="244" class="code">    ACC(:) = ACC - fi(2^32, 0, 33, 0);</text>
+<text x="383" y="259" class="code">  end</text>
+
+<text x="532" y="284" text-anchor="middle" class="label-s">Write a script - 33-bit ACC, explicit wrap</text>
+
+<line x1="187" y1="295" x2="280" y2="325" stroke="#B7950B" stroke-width="1.6" stroke-dasharray="3,2" marker-end="url(#my)"/>
+<line x1="532" y1="295" x2="440" y2="325" stroke="#B7950B" stroke-width="1.6" stroke-dasharray="3,2" marker-end="url(#my)"/>
+
+<rect x="250" y="330" width="220" height="40" rx="8" fill="#D6EAF8" stroke="#1B4F72" stroke-width="2"/>
+<text x="360" y="354" text-anchor="middle" class="subtitle">HDL Coder converts both</text>
+
+<line x1="360" y1="370" x2="360" y2="392" stroke="#1B4F72" stroke-width="1.6" marker-end="url(#mg)"/>
+
+<rect x="150" y="397" width="420" height="85" rx="8" fill="#FEF9E7" stroke="#B7950B" stroke-width="2"/>
+<text x="360" y="416" text-anchor="middle" class="subtitle" fill="#B7950B">Same generated Verilog</text>
+<rect x="165" y="424" width="390" height="50" rx="4" fill="#FFFFFF" stroke="#B7950B" stroke-width="1"/>
+<text x="175" y="439" class="code">always @(posedge clk or negedge reset)</text>
+<text x="175" y="453" class="code">  if (!reset)  phase_acc &lt;= 32'b0;</text>
+<text x="175" y="467" class="code">  else         phase_acc &lt;= phase_acc + phase_inc;</text>
+
+<rect x="20" y="495" width="680" height="35" rx="6" fill="#D5F5E3" stroke="#1E8449" stroke-width="1.5"/>
+<text x="30" y="510" class="label-b" fill="#1E8449">Two valid designs, one outcome.</text>
+<text x="30" y="524" class="label-s">This model uses Way 1 (Block) - a register-feedback loop reads naturally as a block diagram. But Way 2 works equally well.</text>
+</svg>

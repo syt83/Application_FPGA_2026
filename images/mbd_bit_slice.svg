@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 470">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .subtitle { font-size: 12px; fill: #1B4F72; font-weight: bold; }
+  .label-b { font-size: 11px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .code { font-family: 'Courier New', monospace; font-size: 9px; fill: #2C3E50; }
+  .code-b { font-family: 'Courier New', monospace; font-size: 10px; fill: #2C3E50; font-weight: bold; }
+  .sig { font-family: 'Courier New', monospace; font-size: 9px; fill: #E67E22; font-weight: bold; }
+  .bitnum { font-family: 'Courier New', monospace; font-size: 7px; fill: #666; }
+</style>
+<defs>
+  <marker id="mo" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#E67E22"/>
+  </marker>
+  <marker id="mg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#1E8449"/>
+  </marker>
+</defs>
+
+<text x="350" y="22" text-anchor="middle" class="title">Bit Slice — Take the Top 8 Bits</text>
+<text x="350" y="40" text-anchor="middle" class="label-s">The 32-bit accumulator becomes an 8-bit LUT address</text>
+
+<!-- ===== Input label ===== -->
+<text x="350" y="68" text-anchor="middle" class="label-b" fill="#E67E22">phase_acc [31:0]  — 32-bit</text>
+
+<!-- ===== 32-bit register visual ===== -->
+<g transform="translate(50,80)">
+  <!-- top 8 bits (highlighted green) -->
+  <rect x="0"   y="0" width="150" height="34" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/>
+  <!-- lower 24 bits (faded) -->
+  <rect x="150" y="0" width="450" height="34" fill="#F8F9FA" stroke="#AEB6BF" stroke-width="1.5"/>
+
+  <!-- bit dividers for top 8 -->
+  <line x1="18.75" y1="0" x2="18.75" y2="34" stroke="#1E8449" stroke-width="0.5"/>
+  <line x1="37.5"  y1="0" x2="37.5"  y2="34" stroke="#1E8449" stroke-width="0.5"/>
+  <line x1="56.25" y1="0" x2="56.25" y2="34" stroke="#1E8449" stroke-width="0.5"/>
+  <line x1="75"    y1="0" x2="75"    y2="34" stroke="#1E8449" stroke-width="0.5"/>
+  <line x1="93.75" y1="0" x2="93.75" y2="34" stroke="#1E8449" stroke-width="0.5"/>
+  <line x1="112.5" y1="0" x2="112.5" y2="34" stroke="#1E8449" stroke-width="0.5"/>
+  <line x1="131.25" y1="0" x2="131.25" y2="34" stroke="#1E8449" stroke-width="0.5"/>
+
+  <!-- bit position labels for top 8 -->
+  <text x="9"   y="46" text-anchor="middle" class="bitnum">31</text>
+  <text x="28"  y="46" text-anchor="middle" class="bitnum">30</text>
+  <text x="47"  y="46" text-anchor="middle" class="bitnum">29</text>
+  <text x="66"  y="46" text-anchor="middle" class="bitnum">28</text>
+  <text x="84"  y="46" text-anchor="middle" class="bitnum">27</text>
+  <text x="103" y="46" text-anchor="middle" class="bitnum">26</text>
+  <text x="122" y="46" text-anchor="middle" class="bitnum">25</text>
+  <text x="141" y="46" text-anchor="middle" class="bitnum">24</text>
+
+  <!-- region labels -->
+  <text x="75"  y="-8" text-anchor="middle" class="label-b" fill="#1E8449">top 8 bits [31:24]</text>
+  <text x="375" y="-8" text-anchor="middle" class="label-s">lower 24 bits [23:0] — discarded</text>
+  <text x="375" y="22" text-anchor="middle" class="code">(used internally for phase precision)</text>
+</g>
+
+<!-- ===== Arrow down from top 8 bits ===== -->
+<path d="M 125,148 C 125,175 125,185 125,205" fill="none" stroke="#1E8449" stroke-width="2" marker-end="url(#mg)"/>
+<text x="135" y="180" class="label-s" fill="#1E8449">extract</text>
+
+<!-- ===== Bit Slice block ===== -->
+<rect x="220" y="200" width="260" height="80" rx="8" fill="#FDEBD0" stroke="#E67E22" stroke-width="2.5"/>
+<rect x="220" y="200" width="260" height="20" rx="8" fill="#E67E22"/>
+<text x="350" y="214" text-anchor="middle" class="label-b" fill="#FFFFFF">Simulink Block — Bit Slice</text>
+<text x="350" y="240" text-anchor="middle" class="code-b">Bits to extract: [31:24]</text>
+<text x="350" y="258" text-anchor="middle" class="label-s">Output: upper 8 bits as a new uint8 signal</text>
+<text x="350" y="272" text-anchor="middle" class="label-s">(library: Logic and Bit Operations)</text>
+
+<!-- arrow from top-8 region into Bit Slice -->
+<line x1="125" y1="205" x2="220" y2="240" stroke="#1E8449" stroke-width="0" />
+<path d="M 125,150 C 125,180 160,200 220,235" fill="none" stroke="#1E8449" stroke-width="2" marker-end="url(#mg)"/>
+
+<!-- ===== Output ===== -->
+<line x1="480" y1="240" x2="600" y2="240" stroke="#E67E22" stroke-width="2.2" marker-end="url(#mo)"/>
+<text x="500" y="233" class="sig">addr [7:0]</text>
+<text x="615" y="237" class="label-b" fill="#E67E22">addr</text>
+<text x="615" y="251" class="label-s">0 ~ 255</text>
+<text x="615" y="263" class="label-s">to sine LUT</text>
+
+<!-- ============ Why top bits box ============ -->
+<rect x="40" y="305" width="620" height="70" rx="8" fill="#D6EAF8" stroke="#1B4F72" stroke-width="1.5"/>
+<text x="50" y="325" class="subtitle">Why the TOP 8 bits, not the bottom?</text>
+<text x="58" y="345" class="label-s">The accumulator fills slowly. The upper bits change in a smooth, ordered way —</text>
+<text x="58" y="359" class="label-s">they step 0, 1, 2, ... 255 as the phase advances. The lower 24 bits give fine</text>
+<text x="58" y="373" class="label-s">phase precision but are not needed to index a 256-entry table.</text>
+
+<!-- ============ Alternative box ============ -->
+<rect x="40" y="388" width="620" height="68" rx="8" fill="#F8F9FA" stroke="#AEB6BF" stroke-width="1"/>
+<text x="50" y="408" class="label-b">Equivalent ways to do this in Simulink:</text>
+<text x="58" y="427" class="code">  Option 1:  Bit Slice block        -> bits [31:24]</text>
+<text x="58" y="442" class="code">  Option 2:  Shift Arithmetic block -> shift right 24, keep low 8 bits</text>
+</svg>

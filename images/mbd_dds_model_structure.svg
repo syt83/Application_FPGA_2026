@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 480">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .subtitle { font-size: 12px; fill: #1B4F72; font-weight: bold; }
+  .label-b { font-size: 11px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #666; }
+  .code { font-family: 'Courier New', monospace; font-size: 9px; fill: #2C3E50; }
+  .sig { font-family: 'Courier New', monospace; font-size: 9px; fill: #1B4F72; font-weight: bold; }
+  .tag { font-size: 10px; font-weight: bold; }
+</style>
+<defs>
+  <marker id="mb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#1B4F72"/>
+  </marker>
+  <marker id="mg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#1E8449"/>
+  </marker>
+  <marker id="mo" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#E67E22"/>
+  </marker>
+  <marker id="my" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#B7950B"/>
+  </marker>
+  <marker id="mp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#8E44AD"/>
+  </marker>
+</defs>
+
+<text x="360" y="22" text-anchor="middle" class="title">DDS Model — Mixing Simulink Blocks and MATLAB Functions</text>
+<text x="360" y="40" text-anchor="middle" class="label-s">One model, two styles: green = MATLAB Function (script), orange = Simulink Block</text>
+
+<!-- ===== Inputs ===== -->
+<text x="35" y="115" class="label-b" fill="#1B4F72">freq_int</text>
+<text x="35" y="128" class="label-s">SW[7:4]</text>
+<line x1="92" y1="112" x2="135" y2="112" stroke="#1B4F72" stroke-width="1.5" marker-end="url(#mb)"/>
+
+<text x="35" y="160" class="label-b" fill="#1B4F72">freq_frac</text>
+<text x="35" y="173" class="label-s">SW[3:0]</text>
+<line x1="92" y1="157" x2="135" y2="157" stroke="#1B4F72" stroke-width="1.5" marker-end="url(#mb)"/>
+
+<!-- ===== Step 1: freq calc (Function) ===== -->
+<rect x="135" y="92" width="150" height="86" rx="8" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/>
+<rect x="135" y="92" width="150" height="18" rx="8" fill="#1E8449"/>
+<text x="210" y="105" text-anchor="middle" class="tag" fill="#FFFFFF">MATLAB Function</text>
+<text x="210" y="128" text-anchor="middle" class="label-b">freq_calc</text>
+<text x="145" y="145" class="code">freq = int +</text>
+<text x="145" y="157" class="code">       frac/10</text>
+<text x="145" y="171" class="code">(0.1 ~ 9.9 Hz)</text>
+
+<!-- ===== Step 2: phase_inc calc (Function) ===== -->
+<line x1="285" y1="135" x2="320" y2="135" stroke="#1E8449" stroke-width="1.5" marker-end="url(#mg)"/>
+<text x="288" y="128" class="sig" fill="#1E8449">freq</text>
+
+<rect x="320" y="92" width="155" height="86" rx="8" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/>
+<rect x="320" y="92" width="155" height="18" rx="8" fill="#1E8449"/>
+<text x="397" y="105" text-anchor="middle" class="tag" fill="#FFFFFF">MATLAB Function</text>
+<text x="397" y="128" text-anchor="middle" class="label-b">phase_inc_calc</text>
+<text x="330" y="145" class="code">inc = freq *</text>
+<text x="330" y="157" class="code">  2^32 / 50e6</text>
+<text x="330" y="171" class="code">(round to int)</text>
+
+<!-- ===== Step 3: phase accumulator (Block) ===== -->
+<line x1="397" y1="178" x2="397" y2="215" stroke="#1E8449" stroke-width="1.5" marker-end="url(#mg)"/>
+<text x="402" y="200" class="sig" fill="#1E8449">phase_inc</text>
+
+<rect x="290" y="215" width="215" height="95" rx="8" fill="#FDEBD0" stroke="#E67E22" stroke-width="2"/>
+<rect x="290" y="215" width="215" height="18" rx="8" fill="#E67E22"/>
+<text x="397" y="228" text-anchor="middle" class="tag" fill="#FFFFFF">Simulink Block</text>
+<text x="397" y="250" text-anchor="middle" class="label-b">Phase Accumulator (32-bit)</text>
+
+<!-- inside: Sum + Unit Delay -->
+<rect x="305" y="260" width="55" height="36" rx="4" fill="#FFFFFF" stroke="#E67E22"/>
+<text x="332" y="282" text-anchor="middle" class="code">Sum</text>
+<line x1="360" y1="278" x2="390" y2="278" stroke="#E67E22" stroke-width="1.2" marker-end="url(#mo)"/>
+<rect x="390" y="260" width="80" height="36" rx="4" fill="#FFFFFF" stroke="#E67E22"/>
+<text x="430" y="278" text-anchor="middle" class="code">Unit Delay</text>
+<text x="430" y="289" text-anchor="middle" class="code">(register)</text>
+
+<!-- feedback -->
+<path d="M 470,290 C 485,290 485,305 397,305 C 320,305 320,296 320,296" 
+      fill="none" stroke="#E67E22" stroke-width="1.2" stroke-dasharray="3,2" marker-end="url(#mo)"/>
+
+<!-- clk -->
+<text x="510" y="252" class="sig" fill="#8E44AD">clk</text>
+<line x1="505" y1="248" x2="445" y2="248" stroke="#8E44AD" stroke-width="1.2" stroke-dasharray="3,2" marker-end="url(#mp)"/>
+
+<!-- ===== Step 4: bit slice (Block) ===== -->
+<line x1="290" y1="262" x2="250" y2="262" stroke="#E67E22" stroke-width="1.5" marker-end="url(#mo)"/>
+<text x="200" y="256" class="sig" fill="#E67E22">phase_acc[31:0]</text>
+
+<rect x="120" y="240" width="120" height="50" rx="8" fill="#FDEBD0" stroke="#E67E22" stroke-width="2"/>
+<rect x="120" y="240" width="120" height="18" rx="8" fill="#E67E22"/>
+<text x="180" y="253" text-anchor="middle" class="tag" fill="#FFFFFF">Simulink Block</text>
+<text x="180" y="272" text-anchor="middle" class="label-b">Bit Slice [31:24]</text>
+<text x="180" y="284" text-anchor="middle" class="code">take top 8 bits</text>
+
+<!-- ===== Step 5: sine LUT (Function) ===== -->
+<line x1="180" y1="290" x2="180" y2="335" stroke="#E67E22" stroke-width="1.5" marker-end="url(#mo)"/>
+<text x="186" y="315" class="sig" fill="#E67E22">addr[7:0]</text>
+
+<rect x="105" y="335" width="155" height="86" rx="8" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/>
+<rect x="105" y="335" width="155" height="18" rx="8" fill="#1E8449"/>
+<text x="182" y="348" text-anchor="middle" class="tag" fill="#FFFFFF">MATLAB Function</text>
+<text x="182" y="370" text-anchor="middle" class="label-b">sine_lut</text>
+<text x="115" y="387" class="code">persistent LUT</text>
+<text x="115" y="399" class="code">LUT = fi(sin(...),</text>
+<text x="115" y="411" class="code">        1,8,6)</text>
+
+<!-- ===== Outputs ===== -->
+<line x1="260" y1="378" x2="310" y2="378" stroke="#B7950B" stroke-width="2" marker-end="url(#my)"/>
+<text x="318" y="375" class="label-b" fill="#B7950B">sine_out[7:0]</text>
+<text x="318" y="389" class="label-s">sfix8_En6, -1.0~+1.0</text>
+
+<!-- freq_out from freq_calc -->
+<path d="M 210,178 C 210,200 540,200 540,378 L 510,378" 
+      fill="none" stroke="#B7950B" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#my)"/>
+<text x="545" y="375" class="label-b" fill="#B7950B">freq_out[7:0]</text>
+<text x="545" y="389" class="label-s">×10 integer (3.5→35)</text>
+
+<!-- ===== Legend ===== -->
+<rect x="40" y="438" width="640" height="32" rx="4" fill="#F8F9FA" stroke="#AEB6BF" stroke-width="1"/>
+<rect x="55" y="447" width="14" height="14" rx="2" fill="#D5F5E3" stroke="#1E8449" stroke-width="1.5"/>
+<text x="78" y="458" class="label-s">MATLAB Function — script style, good for math and branching</text>
+<rect x="400" y="447" width="14" height="14" rx="2" fill="#FDEBD0" stroke="#E67E22" stroke-width="1.5"/>
+<text x="423" y="458" class="label-s">Simulink Block — visual style, good for signal flow</text>
+</svg>

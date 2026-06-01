@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420">
+<style>
+  text { font-family: 'Segoe UI', Arial, sans-serif; }
+  .title { font-size: 16px; font-weight: bold; fill: #1B4F72; }
+  .subtitle { font-size: 12px; fill: #1B4F72; font-weight: bold; }
+  .step-t { font-size: 12px; font-weight: bold; fill: #FFFFFF; }
+  .label-b { font-size: 11px; fill: #2C3E50; font-weight: bold; }
+  .label-s { font-size: 10px; fill: #555; }
+  .num { font-size: 15px; font-weight: bold; fill: #FFFFFF; }
+  .code { font-family: 'Courier New', monospace; font-size: 9px; fill: #2C3E50; }
+</style>
+<defs>
+  <marker id="big" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+    <path d="M0 0L10 5L0 10z" fill="#5D6D7E"/>
+  </marker>
+</defs>
+
+<text x="360" y="26" text-anchor="middle" class="title">MBD 3 - From AI Code to a Working Board</text>
+<text x="360" y="44" text-anchor="middle" class="label-s">The last step of the semester: bring the DDS design onto real hardware</text>
+
+<!-- ===== Step 1: AI coding ===== -->
+<rect x="30" y="70" width="150" height="115" rx="10" fill="#FDEBD0" stroke="#E67E22" stroke-width="2"/>
+<circle cx="55" cy="95" r="14" fill="#E67E22"/>
+<text x="55" y="100" text-anchor="middle" class="num">1</text>
+<text x="105" y="100" text-anchor="middle" class="label-b" fill="#E67E22">AI Coding</text>
+<text x="105" y="122" text-anchor="middle" class="label-s">Describe the display</text>
+<text x="105" y="135" text-anchor="middle" class="label-s">module - AI writes</text>
+<text x="105" y="148" text-anchor="middle" class="label-s">the Verilog</text>
+<text x="105" y="168" text-anchor="middle" class="code">seg7_freq.v</text>
+<text x="105" y="179" text-anchor="middle" class="code">led_bar.v</text>
+
+<!-- arrow 1->2 -->
+<line x1="180" y1="127" x2="210" y2="127" stroke="#5D6D7E" stroke-width="2" marker-end="url(#big)"/>
+
+<!-- ===== Step 2: Verify ===== -->
+<rect x="212" y="70" width="150" height="115" rx="10" fill="#D6EAF8" stroke="#1B4F72" stroke-width="2"/>
+<circle cx="237" cy="95" r="14" fill="#1B4F72"/>
+<text x="237" y="100" text-anchor="middle" class="num">2</text>
+<text x="287" y="100" text-anchor="middle" class="label-b" fill="#1B4F72">Verify Code</text>
+<text x="287" y="122" text-anchor="middle" class="label-s">Read what AI wrote.</text>
+<text x="287" y="135" text-anchor="middle" class="label-s">Check: no division,</text>
+<text x="287" y="148" text-anchor="middle" class="label-s">active-low reset,</text>
+<text x="287" y="161" text-anchor="middle" class="label-s">correct bit widths.</text>
+<text x="287" y="179" text-anchor="middle" class="code">the engineer's eye</text>
+
+<!-- arrow 2->3 -->
+<line x1="362" y1="127" x2="392" y2="127" stroke="#5D6D7E" stroke-width="2" marker-end="url(#big)"/>
+
+<!-- ===== Step 3: Integrate ===== -->
+<rect x="394" y="70" width="150" height="115" rx="10" fill="#D5F5E3" stroke="#1E8449" stroke-width="2"/>
+<circle cx="419" cy="95" r="14" fill="#1E8449"/>
+<text x="419" y="100" text-anchor="middle" class="num">3</text>
+<text x="469" y="100" text-anchor="middle" class="label-b" fill="#1E8449">Integrate</text>
+<text x="469" y="122" text-anchor="middle" class="label-s">Wire dds_sine (MBD 2)</text>
+<text x="469" y="135" text-anchor="middle" class="label-s">with the display</text>
+<text x="469" y="148" text-anchor="middle" class="label-s">modules in one top.</text>
+<text x="469" y="168" text-anchor="middle" class="code">dds_top.v</text>
+<text x="469" y="179" text-anchor="middle" class="label-s">clk_enable -> 1'b1</text>
+
+<!-- arrow 3->4 -->
+<line x1="544" y1="127" x2="574" y2="127" stroke="#5D6D7E" stroke-width="2" marker-end="url(#big)"/>
+
+<!-- ===== Step 4: Synthesize ===== -->
+<rect x="576" y="70" width="120" height="115" rx="10" fill="#E8DAEF" stroke="#7D3C98" stroke-width="2"/>
+<circle cx="601" cy="95" r="14" fill="#7D3C98"/>
+<text x="601" y="100" text-anchor="middle" class="num">4</text>
+<text x="636" y="100" text-anchor="middle" class="label-b" fill="#7D3C98">Synthesize</text>
+<text x="636" y="124" text-anchor="middle" class="label-s">Quartus 13</text>
+<text x="636" y="138" text-anchor="middle" class="label-s">compile +</text>
+<text x="636" y="152" text-anchor="middle" class="label-s">pin assign</text>
+<text x="636" y="172" text-anchor="middle" class="code">.sof file</text>
+
+<!-- arrow 4->5 (down) -->
+<line x1="636" y1="185" x2="636" y2="235" stroke="#5D6D7E" stroke-width="2" marker-end="url(#big)"/>
+
+<!-- ===== Step 5: Download to board ===== -->
+<rect x="396" y="240" width="300" height="95" rx="10" fill="#FEF9E7" stroke="#B7950B" stroke-width="2.5"/>
+<circle cx="421" cy="265" r="14" fill="#B7950B"/>
+<text x="421" y="270" text-anchor="middle" class="num">5</text>
+<text x="540" y="265" text-anchor="middle" class="label-b" fill="#B7950B">Download to DE0 / DE1 Board</text>
+<text x="546" y="288" text-anchor="middle" class="label-s">Program the FPGA. Set frequency with the switches.</text>
+<text x="546" y="304" text-anchor="middle" class="label-s">7-seg shows the frequency, LEDs show the sine wave.</text>
+<text x="546" y="322" text-anchor="middle" class="code">the model now runs on real silicon</text>
+
+<!-- ===== Closing message ===== -->
+<rect x="30" y="240" width="340" height="95" rx="10" fill="#EAF2F8" stroke="#1B4F72" stroke-width="1.5"/>
+<text x="200" y="263" text-anchor="middle" class="subtitle">The full MBD cycle, completed</text>
+<text x="44" y="285" class="label-s">MBD 1 : learn the tool, fixed-point, end-to-end</text>
+<text x="44" y="301" class="label-s">MBD 2 : model a DDS, generate HDL, verify in ModelSim</text>
+<text x="44" y="317" class="label-s">MBD 3 : AI-code the display, integrate, run on the board</text>
+<text x="44" y="332" class="label-b" fill="#1B4F72">model -> simulate -> generate -> verify -> hardware</text>
+</svg>
